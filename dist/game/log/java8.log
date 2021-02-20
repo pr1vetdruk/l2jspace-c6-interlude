@@ -1,0 +1,64 @@
+2021.02.20 11:34:22,452	INFO	1	ru.privetdruk.l2jspace.commons.util.Util	------------------------------------------------=[ Database ]
+2021.02.20 11:34:22,738	INFO	1	ru.privetdruk.l2jspace.commons.database.DatabaseFactory	Database: Initialized.
+2021.02.20 11:34:22,738	INFO	1	ru.privetdruk.l2jspace.commons.util.Util	----------------------------------------------=[ ThreadPool ]
+2021.02.20 11:34:22,768	INFO	1	ru.privetdruk.l2jspace.commons.concurrent.ThreadPool	ThreadPool: Initialized
+2021.02.20 11:34:22,768	INFO	1	ru.privetdruk.l2jspace.commons.concurrent.ThreadPool	...scheduled pool executor with 160 total threads.
+2021.02.20 11:34:22,768	INFO	1	ru.privetdruk.l2jspace.commons.concurrent.ThreadPool	...instant pool executor with 120 total threads.
+2021.02.20 11:34:22,771	INFO	1	ru.privetdruk.l2jspace.commons.util.Util	-----------------------------------------------=[ IdManager ]
+2021.02.20 11:34:22,773	INFO	1	ru.privetdruk.l2jspace.gameserver.instancemanager.IdManager	Updated characters online status.
+2021.02.20 11:34:22,783	INFO	1	ru.privetdruk.l2jspace.gameserver.instancemanager.IdManager	IdManager: Cleaned 0 elements from database in 0 seconds.
+2021.02.20 11:34:22,787	INFO	1	ru.privetdruk.l2jspace.gameserver.instancemanager.IdManager	IdManager: Cleaned 0 expired timestamps from database.
+2021.02.20 11:34:22,790	INFO	1	ru.privetdruk.l2jspace.gameserver.instancemanager.IdManager	IdManager: 102912 id's available.
+2021.02.20 11:34:22,792	INFO	1	ru.privetdruk.l2jspace.gameserver.cache.HtmCache	Cache[HTML]: Running lazy cache
+2021.02.20 11:34:22,796	INFO	1	ru.privetdruk.l2jspace.gameserver.cache.CrestCache	Cache[Crest]: 0,000MB on 0 files loaded.
+2021.02.20 11:34:22,894	INFO	1	ru.privetdruk.l2jspace.gameserver.scripting.ScriptEngineManager	Loaded 1 files to exclude.
+2021.02.20 11:34:22,894	INFO	1	ru.privetdruk.l2jspace.commons.util.Util	---------------------------------------------------=[ World ]
+2021.02.20 11:34:22,896	INFO	1	ru.privetdruk.l2jspace.gameserver.model.World	World: Setting up World Regions
+2021.02.20 11:34:22,916	INFO	1	ru.privetdruk.l2jspace.gameserver.model.World	World: (88x128) World Region Grid set up.
+2021.02.20 11:34:22,939	INFO	1	ru.privetdruk.l2jspace.gameserver.model.entity.Announcements	Announcements: Loaded 2 Announcements.
+2021.02.20 11:34:22,945	INFO	1	ru.privetdruk.l2jspace.gameserver.handler.AutoAnnouncementHandler	GameServer: Loaded 0 Auto Announcements.
+2021.02.20 11:34:22,949	INFO	1	ru.privetdruk.l2jspace.gameserver.instancemanager.GlobalVariablesManager	GlobalVariablesManager: Loaded 2 variables.
+2021.02.20 11:34:22,964	INFO	1	ru.privetdruk.l2jspace.commons.util.IXmlReader	StaticObjectData: Loaded 29 static objects.
+2021.02.20 11:34:22,976	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.sql.TeleportLocationTable	TeleportLocationTable: Loaded 828 Teleport Location Templates
+2021.02.20 11:34:22,987	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.xml.ExperienceData	ExperienceData: Loaded 87 levels
+2021.02.20 11:34:22,987	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.xml.ExperienceData	ExperienceData: Max Player Level is: 80
+2021.02.20 11:34:22,987	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.xml.ExperienceData	ExperienceData: Max Pet Level is: 80
+2021.02.20 11:34:22,988	INFO	1	ru.privetdruk.l2jspace.gameserver.instancemanager.DuelManager	Initializing DuelManager
+2021.02.20 11:34:22,989	INFO	1	ru.privetdruk.l2jspace.commons.util.Util	-------------------------------------------------=[ Players ]
+2021.02.20 11:34:23,037	INFO	1	ru.privetdruk.l2jspace.commons.util.IXmlReader	PlayerTemplateData: Loaded 89 player templates.
+2021.02.20 11:34:23,059	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.sql.ClanTable	Restored 1 clans from the database.
+2021.02.20 11:34:23,061	INFO	1	ru.privetdruk.l2jspace.gameserver.communitybbs.Manager.BaseBBSManager	Loaded 7 forums. Last forum id used: 7
+2021.02.20 11:34:23,062	INFO	1	ru.privetdruk.l2jspace.commons.util.Util	--------------------------------------------------=[ Skills ]
+2021.02.20 11:34:23,215	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.sql.SkillTreeTable	SkillTreeTable: Loaded 13851 skills.
+2021.02.20 11:34:23,244	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.sql.SkillTreeTable	FishingSkillTreeTable: Loaded 109 general skills.
+2021.02.20 11:34:23,245	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.sql.SkillTreeTable	FishingSkillTreeTable: Loaded 8 dwarven skills.
+2021.02.20 11:34:23,245	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.sql.SkillTreeTable	EnchantSkillTreeTable: Loaded 14520 enchant skills.
+2021.02.20 11:34:23,247	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.sql.SkillTreeTable	PledgeSkillTreeTable: Loaded 64 pledge skills.
+2021.02.20 11:34:23,947	INFO	1	ru.privetdruk.l2jspace.gameserver.engines.DocumentEngine	SkillsEngine: Loaded 30518 skill templates.
+2021.02.20 11:34:23,950	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.sql.SkillSpellbookTable	SkillSpellbookTable: Loaded 334 spellbooks
+2021.02.20 11:34:23,953	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.sql.HelperBuffTable	HelperBuffTable: Loaded 14 templates.
+2021.02.20 11:34:23,953	INFO	1	ru.privetdruk.l2jspace.gameserver.GameServer	Skills: All skills loaded.
+2021.02.20 11:34:23,954	INFO	1	ru.privetdruk.l2jspace.commons.util.Util	---------------------------------------------------=[ Items ]
+2021.02.20 11:34:24,203	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.ItemTable	Highest item id used: 9208
+2021.02.20 11:34:24,212	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.xml.ArmorSetData	ArmorSetData: Loaded 51 armor sets.
+2021.02.20 11:34:24,241	INFO	1	ru.privetdruk.l2jspace.commons.util.IXmlReader	ExtractableItemData: Loaded 334 extractable items.
+2021.02.20 11:34:24,247	INFO	1	ru.privetdruk.l2jspace.commons.util.IXmlReader	SummonItemData: Loaded 14 summon items.
+2021.02.20 11:34:24,256	INFO	1	ru.privetdruk.l2jspace.commons.util.IXmlReader	HennaData: Loaded 180 hennas.
+2021.02.20 11:34:24,265	INFO	1	ru.privetdruk.l2jspace.commons.util.IXmlReader	FishData: Loaded 270 fish.
+2021.02.20 11:34:24,265	INFO	1	ru.privetdruk.l2jspace.commons.util.Util	-----------------------------------------------------=[ Npc ]
+2021.02.20 11:34:24,270	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.SchemeBufferTable	SchemeBufferTable: Loaded 0 players schemes and 60 available buffs.
+2021.02.20 11:34:24,277	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.xml.WalkerRouteData	WalkerRouteData: Loaded 12 walker routes.
+2021.02.20 11:34:24,387	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.sql.NpcTable	NpcTable: Loaded 6594 Npc Templates.
+2021.02.20 11:34:24,388	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.sql.NpcTable	NpcTable: Loaded 6603 Npc Templates.
+2021.02.20 11:34:24,407	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.sql.NpcTable	CustomDropList : Added 0 custom droplist
+2021.02.20 11:34:24,441	INFO	1	ru.privetdruk.l2jspace.gameserver.datatables.sql.NpcTable	NpcTable: Loaded 451 Minions.
+2021.02.20 11:34:24,442	INFO	1	ru.privetdruk.l2jspace.commons.util.Util	-------------------------------------------------=[ Geodata ]
+2021.02.20 11:34:24,444	INFO	1	ru.privetdruk.l2jspace.gameserver.geoengine.GeoEngine	GeoEngine: Initializing...
+2021.02.20 11:34:24,487	INFO	1	ru.privetdruk.l2jspace.gameserver.geoengine.GeoEngine	GeoEngine: Loaded 0 geodata files.
+2021.02.20 11:34:24,488	INFO	1	ru.privetdruk.l2jspace.gameserver.geoengine.GeoEngine	GeoEngine: Forcing PathFinding setting to false.
+2021.02.20 11:34:24,488	INFO	1	ru.privetdruk.l2jspace.gameserver.geoengine.GeoEngine	GeoEngine: Forcing CoordSynchronize setting to -1.
+2021.02.20 11:34:24,547	INFO	1	ru.privetdruk.l2jspace.gameserver.geoengine.GeoEngine	GeoEnginePathfinding: Loaded 32 node buffers.
+2021.02.20 11:34:24,547	INFO	1	ru.privetdruk.l2jspace.commons.util.Util	-------------------------------------------------=[ Economy ]
+2021.02.20 11:34:24,673	INFO	1	ru.privetdruk.l2jspace.gameserver.TradeController	TradeController: Loaded 508 Buylists.
+2021.02.20 11:34:24,674	INFO	1	ru.privetdruk.l2jspace.gameserver.TradeController	TradeController: Loaded 132 Limited Buylists.
+2021.02.20 11:34:24,679	INFO	1	ru.privetdruk.l2jspace.gameserver.TradeController	TradeController: Loaded 0 Custom Buylists.
