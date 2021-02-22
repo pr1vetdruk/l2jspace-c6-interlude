@@ -43,7 +43,7 @@ public class RequestUnEquipItem extends GameClientPacket {
             return;
         }
 
-        if (player._haveFlagCTF) {
+        if (player.haveFlagCtf) {
             player.sendMessage("You can't unequip a CTF flag.");
             return;
         }

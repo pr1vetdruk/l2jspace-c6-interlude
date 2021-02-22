@@ -41,7 +41,7 @@ import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
 import ru.privetdruk.l2jspace.gameserver.model.actor.templates.NpcTemplate;
 import ru.privetdruk.l2jspace.gameserver.model.base.ClassId;
 import ru.privetdruk.l2jspace.gameserver.model.entity.Announcements;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.manager.EventTask;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.core.manager.EventTask;
 import ru.privetdruk.l2jspace.gameserver.model.entity.olympiad.Olympiad;
 import ru.privetdruk.l2jspace.gameserver.model.entity.siege.Castle;
 import ru.privetdruk.l2jspace.gameserver.model.spawn.Spawn;
@@ -1192,7 +1192,7 @@ public class DM implements EventTask {
             return false;
         }
 
-        if (eventPlayer._inEventTvT || eventPlayer._inEventCTF) {
+        if (eventPlayer._inEventTvT || eventPlayer.inEventCtf) {
             eventPlayer.sendMessage("You already participated to another event!");
             return false;
         }

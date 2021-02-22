@@ -25,6 +25,7 @@ import ru.privetdruk.l2jspace.gameserver.model.WorldObject;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Attackable;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Creature;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
+import ru.privetdruk.l2jspace.gameserver.model.base.RewardItem;
 import ru.privetdruk.l2jspace.gameserver.model.items.instance.ItemInstance;
 import ru.privetdruk.l2jspace.gameserver.network.SystemMessageId;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.InventoryUpdate;
@@ -55,7 +56,7 @@ public class Sweep implements ISkillHandler {
             }
 
             final Attackable target = (Attackable) target1;
-            Attackable.RewardItem[] items = null;
+            RewardItem[] items = null;
             boolean isSweeping = false;
             synchronized (target) {
                 if (target.isSweepActive()) {
@@ -68,23 +69,23 @@ public class Sweep implements ISkillHandler {
                 if ((items == null) || (items.length == 0)) {
                     continue;
                 }
-                for (Attackable.RewardItem ritem : items) {
+                for (RewardItem ritem : items) {
                     if (player.isInParty()) {
                         player.getParty().distributeItem(player, ritem, true, target);
                     } else {
-                        final ItemInstance item = player.getInventory().addItem("Sweep", ritem.getItemId(), ritem.getCount(), player, target);
+                        final ItemInstance item = player.getInventory().addItem("Sweep", ritem.getId(), ritem.getAmount(), player, target);
                         if (iu != null) {
                             iu.addItem(item);
                         }
                         send = true;
                         SystemMessage smsg;
-                        if (ritem.getCount() > 1) {
+                        if (ritem.getAmount() > 1) {
                             smsg = new SystemMessage(SystemMessageId.YOU_HAVE_EARNED_S2_S1_S); // earned $s2$s1
-                            smsg.addItemName(ritem.getItemId());
-                            smsg.addNumber(ritem.getCount());
+                            smsg.addItemName(ritem.getId());
+                            smsg.addNumber(ritem.getAmount());
                         } else {
                             smsg = new SystemMessage(SystemMessageId.YOU_HAVE_EARNED_S1); // earned $s1
-                            smsg.addItemName(ritem.getItemId());
+                            smsg.addItemName(ritem.getId());
                         }
                         player.sendPacket(smsg);
                     }

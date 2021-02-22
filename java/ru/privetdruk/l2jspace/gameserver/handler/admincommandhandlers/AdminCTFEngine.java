@@ -18,14 +18,8 @@ package ru.privetdruk.l2jspace.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
-import ru.privetdruk.l2jspace.Config;
-import ru.privetdruk.l2jspace.gameserver.datatables.ItemTable;
 import ru.privetdruk.l2jspace.gameserver.handler.IAdminCommandHandler;
-import ru.privetdruk.l2jspace.gameserver.model.Location;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
-import ru.privetdruk.l2jspace.gameserver.network.serverpackets.NpcHtmlMessage;
-import ru.privetdruk.l2jspace.gameserver.util.BuilderUtil;
 
 public class AdminCTFEngine implements IAdminCommandHandler {
     private static final String[] ADMIN_COMMANDS =
@@ -76,7 +70,8 @@ public class AdminCTFEngine implements IAdminCommandHandler {
             return false;
         }
 
-        switch (comm) {
+        // TODO privetdruk We need to completely rewrite it for the new engine.
+        /*switch (comm) {
             case "admin_ctf": {
                 showMainPage(activeChar);
                 return true;
@@ -230,7 +225,7 @@ public class AdminCTFEngine implements IAdminCommandHandler {
                 return false;
             }
             case "admin_ctf_npc_pos": {
-                CTF.setNpcPos(activeChar);
+                CTF.setNpcPosition(activeChar);
                 showMainPage(activeChar);
                 return true;
             }
@@ -327,7 +322,7 @@ public class AdminCTFEngine implements IAdminCommandHandler {
                 return false;
             }
             case "admin_ctf_join": {
-                if (CTF.startJoin()) {
+                if (CTF.startRegistrationPlayer()) {
                     showMainPage(activeChar);
                     return true;
                 }
@@ -335,7 +330,7 @@ public class AdminCTFEngine implements IAdminCommandHandler {
                 return false;
             }
             case "admin_ctf_teleport": {
-                CTF.startTeleport();
+                CTF.teleportPlayer();
                 showMainPage(activeChar);
                 return true;
             }
@@ -364,7 +359,7 @@ public class AdminCTFEngine implements IAdminCommandHandler {
                 return true;
             }
             case "admin_ctf_sit": {
-                CTF.sit();
+                CTF.sitPlayer();
                 showMainPage(activeChar);
                 return true;
             }
@@ -494,7 +489,9 @@ public class AdminCTFEngine implements IAdminCommandHandler {
             default: {
                 return false;
             }
-        }
+        }*/
+
+        return false;
     }
 
     @Override
@@ -502,7 +499,7 @@ public class AdminCTFEngine implements IAdminCommandHandler {
         return ADMIN_COMMANDS;
     }
 
-    public void showEditPage(PlayerInstance activeChar) {
+    /*public void showEditPage(PlayerInstance activeChar) {
         final NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
         final StringBuilder replyMSG = new StringBuilder("<html><body>");
         replyMSG.append("<center><font color=\"LEVEL\">[CTF Engine]</font></center><br><br><br>");
@@ -656,5 +653,5 @@ public class AdminCTFEngine implements IAdminCommandHandler {
         replyMSG.append("</body></html>");
         adminReply.setHtml(replyMSG.toString());
         activeChar.sendPacket(adminReply);
-    }
+    }*/
 }

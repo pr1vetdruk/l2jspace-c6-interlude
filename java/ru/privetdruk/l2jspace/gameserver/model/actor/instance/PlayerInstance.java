@@ -117,6 +117,7 @@ import ru.privetdruk.l2jspace.gameserver.model.actor.stat.PlayerStat;
 import ru.privetdruk.l2jspace.gameserver.model.actor.status.PlayerStatus;
 import ru.privetdruk.l2jspace.gameserver.model.actor.templates.PlayerTemplate;
 import ru.privetdruk.l2jspace.gameserver.model.base.ClassId;
+import ru.privetdruk.l2jspace.gameserver.model.base.RewardItem;
 import ru.privetdruk.l2jspace.gameserver.model.base.SubClass;
 import ru.privetdruk.l2jspace.gameserver.model.clan.Clan;
 import ru.privetdruk.l2jspace.gameserver.model.clan.ClanMember;
@@ -124,11 +125,12 @@ import ru.privetdruk.l2jspace.gameserver.model.entity.Announcements;
 import ru.privetdruk.l2jspace.gameserver.model.entity.Duel;
 import ru.privetdruk.l2jspace.gameserver.model.entity.Hero;
 import ru.privetdruk.l2jspace.gameserver.model.entity.Rebirth;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.GameEvent;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.VIP;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.core.State;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.olympiad.Olympiad;
 import ru.privetdruk.l2jspace.gameserver.model.entity.sevensigns.SevenSigns;
 import ru.privetdruk.l2jspace.gameserver.model.entity.sevensigns.SevenSignsFestival;
@@ -159,7 +161,6 @@ import ru.privetdruk.l2jspace.gameserver.model.partymatching.PartyMatchWaitingLi
 import ru.privetdruk.l2jspace.gameserver.model.quest.EventType;
 import ru.privetdruk.l2jspace.gameserver.model.quest.Quest;
 import ru.privetdruk.l2jspace.gameserver.model.quest.QuestState;
-import ru.privetdruk.l2jspace.gameserver.model.quest.State;
 import ru.privetdruk.l2jspace.gameserver.model.skills.BaseStat;
 import ru.privetdruk.l2jspace.gameserver.model.skills.Formulas;
 import ru.privetdruk.l2jspace.gameserver.model.skills.Stat;
@@ -232,6 +233,9 @@ import ru.privetdruk.l2jspace.gameserver.util.Broadcast;
 import ru.privetdruk.l2jspace.gameserver.util.FloodProtectors;
 import ru.privetdruk.l2jspace.gameserver.util.IllegalPlayerAction;
 import ru.privetdruk.l2jspace.gameserver.util.Util;
+
+import static ru.privetdruk.l2jspace.gameserver.model.entity.event.core.State.START;
+import static ru.privetdruk.l2jspace.gameserver.model.entity.event.core.State.TELEPORTATION;
 
 /**
  * This class represents all player characters in the world.<br>
@@ -337,14 +341,14 @@ public class PlayerInstance extends Playable {
     public int _countTvTdies;
     public int _originalKarmaTvT;
     public boolean _inEventTvT = false;
-    public String _teamNameCTF;
-    public String _teamNameHaveFlagCTF;
-    public String _originalTitleCTF;
-    public int _originalNameColorCTF = 0;
-    public int _originalKarmaCTF;
+    public String teamNameCtf;
+    public String teamNameHaveFlagCtf;
+    public String originalTitleCtf;
+    public int originalNameColorCtf = 0;
+    public int originalKarmaCtf;
     public int _countCTFflags;
-    public boolean _inEventCTF = false;
-    public boolean _haveFlagCTF = false;
+    public boolean inEventCtf = false;
+    public boolean haveFlagCtf = false;
     public Future<?> _posCheckerCTF = null;
     public String _originalTitleDM;
     public int _originalNameColorDM = 0;
@@ -664,7 +668,7 @@ public class PlayerInstance extends Playable {
             }
 
             // during teleport phase, players cant do any attack
-            if ((TvT.isTeleport() && _inEventTvT) || (CTF.isTeleport() && _inEventCTF) || (DM.isTeleport() && _inEventDM)) {
+            if ((TvT.isTeleport() && _inEventTvT) || (inEventCtf && CTF.isTeleported()) || (DM.isTeleport() && _inEventDM)) {
                 sendPacket(ActionFailed.STATIC_PACKET);
                 return;
             }
@@ -710,7 +714,7 @@ public class PlayerInstance extends Playable {
             }
 
             // during teleport phase, players cant do any attack
-            if ((TvT.isTeleport() && _inEventTvT) || (CTF.isTeleport() && _inEventCTF) || (DM.isTeleport() && _inEventDM)) {
+            if ((TvT.isTeleport() && _inEventTvT) || (inEventCtf && CTF.isTeleported()) || (DM.isTeleport() && _inEventDM)) {
                 sendPacket(ActionFailed.STATIC_PACKET);
                 return;
             }
@@ -1450,7 +1454,7 @@ public class PlayerInstance extends Playable {
                     for (QuestState state : states) {
                         if ((state.getQuest().getQuestId() == qs.getQuest().getQuestId()) && !qs.isCompleted()) {
                             if (qs.getQuest().notifyEvent(event, npc, this)) {
-                                showQuestWindow(quest, State.getStateName(qs.getState()));
+                                showQuestWindow(quest, ru.privetdruk.l2jspace.gameserver.model.quest.State.getStateName(qs.getState()));
                             }
                             retval = qs;
                         }
@@ -2885,7 +2889,7 @@ public class PlayerInstance extends Playable {
 
         if (GameEvent.active && eventSitForced) {
             sendMessage("A dark force beyond your mortal understanding makes your knees to shake when you try to stand up ...");
-        } else if ((TvT.isSitForced() && _inEventTvT) || (CTF.isSitForced() && _inEventCTF) || (DM.isSitForced() && _inEventDM)) {
+        } else if ((TvT.isSitForced() && _inEventTvT) || (inEventCtf && (CTF.isTeleported() || CTF.find(State.FINISH) != null)) || (DM.isSitForced() && _inEventDM)) {
             sendMessage("A dark force beyond your mortal understanding makes your knees to shake when you try to stand up...");
         } else if (VIP._sitForced && _inEventVIP) {
             sendMessage("A dark force beyond your mortal understanding makes your knees to shake when you try to stand up...");
@@ -3894,11 +3898,11 @@ public class PlayerInstance extends Playable {
     @Override
     public void onAction(PlayerInstance player) {
         // no Interaction with not participant to events
-        if (((TvT.isStarted() || TvT.isTeleport()) && !Config.TVT_ALLOW_INTERFERENCE) || ((CTF.isStarted() || CTF.isTeleport()) && !Config.CTF_ALLOW_INTERFERENCE) || ((DM.hasStarted() || DM.isTeleport()) && !Config.DM_ALLOW_INTERFERENCE)) {
+        if (((TvT.isStarted() || TvT.isTeleport()) && !Config.TVT_ALLOW_INTERFERENCE) || (((CTF.isTeleported() || CTF.isStarted())) && !Config.CTF_ALLOW_INTERFERENCE) || ((DM.hasStarted() || DM.isTeleport()) && !Config.DM_ALLOW_INTERFERENCE)) {
             if ((_inEventTvT && !player._inEventTvT) || (!_inEventTvT && player._inEventTvT)) {
                 player.sendPacket(ActionFailed.STATIC_PACKET);
                 return;
-            } else if ((_inEventCTF && !player._inEventCTF) || (!_inEventCTF && player._inEventCTF)) {
+            } else if ((inEventCtf && !player.inEventCtf) || (!inEventCtf && player.inEventCtf)) {
                 player.sendPacket(ActionFailed.STATIC_PACKET);
                 return;
             } else if ((_inEventDM && !player._inEventDM) || (!_inEventDM && player._inEventDM)) {
@@ -3977,11 +3981,11 @@ public class PlayerInstance extends Playable {
             }
         } else // Like L2OFF set the target of the PlayerInstance player
         {
-            if (((TvT.isStarted() || TvT.isTeleport()) && !Config.TVT_ALLOW_INTERFERENCE) || ((CTF.isStarted() || CTF.isTeleport()) && !Config.CTF_ALLOW_INTERFERENCE) || ((DM.hasStarted() || DM.isTeleport()) && !Config.DM_ALLOW_INTERFERENCE)) {
+            if (((TvT.isStarted() || TvT.isTeleport()) && !Config.TVT_ALLOW_INTERFERENCE) || (((CTF.isTeleported() || CTF.isStarted())) && !Config.CTF_ALLOW_INTERFERENCE) || ((DM.hasStarted() || DM.isTeleport()) && !Config.DM_ALLOW_INTERFERENCE)) {
                 if ((_inEventTvT && !player._inEventTvT) || (!_inEventTvT && player._inEventTvT)) {
                     player.sendPacket(ActionFailed.STATIC_PACKET);
                     return;
-                } else if ((_inEventCTF && !player._inEventCTF) || (!_inEventCTF && player._inEventCTF)) {
+                } else if ((inEventCtf && !player.inEventCtf) || (!inEventCtf && player.inEventCtf)) {
                     player.sendPacket(ActionFailed.STATIC_PACKET);
                     return;
                 } else if ((_inEventDM && !player._inEventDM) || (!_inEventDM && player._inEventDM)) {
@@ -4096,11 +4100,11 @@ public class PlayerInstance extends Playable {
     }
 
     public boolean isInStartedCTFEvent() {
-        return (CTF.isStarted() && _inEventCTF);
+        return inEventCtf && CTF.isStarted();
     }
 
     public boolean isRegisteredInCTFEvent() {
-        return _inEventCTF;
+        return inEventCtf;
     }
 
     public boolean isInStartedVIPEvent() {
@@ -4117,7 +4121,7 @@ public class PlayerInstance extends Playable {
      * @return true, if is registered in fun event
      */
     public boolean isRegisteredInFunEvent() {
-        return (atEvent || (_inEventTvT) || (_inEventDM) || (_inEventCTF) || (_inEventVIP) || Olympiad.getInstance().isRegistered(this));
+        return (atEvent || (_inEventTvT) || (_inEventDM) || (inEventCtf) || (_inEventVIP) || Olympiad.getInstance().isRegistered(this));
     }
 
     /**
@@ -4427,13 +4431,13 @@ public class PlayerInstance extends Playable {
      * @param target The ItemInstance dropped
      * @param item   the item
      */
-    public void doAutoLoot(Attackable target, Attackable.RewardItem item) {
+    public void doAutoLoot(Attackable target, RewardItem item) {
         if (isInParty()) {
             getParty().distributeItem(this, item, false, target);
-        } else if (item.getItemId() == 57) {
-            addAdena("AutoLoot", item.getCount(), target, true);
+        } else if (item.getId() == 57) {
+            addAdena("AutoLoot", item.getAmount(), target, true);
         } else {
-            addItem("AutoLoot", item.getItemId(), item.getCount(), target, true);
+            addItem("AutoLoot", item.getId(), item.getAmount(), target, true);
         }
     }
 
@@ -5072,15 +5076,20 @@ public class PlayerInstance extends Playable {
                             broadcastPacket(new SocialAction(getObjectId(), 15));
                         }, Config.TVT_REVIVE_DELAY);
                     }
-                } else if (_inEventCTF) {
-                    if (CTF.isTeleport() || CTF.isStarted()) {
+                } else if (inEventCtf) {
+                    CTF ctf = CTF.findActive();
+
+                    if (ctf.getEventState() == TELEPORTATION || ctf.getEventState() == START) {
                         sendMessage("You will be revived and teleported to team flag in 20 seconds!");
-                        if (_haveFlagCTF) {
-                            removeCTFFlagOnDie();
+
+                        if (haveFlagCtf) {
+                            ctf.removeFlagOnPlayerDie(this);
                         }
-                        ThreadPool.schedule(() ->
-                        {
-                            teleToLocation(CTF._teamsX.get(CTF._teams.indexOf(_teamNameCTF)), CTF._teamsY.get(CTF._teams.indexOf(_teamNameCTF)), CTF._teamsZ.get(CTF._teams.indexOf(_teamNameCTF)), false);
+
+                        Location spawnLocation = ctf.findTeam(teamNameCtf).getSpawnLocation();
+
+                        ThreadPool.schedule(() -> {
+                            teleToLocation(spawnLocation.getX(), spawnLocation.getY(), spawnLocation.getZ(), false);
                             doRevive();
                         }, 20000);
                     }
@@ -5206,24 +5215,12 @@ public class PlayerInstance extends Playable {
     }
 
     /**
-     * Removes the ctf flag on die.
-     */
-    public void removeCTFFlagOnDie() {
-        CTF._flagsTaken.set(CTF._teams.indexOf(_teamNameHaveFlagCTF), false);
-        CTF.spawnFlag(_teamNameHaveFlagCTF);
-        CTF.removeFlagFromPlayer(this);
-        broadcastUserInfo();
-        _haveFlagCTF = false;
-        Announcements.getInstance().criticalAnnounceToAll(CTF.getEventName() + "(CTF): " + _teamNameHaveFlagCTF + "'s flag returned.");
-    }
-
-    /**
      * On die drop item.
      *
      * @param killer the killer
      */
     private void onDieDropItem(Creature killer) {
-        if (atEvent || (TvT.isStarted() && _inEventTvT) || (DM.hasStarted() && _inEventDM) || (CTF.isStarted() && _inEventCTF) || (VIP._started && _inEventVIP) || (killer == null)) {
+        if (atEvent || (TvT.isStarted() && _inEventTvT) || (DM.hasStarted() && _inEventDM) || (inEventCtf && CTF.isStarted()) || (VIP._started && _inEventVIP) || (killer == null)) {
             return;
         }
 
@@ -5327,7 +5324,7 @@ public class PlayerInstance extends Playable {
             return;
         }
 
-        if ((_inEventCTF && CTF.isStarted()) || (_inEventTvT && TvT.isStarted()) || (_inEventVIP && VIP._started) || (_inEventDM && DM.hasStarted())) {
+        if ((inEventCtf && CTF.isStarted()) || (_inEventTvT && TvT.isStarted()) || (_inEventVIP && VIP._started) || (_inEventDM && DM.hasStarted())) {
             return;
         }
 
@@ -5400,7 +5397,7 @@ public class PlayerInstance extends Playable {
             }
 
             // 'No war' or 'One way war' -> 'Normal PK'
-            if ((!_inEventTvT || !TvT.isStarted()) || (!_inEventCTF || !CTF.isStarted()) || (!_inEventVIP || !VIP._started) || (!_inEventDM || !DM.hasStarted())) {
+            if ((!_inEventTvT || !TvT.isStarted()) || (!inEventCtf || !CTF.isStarted()) || (!_inEventVIP || !VIP._started) || (!_inEventDM || !DM.hasStarted())) {
                 if (targetPlayer.getKarma() > 0) // Target player has karma
                 {
                     if (Config.KARMA_AWARD_PK_KILL) {
@@ -5559,7 +5556,7 @@ public class PlayerInstance extends Playable {
             }
         }
 
-        if ((TvT.isStarted() && _inEventTvT) || (DM.hasStarted() && _inEventDM) || (CTF.isStarted() && _inEventCTF) || (VIP._started && _inEventVIP)) {
+        if ((TvT.isStarted() && _inEventTvT) || (DM.hasStarted() && _inEventDM) || (inEventCtf && CTF.isStarted()) || (VIP._started && _inEventVIP)) {
             return;
         }
 
@@ -5763,7 +5760,7 @@ public class PlayerInstance extends Playable {
      * @param targLVL : level of the killed player
      */
     public void increasePkKillsAndKarma(int targLVL) {
-        if ((TvT.isStarted() && _inEventTvT) || (DM.hasStarted() && _inEventDM) || (CTF.isStarted() && _inEventCTF) || (VIP._started && _inEventVIP)) {
+        if ((TvT.isStarted() && _inEventTvT) || (DM.hasStarted() && _inEventDM) || (inEventCtf && CTF.isStarted()) || (VIP._started && _inEventVIP)) {
             return;
         }
 
@@ -5880,7 +5877,7 @@ public class PlayerInstance extends Playable {
      * Update pvp status.
      */
     public void updatePvPStatus() {
-        if ((TvT.isStarted() && _inEventTvT) || (CTF.isStarted() && _inEventCTF) || (DM.hasStarted() && _inEventDM) || (VIP._started && _inEventVIP)) {
+        if ((TvT.isStarted() && _inEventTvT) || (inEventCtf && CTF.isStarted()) || (DM.hasStarted() && _inEventDM) || (VIP._started && _inEventVIP)) {
             return;
         }
 
@@ -5911,7 +5908,7 @@ public class PlayerInstance extends Playable {
             return;
         }
 
-        if ((TvT.isStarted() && _inEventTvT && targetPlayer._inEventTvT) || (DM.hasStarted() && _inEventDM && targetPlayer._inEventDM) || (CTF.isStarted() && _inEventCTF && targetPlayer._inEventCTF) || (VIP._started && _inEventVIP && targetPlayer._inEventVIP)) {
+        if ((TvT.isStarted() && _inEventTvT && targetPlayer._inEventTvT) || (DM.hasStarted() && _inEventDM && targetPlayer._inEventDM) || (inEventCtf && CTF.isStarted() && targetPlayer.inEventCtf) || (VIP._started && _inEventVIP && targetPlayer._inEventVIP)) {
             return;
         }
 
@@ -5981,7 +5978,7 @@ public class PlayerInstance extends Playable {
 
         // Calculate the Experience loss
         long lostExp = 0;
-        if (!atEvent && (!_inEventTvT || !TvT.isStarted()) && (!_inEventDM || !DM.hasStarted()) && (!_inEventCTF || !CTF.isStarted()) && (!_inEventVIP || !VIP._started)) {
+        if (!atEvent && (!_inEventTvT || !TvT.isStarted()) && (!_inEventDM || !DM.hasStarted()) && (!inEventCtf || !CTF.isStarted()) && (!_inEventVIP || !VIP._started)) {
             final byte maxLevel = ExperienceData.getInstance().getMaxLevel();
             if (lvl < maxLevel) {
                 lostExp = Math.round(((getStat().getExpForLevel(lvl + 1) - getStat().getExpForLevel(lvl)) * percentLost) / 100);
@@ -8396,7 +8393,10 @@ public class PlayerInstance extends Playable {
             if (player != null) {
                 // checks for events
                 if (player.isInFunEvent()) {
-                    return (_inEventTvT && player._inEventTvT && TvT.isStarted() && !_teamNameTvT.equals(player._teamNameTvT)) || (_inEventCTF && player._inEventCTF && CTF.isStarted() && !_teamNameCTF.equals(player._teamNameCTF)) || (_inEventDM && player._inEventDM && DM.hasStarted()) || (_inEventVIP && player._inEventVIP && VIP._started);
+                    return (_inEventTvT && player._inEventTvT && TvT.isStarted() && !_teamNameTvT.equals(player._teamNameTvT)) ||
+                            (inEventCtf && player.inEventCtf && CTF.isStarted() && !teamNameCtf.equals(player.teamNameCtf)) ||
+                            (_inEventDM && player._inEventDM && DM.hasStarted()) ||
+                            (_inEventVIP && player._inEventVIP && VIP._started);
                 }
                 return false;
             }
@@ -8844,7 +8844,18 @@ public class PlayerInstance extends Playable {
             }
 
             // Check if a Forced ATTACK is in progress on non-attackable target
-            if (!target.isAutoAttackable(this) && (!forceUse && ((skill.getId() != 3261) && (skill.getId() != 3260) && (skill.getId() != 3262))) && (!_inEventTvT || !TvT.isStarted()) && (!_inEventDM || !DM.hasStarted()) && (!_inEventCTF || !CTF.isStarted()) && (!_inEventVIP || !VIP._started) && (sklTargetType != SkillTargetType.TARGET_AURA) && (sklTargetType != SkillTargetType.TARGET_CLAN) && (sklTargetType != SkillTargetType.TARGET_ALLY) && (sklTargetType != SkillTargetType.TARGET_PARTY) && (sklTargetType != SkillTargetType.TARGET_SELF) && (sklTargetType != SkillTargetType.TARGET_GROUND)) {
+            if (!target.isAutoAttackable(this) &&
+                    (!forceUse && ((skill.getId() != 3261) && (skill.getId() != 3260) && (skill.getId() != 3262))) &&
+                    (!_inEventTvT || !TvT.isStarted()) &&
+                    (!_inEventDM || !DM.hasStarted()) &&
+                    (!inEventCtf || !CTF.isStarted()) &&
+                    (!_inEventVIP || !VIP._started) &&
+                    (sklTargetType != SkillTargetType.TARGET_AURA) &&
+                    (sklTargetType != SkillTargetType.TARGET_CLAN) &&
+                    (sklTargetType != SkillTargetType.TARGET_ALLY) &&
+                    (sklTargetType != SkillTargetType.TARGET_PARTY) &&
+                    (sklTargetType != SkillTargetType.TARGET_SELF) &&
+                    (sklTargetType != SkillTargetType.TARGET_GROUND)) {
                 // Send a Server->Client packet ActionFailed to the PlayerInstance
                 sendPacket(ActionFailed.STATIC_PACKET);
                 return;
@@ -9044,7 +9055,10 @@ public class PlayerInstance extends Playable {
 
         // Check if player and target are in events and on the same team.
         if (target instanceof PlayerInstance) {
-            if ((skill.isOffensive() && (_inEventTvT && target.getActingPlayer()._inEventTvT && TvT.isStarted() && !_teamNameTvT.equals(target.getActingPlayer()._teamNameTvT))) || (_inEventCTF && target.getActingPlayer()._inEventCTF && CTF.isStarted() && !_teamNameCTF.equals(target.getActingPlayer()._teamNameCTF)) || (_inEventDM && target.getActingPlayer()._inEventDM && DM.hasStarted()) || (_inEventVIP && target.getActingPlayer()._inEventVIP && VIP._started)) {
+            if ((skill.isOffensive() && (_inEventTvT && target.getActingPlayer()._inEventTvT && TvT.isStarted() && !_teamNameTvT.equals(target.getActingPlayer()._teamNameTvT))) ||
+                    (inEventCtf && target.getActingPlayer().inEventCtf && CTF.isStarted() && !teamNameCtf.equals(target.getActingPlayer().teamNameCtf)) ||
+                    (_inEventDM && target.getActingPlayer()._inEventDM && DM.hasStarted()) ||
+                    (_inEventVIP && target.getActingPlayer()._inEventVIP && VIP._started)) {
                 return true;
             } else if (isInFunEvent() && skill.isOffensive()) // same team return false
             {
@@ -11031,7 +11045,7 @@ public class PlayerInstance extends Playable {
         updatePunishState();
 
         if (isGM() && !Config.GM_STARTUP_BUILDER_HIDE) {
-            // Bleah, see L2jSpace custom below.
+            // Bleah, see L2J custom below.
             if (_isInvul) {
                 sendMessage("Entering world in Invulnerable mode.");
             }
@@ -11145,7 +11159,9 @@ public class PlayerInstance extends Playable {
             getParty().getDimensionalRift().memberRessurected(this);
         }
 
-        if ((_inEventTvT && TvT.isStarted() && Config.TVT_REVIVE_RECOVERY) || (_inEventCTF && CTF.isStarted() && Config.CTF_REVIVE_RECOVERY) || (_inEventDM && DM.hasStarted() && Config.DM_REVIVE_RECOVERY)) {
+        if ((_inEventTvT && TvT.isStarted() && Config.TVT_REVIVE_RECOVERY) ||
+                (inEventCtf && Config.CTF_REVIVE_RECOVERY && CTF.isStarted()) ||
+                (_inEventDM && DM.hasStarted() && Config.DM_REVIVE_RECOVERY)) {
             getStatus().setCurrentHp(getMaxHp());
             getStatus().setCurrentMp(getMaxMp());
             getStatus().setCurrentCp(getMaxCp());
@@ -14043,8 +14059,8 @@ public class PlayerInstance extends Playable {
                     sendMessage("You are in jail for " + (delayInMilliseconds / 60000) + " minutes.");
                 }
 
-                if (_inEventCTF) {
-                    CTF.onDisconnect(this);
+                if (inEventCtf) {
+                    CTF.findActive().onDisconnect(this);
                 } else if (_inEventDM) {
                     DM.onDisconnect(this);
                 } else if (_inEventTvT) {
@@ -14438,4 +14454,6 @@ public class PlayerInstance extends Playable {
     public boolean isPlayer() {
         return true;
     }
+
+
 }

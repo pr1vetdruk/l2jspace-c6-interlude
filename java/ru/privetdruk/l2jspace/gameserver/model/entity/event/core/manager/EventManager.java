@@ -14,20 +14,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ru.privetdruk.l2jspace.gameserver.model.entity.event.manager;
+package ru.privetdruk.l2jspace.gameserver.model.entity.event.core.manager;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Logger;
 
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
+import ru.privetdruk.l2jspace.commons.database.DatabaseFactory;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.core.LocationLoadingMode;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.core.State;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.core.EventEngine;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
+
+import static ru.privetdruk.l2jspace.gameserver.model.entity.event.core.LocationLoadingMode.RANDOMLY;
 
 /**
  * @author Shyla
@@ -40,6 +54,7 @@ public class EventManager {
     public static boolean TVT_EVENT_ENABLED;
     public static List<String> TVT_TIMES_LIST;
 
+    public static LocationLoadingMode CTF_LOCATION_LOADING_MODE;
     public static boolean CTF_EVENT_ENABLED;
     public static List<String> CTF_TIMES_LIST;
 
@@ -70,47 +85,90 @@ public class EventManager {
             TVT_TIMES_LIST = new ArrayList<>();
             String[] propertySplit;
             propertySplit = eventSettings.getProperty("TVTStartTime", "").split(";");
-            for (String time : propertySplit) {
-                TVT_TIMES_LIST.add(time);
-            }
+            TVT_TIMES_LIST.addAll(Arrays.asList(propertySplit));
 
             CTF_EVENT_ENABLED = Boolean.parseBoolean(eventSettings.getProperty("CTFEventEnabled", "false"));
+            CTF_LOCATION_LOADING_MODE = LocationLoadingMode.valueOf(eventSettings.getProperty("CtfLocationLoadingMode", RANDOMLY.name()));
             CTF_TIMES_LIST = new ArrayList<>();
             propertySplit = eventSettings.getProperty("CTFStartTime", "").split(";");
-            for (String time : propertySplit) {
-                CTF_TIMES_LIST.add(time);
-            }
+            CTF_TIMES_LIST.addAll(Arrays.asList(propertySplit));
 
             DM_EVENT_ENABLED = Boolean.parseBoolean(eventSettings.getProperty("DMEventEnabled", "false"));
             DM_TIMES_LIST = new ArrayList<>();
             propertySplit = eventSettings.getProperty("DMStartTime", "").split(";");
-            for (String time : propertySplit) {
-                DM_TIMES_LIST.add(time);
-            }
+            DM_TIMES_LIST.addAll(Arrays.asList(propertySplit));
         } catch (Exception e) {
-            LOGGER.warning(e.toString());
+            LOGGER.severe(e.toString());
         } finally {
             if (is != null) {
                 try {
                     is.close();
                 } catch (IOException e) {
-                    LOGGER.warning(e.toString());
+                    LOGGER.severe(e.toString());
                 }
             }
         }
     }
 
-    public void startEventRegistration() {
+    public void startEventRegistration() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         if (TVT_EVENT_ENABLED) {
             registerTvT();
         }
 
         if (CTF_EVENT_ENABLED) {
-            registerCTF();
+            register(CTF.class, CTF_TIMES_LIST);
         }
 
         if (DM_EVENT_ENABLED) {
             registerDM();
+        }
+    }
+
+    private void register(Class<? extends EventEngine> eventClass, List<String> timeList) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+        EventsGlobalTask.getInstance().clearEventTasksByEventName("ALL");
+
+        Set<Integer> eventIdSet = new HashSet<>(timeList.size());
+        int eventId = 0;
+        int count = 0;
+        List<Integer> eventIdList = new ArrayList<>();
+
+        try (Connection connection = DatabaseFactory.getConnection()) {
+            PreparedStatement statement;
+            ResultSet resultSet;
+
+            statement = connection.prepareStatement("SELECT id FROM event e WHERE e.type = 'CTF' order by e.loading_order");
+            resultSet = statement.executeQuery();
+
+            if (!resultSet.next()) {
+                LOGGER.warning("Settings ctf not found!");
+                return;
+            }
+
+            do {
+                eventIdList.add(resultSet.getInt("id"));
+            } while (resultSet.next());
+        } catch (Exception e) {
+            LOGGER.severe("An error occurred while reading event data!");
+            return;
+        }
+
+        if (CTF_LOCATION_LOADING_MODE == RANDOMLY) {
+            Collections.shuffle(eventIdList);
+        }
+
+        for (int timeIndex = 0, eventIdIndex = 0; timeIndex < timeList.size(); timeIndex++, eventIdIndex++) {
+            if (eventIdIndex == eventIdList.size()) {
+                eventIdIndex = 0;
+            }
+
+            EventEngine eventTask = eventClass.getDeclaredConstructor().newInstance();
+            eventTask.loadData(eventIdList.get(eventIdIndex));
+
+            if (eventTask.getEventState() != State.ERROR) {
+                eventTask.setEventStartTime(timeList.get(timeIndex));
+                EventsGlobalTask.getInstance().registerNewEventTask(eventTask);
+                LOGGER.info(eventTask.getEventIdentifier() + ": starts at " + timeList.get(timeIndex));
+            }
         }
     }
 
@@ -124,21 +182,6 @@ public class EventManager {
 
         for (String time : TVT_TIMES_LIST) {
             final TvT newInstance = TvT.getNewInstance();
-            newInstance.setEventStartTime(time);
-            EventsGlobalTask.getInstance().registerNewEventTask(newInstance);
-        }
-    }
-
-    private void registerCTF() {
-        CTF.loadData();
-        if (!CTF.checkStartJoinOk()) {
-            LOGGER.warning("registerCTF: CTF Event is not setted Properly");
-        }
-
-        EventsGlobalTask.getInstance().clearEventTasksByEventName(CTF.getEventName());
-
-        for (String time : CTF_TIMES_LIST) {
-            final CTF newInstance = CTF.getNewInstance();
             newInstance.setEventStartTime(time);
             EventsGlobalTask.getInstance().registerNewEventTask(newInstance);
         }

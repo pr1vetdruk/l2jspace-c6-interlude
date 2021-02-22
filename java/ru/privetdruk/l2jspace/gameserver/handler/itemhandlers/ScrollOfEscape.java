@@ -29,7 +29,7 @@ import ru.privetdruk.l2jspace.gameserver.instancemanager.FortManager;
 import ru.privetdruk.l2jspace.gameserver.model.Skill;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Playable;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.VIP;
@@ -106,7 +106,7 @@ public class ScrollOfEscape implements IItemHandler {
             return;
         }
 
-        if (player._inEventCTF && CTF.isStarted()) {
+        if (player.inEventCtf && CTF.isStarted()) {
             player.sendMessage("You can't use Scroll of Escape in CTF.");
             return;
         }

@@ -20,7 +20,7 @@ import ru.privetdruk.l2jspace.gameserver.model.World;
 import ru.privetdruk.l2jspace.gameserver.model.WorldObject;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.SummonInstance;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.ActionFailed;
@@ -85,7 +85,7 @@ public class AttackRequest extends GameClientPacket {
         }
 
         // During teleport phase, players cant do any attack
-        if ((TvT.isTeleport() && player._inEventTvT) || (CTF.isTeleport() && player._inEventCTF) || (DM.isTeleport() && player._inEventDM)) {
+        if ((TvT.isTeleport() && player._inEventTvT) || (player.inEventCtf && CTF.isTeleported()) || (DM.isTeleport() && player._inEventDM)) {
             player.sendPacket(ActionFailed.STATIC_PACKET);
             return;
         }
@@ -108,12 +108,12 @@ public class AttackRequest extends GameClientPacket {
         // No attacks to same team in Event
         if (CTF.isStarted()) {
             if (target instanceof PlayerInstance) {
-                if ((player._inEventCTF && ((PlayerInstance) target)._inEventCTF) && player._teamNameCTF.equals(((PlayerInstance) target)._teamNameCTF)) {
+                if ((player.inEventCtf && ((PlayerInstance) target).inEventCtf) && player.teamNameCtf.equals(((PlayerInstance) target).teamNameCtf)) {
                     player.sendPacket(ActionFailed.STATIC_PACKET);
                     return;
                 }
             } else if (target instanceof SummonInstance) {
-                if ((player._inEventCTF && ((SummonInstance) target).getOwner()._inEventCTF) && player._teamNameCTF.equals(((SummonInstance) target).getOwner()._teamNameCTF)) {
+                if ((player.inEventCtf && ((SummonInstance) target).getOwner().inEventCtf) && player.teamNameCtf.equals(((SummonInstance) target).getOwner().teamNameCtf)) {
                     player.sendPacket(ActionFailed.STATIC_PACKET);
                     return;
                 }

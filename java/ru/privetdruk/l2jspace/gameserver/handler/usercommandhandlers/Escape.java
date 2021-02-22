@@ -24,7 +24,7 @@ import ru.privetdruk.l2jspace.gameserver.enums.TeleportWhereType;
 import ru.privetdruk.l2jspace.gameserver.handler.IUserCommandHandler;
 import ru.privetdruk.l2jspace.gameserver.instancemanager.GrandBossManager;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.VIP;
@@ -55,7 +55,7 @@ public class Escape implements IUserCommandHandler {
         }
 
         // Check to see if the current player is in CTF Event.
-        if (player._inEventCTF && CTF.isStarted()) {
+        if (player.inEventCtf && CTF.isStarted()) {
             player.sendMessage("You may not use an escape skill in CTF.");
             return false;
         }

@@ -16,6 +16,7 @@
  */
 package ru.privetdruk.l2jspace.gameserver.model;
 
+import java.util.Objects;
 import java.util.logging.Logger;
 
 import ru.privetdruk.l2jspace.Config;
@@ -407,5 +408,18 @@ public abstract class WorldObject {
     @Override
     public String toString() {
         return "" + _objectId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WorldObject that = (WorldObject) o;
+        return _objectId == that._objectId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(_objectId);
     }
 }

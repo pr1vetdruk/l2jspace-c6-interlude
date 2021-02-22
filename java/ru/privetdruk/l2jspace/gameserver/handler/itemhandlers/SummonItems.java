@@ -30,7 +30,7 @@ import ru.privetdruk.l2jspace.gameserver.model.actor.Playable;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PetInstance;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
 import ru.privetdruk.l2jspace.gameserver.model.actor.templates.NpcTemplate;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.model.holders.SkillUseHolder;
@@ -69,7 +69,7 @@ public class SummonItems implements IItemHandler {
             return;
         }
 
-        if (player._inEventCTF && CTF.isStarted() && !Config.CTF_ALLOW_SUMMON) {
+        if (player.inEventCtf && CTF.isStarted() && !Config.CTF_ALLOW_SUMMON) {
             final ActionFailed af = ActionFailed.STATIC_PACKET;
             player.sendPacket(af);
             return;

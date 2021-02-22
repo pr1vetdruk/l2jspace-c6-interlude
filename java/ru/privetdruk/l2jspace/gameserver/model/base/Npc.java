@@ -14,13 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ru.privetdruk.l2jspace.gameserver.model.entity.event.manager;
+package ru.privetdruk.l2jspace.gameserver.model.base;
 
-/**
- * @author Shyla
- */
-public interface EventTask extends Runnable {
-    String getEventIdentifier();
+import ru.privetdruk.l2jspace.gameserver.model.Location;
 
-    String getEventStartTime(); // hh:mm (es. 01:05)
+public class Npc {
+    protected int id;
+    protected Location spawnPosition;
+
+    public Npc(int id, Location spawnPosition) {
+        this.id = id;
+        this.spawnPosition = spawnPosition;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public Location getSpawnPosition() {
+        return spawnPosition;
+    }
 }

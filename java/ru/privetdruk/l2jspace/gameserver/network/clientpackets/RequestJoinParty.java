@@ -20,7 +20,7 @@ import ru.privetdruk.l2jspace.gameserver.model.BlockList;
 import ru.privetdruk.l2jspace.gameserver.model.Party;
 import ru.privetdruk.l2jspace.gameserver.model.World;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.network.SystemMessageId;
@@ -60,7 +60,10 @@ public class RequestJoinParty extends GameClientPacket {
             return;
         }
 
-        if ((requestor._inEventTvT && !target._inEventTvT && (TvT.isStarted() || TvT.isTeleport())) || (!requestor._inEventTvT && target._inEventTvT && (TvT.isStarted() || TvT.isTeleport())) || (requestor._inEventCTF && !target._inEventCTF && (CTF.isStarted() || CTF.isTeleport())) || (!requestor._inEventCTF && target._inEventCTF && (CTF.isStarted() || CTF.isTeleport()))) {
+        if ((requestor._inEventTvT && !target._inEventTvT && (TvT.isStarted() || TvT.isTeleport())) ||
+                (!requestor._inEventTvT && target._inEventTvT && (TvT.isStarted() || TvT.isTeleport())) ||
+                (requestor.inEventCtf && !target.inEventCtf && (CTF.isStarted() || CTF.isTeleported())) ||
+                (!requestor.inEventCtf && target.inEventCtf && (CTF.isStarted() || CTF.isTeleported()))) {
             requestor.sendMessage("You can't invite that player in party: you or your target are in Event");
             return;
         }

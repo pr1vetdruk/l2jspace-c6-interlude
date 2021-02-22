@@ -32,11 +32,12 @@ import ru.privetdruk.l2jspace.gameserver.model.actor.instance.NpcInstance;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.SymbolMakerInstance;
 import ru.privetdruk.l2jspace.gameserver.model.entity.Rebirth;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.GameEvent;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.VIP;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.core.State;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.olympiad.Olympiad;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.ActionFailed;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -129,61 +130,63 @@ public class RequestBypassToServer extends GameClientPacket {
                 }
 
                 try {
-                    if (_command.substring(endOfId + 1).startsWith("event_participate")) {
+                    String command = _command.substring(endOfId + 1);
+
+                    if (command.startsWith("event_participate")) {
                         GameEvent.inscribePlayer(player);
-                    } else if (_command.substring(endOfId + 1).startsWith("tvt_player_join ")) {
-                        final String teamName = _command.substring(endOfId + 1).substring(16);
+                    } else if (command.startsWith("tvt_player_join ")) {
+                        final String teamName = command.substring(16);
                         if (TvT.isJoining()) {
                             TvT.addPlayer(player, teamName);
                         } else {
                             player.sendMessage("The event is already started. You can not join now!");
                         }
-                    } else if (_command.substring(endOfId + 1).startsWith("tvt_player_leave")) {
+                    } else if (command.startsWith("tvt_player_leave")) {
                         if (TvT.isJoining()) {
                             TvT.removePlayer(player);
                         } else {
                             player.sendMessage("The event is already started. You can not leave now!");
                         }
-                    } else if (_command.substring(endOfId + 1).startsWith("dmevent_player_join")) {
+                    } else if (command.startsWith("dmevent_player_join")) {
                         if (DM.isJoining()) {
                             DM.addPlayer(player);
                         } else {
                             player.sendMessage("The event is already started. You can't join now!");
                         }
-                    } else if (_command.substring(endOfId + 1).startsWith("dmevent_player_leave")) {
+                    } else if (command.startsWith("dmevent_player_leave")) {
                         if (DM.isJoining()) {
                             DM.removePlayer(player);
                         } else {
                             player.sendMessage("The event is already started. You can't leave now!");
                         }
-                    } else if (_command.substring(endOfId + 1).startsWith("ctf_player_join ")) {
-                        final String teamName = _command.substring(endOfId + 1).substring(16);
-                        if (CTF.isJoining()) {
-                            CTF.addPlayer(player, teamName);
+                    } else if (command.startsWith("ctf_")) {
+                        CTF ctf = CTF.find(State.REGISTRATION);
+
+                        if (ctf != null) {
+                            if (command.startsWith("ctf_player_join ")) {
+                                String teamName = command.substring(16);
+                                ctf.registerPlayer(player, teamName);
+                            } else if (command.startsWith("ctf_player_leave")) {
+                                ctf.excludePlayer(player);
+                            }
                         } else {
                             player.sendMessage("The event is already started. You can't join now!");
                         }
-                    } else if (_command.substring(endOfId + 1).startsWith("ctf_player_leave")) {
-                        if (CTF.isJoining()) {
-                            CTF.removePlayer(player);
-                        } else {
-                            player.sendMessage("The event is already started. You can't leave now!");
-                        }
                     }
 
-                    if (_command.substring(endOfId + 1).startsWith("vip_joinVIPTeam")) {
+                    if (command.startsWith("vip_joinVIPTeam")) {
                         VIP.addPlayerVIP(player);
                     }
 
-                    if (_command.substring(endOfId + 1).startsWith("vip_joinNotVIPTeam")) {
+                    if (command.startsWith("vip_joinNotVIPTeam")) {
                         VIP.addPlayerNotVIP(player);
                     }
 
-                    if (_command.substring(endOfId + 1).startsWith("vip_finishVIP")) {
+                    if (command.startsWith("vip_finishVIP")) {
                         VIP.vipWin(player);
                     }
 
-                    if (_command.substring(endOfId + 1).startsWith("event_participate")) {
+                    if (command.startsWith("event_participate")) {
                         GameEvent.inscribePlayer(player);
                     }
 

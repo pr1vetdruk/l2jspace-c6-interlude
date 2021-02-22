@@ -24,10 +24,10 @@ import ru.privetdruk.l2jspace.commons.util.Rnd;
 import ru.privetdruk.l2jspace.gameserver.handler.ISkillHandler;
 import ru.privetdruk.l2jspace.gameserver.model.Skill;
 import ru.privetdruk.l2jspace.gameserver.model.WorldObject;
-import ru.privetdruk.l2jspace.gameserver.model.actor.Attackable;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Creature;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.MonsterInstance;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
+import ru.privetdruk.l2jspace.gameserver.model.base.RewardItem;
 import ru.privetdruk.l2jspace.gameserver.model.items.instance.ItemInstance;
 import ru.privetdruk.l2jspace.gameserver.network.SystemMessageId;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.InventoryUpdate;
@@ -79,19 +79,19 @@ public class Harvest implements ISkillHandler {
             // TODO: check items and amount of items player harvest
             if (_target.isSeeded()) {
                 if (calcSuccess()) {
-                    final Attackable.RewardItem[] items = _target.takeHarvest();
+                    final RewardItem[] items = _target.takeHarvest();
                     if ((items != null) && (items.length > 0)) {
-                        for (Attackable.RewardItem ritem : items) {
-                            cropId = ritem.getItemId(); // always got 1 type of crop as reward
+                        for (RewardItem ritem : items) {
+                            cropId = ritem.getId(); // always got 1 type of crop as reward
                             if (_player.isInParty()) {
                                 _player.getParty().distributeItem(_player, ritem, true, _target);
                             } else {
-                                final ItemInstance item = _player.getInventory().addItem("Manor", ritem.getItemId(), ritem.getCount(), _player, _target);
+                                final ItemInstance item = _player.getInventory().addItem("Manor", ritem.getId(), ritem.getAmount(), _player, _target);
                                 if (iu != null) {
                                     iu.addItem(item);
                                 }
                                 send = true;
-                                total += ritem.getCount();
+                                total += ritem.getAmount();
                             }
                         }
                         if (send) {

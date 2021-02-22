@@ -50,7 +50,7 @@ public class ObservationInstance extends FolkInstance {
             return;
         }
 
-        if (player._inEventTvT || player._inEventDM || player._inEventCTF) {
+        if (player._inEventTvT || player._inEventDM || player.inEventCtf) {
             player.sendMessage("You already participated in Event!");
             player.sendPacket(ActionFailed.STATIC_PACKET);
             return;

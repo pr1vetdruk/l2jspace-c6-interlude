@@ -21,47 +21,47 @@ import ru.privetdruk.l2jspace.gameserver.model.actor.Creature;
 public class Location {
     public static final Location DUMMY_LOC = new Location(0, 0, 0);
 
-    protected int _x;
-    protected int _y;
-    protected int _z;
+    protected int x;
+    protected int y;
+    protected int z;
     private int _heading = 0;
 
     public Location(int x, int y, int z) {
-        _x = x;
-        _y = y;
-        _z = z;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public Location(int x, int y, int z, int heading) {
-        _x = x;
-        _y = y;
-        _z = z;
+        this.x = x;
+        this.y = y;
+        this.z = z;
         _heading = heading;
     }
 
     public Location(WorldObject obj) {
-        _x = obj.getX();
-        _y = obj.getY();
-        _z = obj.getZ();
+        x = obj.getX();
+        y = obj.getY();
+        z = obj.getZ();
     }
 
     public Location(Creature obj) {
-        _x = obj.getX();
-        _y = obj.getY();
-        _z = obj.getZ();
+        x = obj.getX();
+        y = obj.getY();
+        z = obj.getZ();
         _heading = obj.getHeading();
     }
 
     public int getX() {
-        return _x;
+        return x;
     }
 
     public int getY() {
-        return _y;
+        return y;
     }
 
     public int getZ() {
-        return _z;
+        return z;
     }
 
     public int getHeading() {
@@ -69,15 +69,15 @@ public class Location {
     }
 
     public void setX(int x) {
-        _x = x;
+        this.x = x;
     }
 
     public void setY(int y) {
-        _y = y;
+        this.y = y;
     }
 
     public void setZ(int z) {
-        _z = z;
+        this.z = z;
     }
 
     public void setHeading(int head) {
@@ -85,12 +85,12 @@ public class Location {
     }
 
     public void setXYZ(int x, int y, int z) {
-        _x = x;
-        _y = y;
-        _z = z;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public boolean equals(int x, int y, int z) {
-        return (_x == x) && (_y == y) && (_z == z);
+        return (this.x == x) && (this.y == y) && (this.z == z);
     }
 }

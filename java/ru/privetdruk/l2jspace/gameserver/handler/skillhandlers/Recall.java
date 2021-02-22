@@ -25,7 +25,7 @@ import ru.privetdruk.l2jspace.gameserver.model.Skill;
 import ru.privetdruk.l2jspace.gameserver.model.WorldObject;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Creature;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.VIP;
@@ -79,7 +79,7 @@ public class Recall implements ISkillHandler {
                         continue;
                     }
 
-                    if ((targetChar._inEventCTF && CTF.isStarted()) || (targetChar._inEventTvT && TvT.isStarted()) || (targetChar._inEventDM && DM.hasStarted()) || (targetChar._inEventVIP && VIP._started)) {
+                    if ((targetChar.inEventCtf && CTF.isStarted()) || (targetChar._inEventTvT && TvT.isStarted()) || (targetChar._inEventDM && DM.hasStarted()) || (targetChar._inEventVIP && VIP._started)) {
                         targetChar.sendMessage("You can't use escape skill in Event.");
                         continue;
                     }

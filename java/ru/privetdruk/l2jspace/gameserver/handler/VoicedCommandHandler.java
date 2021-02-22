@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import ru.privetdruk.l2jspace.Config;
 import ru.privetdruk.l2jspace.gameserver.handler.voicedcommandhandlers.AutoPotion;
 import ru.privetdruk.l2jspace.gameserver.handler.voicedcommandhandlers.BankingCmd;
-import ru.privetdruk.l2jspace.gameserver.handler.voicedcommandhandlers.CTFCmd;
+import ru.privetdruk.l2jspace.gameserver.handler.voicedcommandhandlers.CtfVoiceCommand;
 import ru.privetdruk.l2jspace.gameserver.handler.voicedcommandhandlers.DMCmd;
 import ru.privetdruk.l2jspace.gameserver.handler.voicedcommandhandlers.ExperienceGain;
 import ru.privetdruk.l2jspace.gameserver.handler.voicedcommandhandlers.FarmPvpCmd;
@@ -45,7 +45,7 @@ public class VoicedCommandHandler {
         }
 
         if (Config.CTF_COMMAND) {
-            registerVoicedCommandHandler(new CTFCmd());
+            registerVoicedCommandHandler(new CtfVoiceCommand());
         }
 
         if (Config.TVT_COMMAND) {

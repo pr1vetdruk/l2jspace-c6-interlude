@@ -44,7 +44,7 @@ import ru.privetdruk.l2jspace.gameserver.model.CharSelectInfoPackage;
 import ru.privetdruk.l2jspace.gameserver.model.World;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
 import ru.privetdruk.l2jspace.gameserver.model.clan.Clan;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.GameEvent;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
@@ -479,36 +479,11 @@ public class GameClient extends MMOClient<MMOConnection<GameClient>> implements 
         public void run() {
             try {
                 // we are going to manually save the char below thus we can force the cancel
-
                 final PlayerInstance player = _player;
                 if (player != null) // this should only happen on connection loss
                 {
                     // we store all data from players who are disconnected while in an event in order to restore it in the next login
-                    if (player.atEvent) {
-                        final EventData data = new EventData(player.eventX, player.eventY, player.eventZ, player.eventKarma, player.eventPvpKills, player.eventPkKills, player.eventTitle, player.kills, player.eventSitForced);
-                        GameEvent.connectionLossData.put(player.getName(), data);
-                    } else if (player._inEventCTF) {
-                        CTF.onDisconnect(player);
-                    } else if (player._inEventDM) {
-                        DM.onDisconnect(player);
-                    } else if (player._inEventTvT) {
-                        TvT.onDisconnect(player);
-                    } else if (player._inEventVIP) {
-                        VIP.onDisconnect(player);
-                    }
-
-                    if (player.isFlying()) {
-                        player.removeSkill(SkillTable.getInstance().getSkill(4289, 1));
-                    }
-
-                    if (Olympiad.getInstance().isRegistered(player)) {
-                        Olympiad.getInstance().unRegisterNoble(player);
-                    }
-
-                    // Decrease boxes number
-                    if (player._activeBoxes != -1) {
-                        player.decreaseBoxes();
-                    }
+                    playerChecks(player);
 
                     // prevent closing again
                     player.setClient(null);
@@ -526,6 +501,37 @@ public class GameClient extends MMOClient<MMOConnection<GameClient>> implements 
         }
     }
 
+    private void playerChecks(PlayerInstance player) {
+        if (player.atEvent) {
+            final EventData data = new EventData(player.eventX, player.eventY, player.eventZ, player.eventKarma, player.eventPvpKills, player.eventPkKills, player.eventTitle, player.kills, player.eventSitForced);
+            GameEvent.connectionLossData.put(player.getName(), data);
+        } else if (player.inEventCtf) {
+            CTF ctf = CTF.findActive();
+            if (ctf != null) {
+                ctf.onDisconnect(player);
+            }
+        } else if (player._inEventDM) {
+            DM.onDisconnect(player);
+        } else if (player._inEventTvT) {
+            TvT.onDisconnect(player);
+        } else if (player._inEventVIP) {
+            VIP.onDisconnect(player);
+        }
+
+        if (player.isFlying()) {
+            player.removeSkill(SkillTable.getInstance().getSkill(4289, 1));
+        }
+
+        if (Olympiad.getInstance().isRegistered(player)) {
+            Olympiad.getInstance().unRegisterNoble(player);
+        }
+
+        // Decrease boxes number
+        if (player._activeBoxes != -1) {
+            player.decreaseBoxes();
+        }
+    }
+
     protected class DisconnectTask implements Runnable {
         @Override
         public void run() {
@@ -536,31 +542,7 @@ public class GameClient extends MMOClient<MMOConnection<GameClient>> implements 
                 if (player != null) // this should only happen on connection loss
                 {
                     // we store all data from players who are disconnected while in an event in order to restore it in the next login
-                    if (player.atEvent) {
-                        final EventData data = new EventData(player.eventX, player.eventY, player.eventZ, player.eventKarma, player.eventPvpKills, player.eventPkKills, player.eventTitle, player.kills, player.eventSitForced);
-                        GameEvent.connectionLossData.put(player.getName(), data);
-                    } else if (player._inEventCTF) {
-                        CTF.onDisconnect(player);
-                    } else if (player._inEventDM) {
-                        DM.onDisconnect(player);
-                    } else if (player._inEventTvT) {
-                        TvT.onDisconnect(player);
-                    } else if (player._inEventVIP) {
-                        VIP.onDisconnect(player);
-                    }
-
-                    if (player.isFlying()) {
-                        player.removeSkill(SkillTable.getInstance().getSkill(4289, 1));
-                    }
-
-                    if (Olympiad.getInstance().isRegistered(player)) {
-                        Olympiad.getInstance().unRegisterNoble(player);
-                    }
-
-                    // Decrease boxes number
-                    if (player._activeBoxes != -1) {
-                        player.decreaseBoxes();
-                    }
+                    playerChecks(player);
 
                     if (!player.isKicked() //
                             && !Olympiad.getInstance().isRegistered(player) //

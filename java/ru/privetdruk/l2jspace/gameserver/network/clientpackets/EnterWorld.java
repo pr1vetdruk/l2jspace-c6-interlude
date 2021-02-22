@@ -44,6 +44,7 @@ import ru.privetdruk.l2jspace.gameserver.instancemanager.SiegeManager;
 import ru.privetdruk.l2jspace.gameserver.model.Effect;
 import ru.privetdruk.l2jspace.gameserver.model.Skill;
 import ru.privetdruk.l2jspace.gameserver.model.World;
+import ru.privetdruk.l2jspace.gameserver.model.WorldObject;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.ClassMasterInstance;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
 import ru.privetdruk.l2jspace.gameserver.model.clan.Clan;
@@ -52,7 +53,8 @@ import ru.privetdruk.l2jspace.gameserver.model.entity.ClanHall;
 import ru.privetdruk.l2jspace.gameserver.model.entity.Hero;
 import ru.privetdruk.l2jspace.gameserver.model.entity.Rebirth;
 import ru.privetdruk.l2jspace.gameserver.model.entity.Wedding;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.core.State;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.GameEvent;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
@@ -383,8 +385,14 @@ public class EnterWorld extends GameClientPacket {
             TvT.addDisconnectedPlayer(player);
         }
 
-        if (CTF._savePlayers.contains(player.getName())) {
-            CTF.addDisconnectedPlayer(player);
+        CTF ctf = CTF.find(State.START);
+
+        if (ctf != null) {
+            ctf.getPlayers().stream()
+                    .map(WorldObject::getName)
+                    .filter(eventPlayer -> eventPlayer.equals(player.getName()))
+                    .findAny()
+                    .ifPresent(findPlayer -> ctf.addDisconnectedPlayer(player));
         }
 
         if (DM._savePlayers.contains(player.getName())) {
@@ -485,7 +493,7 @@ public class EnterWorld extends GameClientPacket {
                     BuilderUtil.sendSysMessage(player, "FriendAddOff is default for builder.");
                     BuilderUtil.sendSysMessage(player, "whisperoff is default for builder.");
 
-                    // It isn't recommend to use the below custom L2jSpace GMStartup functions together with retail-like GMStartupBuilderHide, so breaking the process at that stage.
+                    // It isn't recommend to use the below custom L2J GMStartup functions together with retail-like GMStartupBuilderHide, so breaking the process at that stage.
                     break gmStartupProcess;
                 }
 

@@ -56,12 +56,13 @@ import ru.privetdruk.l2jspace.gameserver.model.actor.stat.NpcStat;
 import ru.privetdruk.l2jspace.gameserver.model.actor.status.NpcStatus;
 import ru.privetdruk.l2jspace.gameserver.model.actor.templates.NpcTemplate;
 import ru.privetdruk.l2jspace.gameserver.model.clan.Clan;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.GameEvent;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.Lottery;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.VIP;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.core.State;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.olympiad.Olympiad;
 import ru.privetdruk.l2jspace.gameserver.model.entity.sevensigns.SevenSigns;
 import ru.privetdruk.l2jspace.gameserver.model.entity.sevensigns.SevenSignsFestival;
@@ -75,7 +76,6 @@ import ru.privetdruk.l2jspace.gameserver.model.items.type.WeaponType;
 import ru.privetdruk.l2jspace.gameserver.model.quest.EventType;
 import ru.privetdruk.l2jspace.gameserver.model.quest.Quest;
 import ru.privetdruk.l2jspace.gameserver.model.quest.QuestState;
-import ru.privetdruk.l2jspace.gameserver.model.quest.State;
 import ru.privetdruk.l2jspace.gameserver.model.skills.Stat;
 import ru.privetdruk.l2jspace.gameserver.model.spawn.Spawn;
 import ru.privetdruk.l2jspace.gameserver.model.zone.type.TownZone;
@@ -123,11 +123,11 @@ public class NpcInstance extends Creature {
     public boolean _isEventVIPNPC = false;
     public boolean _isEventVIPNPCEnd = false;
     public boolean _isEventMobDM = false;
-    public boolean _isEventMobCTF = false;
-    public boolean _isCTF_throneSpawn = false;
-    public boolean _isCTF_Flag = false;
+    public boolean isCtfMainNpc = false;
+    public boolean isCtfThroneNpc = false;
+    public boolean isCtfFlagNpc = false;
     private boolean _isInTown = false;
-    public String _CTF_FlagTeamName;
+    public String ctfFlagTeamName;
     private int _isSpoiledBy = 0;
     private long _lastSocialBroadcast = 0;
     private static final int MINIMUM_SOCIAL_INTERVAL = 6000;
@@ -659,12 +659,12 @@ public class NpcInstance extends Creature {
                         TvT.showEventHtml(player, String.valueOf(getObjectId()));
                     } else if (_isEventMobDM) {
                         DM.showEventHtml(player, String.valueOf(getObjectId()));
-                    } else if (_isEventMobCTF) {
+                    } else if (isCtfMainNpc) {
                         CTF.showEventHtml(player, String.valueOf(getObjectId()));
-                    } else if (_isCTF_Flag && player._inEventCTF) {
-                        CTF.showFlagHtml(player, String.valueOf(getObjectId()), _CTF_FlagTeamName);
-                    } else if (_isCTF_throneSpawn) {
-                        CTF.checkRestoreFlags();
+                    } else if (isCtfFlagNpc && player.inEventCtf) {
+                        CTF.find(State.START).showFlagHtml(player, String.valueOf(getObjectId()), ctfFlagTeamName);
+                    } else if (isCtfThroneNpc) {
+                        CTF.find(State.START).restoreFlag();
                     } else if (_isEventVIPNPC) {
                         VIP.showJoinHTML(player, String.valueOf(getObjectId()));
                     } else if (_isEventVIPNPCEnd) {
@@ -890,12 +890,12 @@ public class NpcInstance extends Creature {
                             TvT.showEventHtml(player, String.valueOf(getObjectId()));
                         } else if (_isEventMobDM) {
                             DM.showEventHtml(player, String.valueOf(getObjectId()));
-                        } else if (_isEventMobCTF) {
+                        } else if (isCtfMainNpc) {
                             CTF.showEventHtml(player, String.valueOf(getObjectId()));
-                        } else if (_isCTF_Flag && player._inEventCTF) {
-                            CTF.showFlagHtml(player, String.valueOf(getObjectId()), _CTF_FlagTeamName);
-                        } else if (_isCTF_throneSpawn) {
-                            CTF.checkRestoreFlags();
+                        } else if (isCtfFlagNpc && player.inEventCtf) {
+                            CTF.find(State.START).showFlagHtml(player, String.valueOf(getObjectId()), ctfFlagTeamName);
+                        } else if (isCtfThroneNpc) {
+                            CTF.find(State.START).restoreFlag();
                         } else if (_isEventVIPNPC) {
                             VIP.showJoinHTML(player, String.valueOf(getObjectId()));
                         } else if (_isEventVIPNPCEnd) {
@@ -1456,7 +1456,7 @@ public class NpcInstance extends Creature {
                 return;
             }
 
-            final String stateId = State.getStateName(qs.getState());
+            final String stateId = ru.privetdruk.l2jspace.gameserver.model.quest.State.getStateName(qs.getState());
             final String path = Config.DATAPACK_ROOT + "/data/scripts/quests/" + qs.getQuest().getName() + "/" + stateId + ".htm";
             content = HtmCache.getInstance().getHtm(path);
         }

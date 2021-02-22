@@ -114,7 +114,7 @@ import ru.privetdruk.l2jspace.gameserver.model.entity.Hero;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.Lottery;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.MonsterRace;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.PcPoint;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.manager.EventManager;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.core.manager.EventManager;
 import ru.privetdruk.l2jspace.gameserver.model.entity.olympiad.Olympiad;
 import ru.privetdruk.l2jspace.gameserver.model.entity.sevensigns.SevenSigns;
 import ru.privetdruk.l2jspace.gameserver.model.entity.sevensigns.SevenSignsFestival;

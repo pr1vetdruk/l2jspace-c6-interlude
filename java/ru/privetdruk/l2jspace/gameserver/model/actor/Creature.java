@@ -86,11 +86,12 @@ import ru.privetdruk.l2jspace.gameserver.model.actor.status.CreatureStatus;
 import ru.privetdruk.l2jspace.gameserver.model.actor.templates.CreatureTemplate;
 import ru.privetdruk.l2jspace.gameserver.model.actor.templates.NpcTemplate;
 import ru.privetdruk.l2jspace.gameserver.model.entity.Duel;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.GameEvent;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.VIP;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.core.State;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.olympiad.Olympiad;
 import ru.privetdruk.l2jspace.gameserver.model.holders.SkillUseHolder;
 import ru.privetdruk.l2jspace.gameserver.model.itemcontainer.Inventory;
@@ -1606,7 +1607,7 @@ public abstract class Creature extends WorldObject implements ISkillsHolder {
                 if (Config.TVT_REMOVE_BUFFS_ON_DIE) {
                     stopAllEffects();
                 }
-            } else if (player._inEventCTF && CTF.isStarted()) {
+            } else if (player.inEventCtf && CTF.find(State.START) != null) {
                 if (Config.CTF_REMOVE_BUFFS_ON_DIE) {
                     stopAllEffects();
                 }
@@ -4809,7 +4810,9 @@ public abstract class Creature extends WorldObject implements ISkillsHolder {
                 getActingPlayer().sendMessage("A dark force beyond your mortal understanding makes your knees to shake when you try to stand up...");
                 getActingPlayer().getClient().sendPacket(ActionFailed.STATIC_PACKET);
                 return;
-            } else if ((TvT.isSitForced() && getActingPlayer()._inEventTvT) || (CTF.isSitForced() && getActingPlayer()._inEventCTF) || (DM.isSitForced() && getActingPlayer()._inEventDM)) {
+            } else if ((TvT.isSitForced() && getActingPlayer()._inEventTvT) ||
+                    (getActingPlayer().inEventCtf && (CTF.find(State.TELEPORTATION) != null || CTF.find(State.FINISH) != null)) ||
+                    (DM.isSitForced() && getActingPlayer()._inEventDM)) {
                 getActingPlayer().sendMessage("A dark force beyond your mortal understanding makes your knees to shake when you try to stand up...");
                 getActingPlayer().getClient().sendPacket(ActionFailed.STATIC_PACKET);
                 return;

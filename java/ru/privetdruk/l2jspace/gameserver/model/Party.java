@@ -33,6 +33,7 @@ import ru.privetdruk.l2jspace.gameserver.model.actor.Playable;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PetInstance;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.SummonInstance;
+import ru.privetdruk.l2jspace.gameserver.model.base.RewardItem;
 import ru.privetdruk.l2jspace.gameserver.model.entity.DimensionalRift;
 import ru.privetdruk.l2jspace.gameserver.model.entity.sevensigns.SevenSignsFestival;
 import ru.privetdruk.l2jspace.gameserver.model.items.instance.ItemInstance;
@@ -546,30 +547,30 @@ public class Party {
      * @param spoil
      * @param target
      */
-    public void distributeItem(PlayerInstance player, Attackable.RewardItem item, boolean spoil, Attackable target) {
+    public void distributeItem(PlayerInstance player, RewardItem item, boolean spoil, Attackable target) {
         if (item == null) {
             return;
         }
 
-        if (item.getItemId() == 57) {
-            distributeAdena(player, item.getCount(), target);
+        if (item.getId() == 57) {
+            distributeAdena(player, item.getAmount(), target);
             return;
         }
 
-        final PlayerInstance looter = getActualLooter(player, item.getItemId(), spoil, target);
-        looter.addItem(spoil ? "Sweep" : "Party", item.getItemId(), item.getCount(), player, true);
+        final PlayerInstance looter = getActualLooter(player, item.getId(), spoil, target);
+        looter.addItem(spoil ? "Sweep" : "Party", item.getId(), item.getAmount(), player, true);
 
         // Send messages to other aprty members about reward
-        if (item.getCount() > 1) {
+        if (item.getAmount() > 1) {
             final SystemMessage msg = spoil ? new SystemMessage(SystemMessageId.S1_HAS_OBTAINED_S3_S2_BY_USING_SWEEPER) : new SystemMessage(SystemMessageId.S1_HAS_OBTAINED_S3_S2);
             msg.addString(looter.getName());
-            msg.addItemName(item.getItemId());
-            msg.addNumber(item.getCount());
+            msg.addItemName(item.getId());
+            msg.addNumber(item.getAmount());
             broadcastToPartyMembers(looter, msg);
         } else {
             final SystemMessage msg = spoil ? new SystemMessage(SystemMessageId.S1_HAS_OBTAINED_S2_BY_USING_SWEEPER) : new SystemMessage(SystemMessageId.S1_HAS_OBTAINED_S2);
             msg.addString(looter.getName());
-            msg.addItemName(item.getItemId());
+            msg.addItemName(item.getId());
             broadcastToPartyMembers(looter, msg);
         }
     }

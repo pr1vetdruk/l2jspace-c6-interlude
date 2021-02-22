@@ -34,14 +34,15 @@ import ru.privetdruk.l2jspace.gameserver.model.actor.Playable;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Summon;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PetInstance;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.VIP;
 import ru.privetdruk.l2jspace.gameserver.model.items.instance.ItemInstance;
 import ru.privetdruk.l2jspace.gameserver.network.SystemMessageId;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.ActionFailed;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.SystemMessage;
+
+import static ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT.isStarted;
 
 public class Potions implements IItemHandler {
     protected static final Logger LOGGER = Logger.getLogger(Potions.class.getName());
@@ -191,7 +192,7 @@ public class Potions implements IItemHandler {
         if (playable instanceof PlayerInstance) {
             PlayerInstance activeChar;
             activeChar = (PlayerInstance) playable;
-            if (activeChar._inEventTvT && TvT.isStarted() && !Config.TVT_ALLOW_POTIONS) {
+            if (activeChar._inEventTvT && isStarted() && !Config.TVT_ALLOW_POTIONS) {
                 activeChar.sendPacket(ActionFailed.STATIC_PACKET);
                 return;
             }
@@ -201,7 +202,7 @@ public class Potions implements IItemHandler {
                 return;
             }
 
-            if (activeChar._inEventCTF && CTF.isStarted() && !Config.CTF_ALLOW_POTIONS) {
+            if (activeChar.inEventCtf && !Config.CTF_ALLOW_POTIONS && CTF.isStarted()) {
                 activeChar.sendPacket(ActionFailed.STATIC_PACKET);
                 return;
             }

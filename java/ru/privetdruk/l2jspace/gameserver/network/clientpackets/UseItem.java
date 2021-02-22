@@ -264,8 +264,8 @@ public class UseItem extends GameClientPacket {
             int bodyPart = item.getItem().getBodyPart();
 
             // Like L2OFF you can't use equips while you are casting
-            if ((player.isCastingNow() || player.isCastingPotionNow() || player.isMounted() || (player._inEventCTF && player._haveFlagCTF))) {
-                if (player._inEventCTF && player._haveFlagCTF) {
+            if ((player.isCastingNow() || player.isCastingPotionNow() || player.isMounted() || (player.inEventCtf && player.haveFlagCtf))) {
+                if (player.inEventCtf && player.haveFlagCtf) {
                     player.sendMessage("This item can not be equipped when you have the flag.");
                 } else {
                     player.sendPacket(new SystemMessage(SystemMessageId.YOU_MAY_NOT_EQUIP_ITEMS_WHILE_CASTING_OR_PERFORMING_A_SKILL));

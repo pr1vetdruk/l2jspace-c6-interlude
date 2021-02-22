@@ -24,7 +24,7 @@ import ru.privetdruk.l2jspace.gameserver.model.Skill;
 import ru.privetdruk.l2jspace.gameserver.model.WorldObject;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Creature;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.VIP;
@@ -61,7 +61,7 @@ public class SummonFriend implements ISkillHandler {
             return;
         }
 
-        if (activePlayer._inEventCTF && CTF.isStarted()) {
+        if (activePlayer.inEventCtf && CTF.isStarted()) {
             activePlayer.sendMessage("You cannot use this skill in an Event.");
             return;
         }
@@ -126,7 +126,7 @@ public class SummonFriend implements ISkillHandler {
                         targetPlayer.sendMessage("You cannot use this skill in an Event.");
                         return;
                     }
-                    if (targetPlayer._inEventCTF) {
+                    if (targetPlayer.inEventCtf) {
                         targetPlayer.sendMessage("You cannot use this skill in an Event.");
                         return;
                     }

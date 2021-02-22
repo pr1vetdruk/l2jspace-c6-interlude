@@ -29,7 +29,7 @@ import ru.privetdruk.l2jspace.gameserver.model.Location;
 import ru.privetdruk.l2jspace.gameserver.model.SiegeClan;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
 import ru.privetdruk.l2jspace.gameserver.model.entity.ClanHall;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.model.entity.siege.Castle;
@@ -89,7 +89,7 @@ public class RequestRestartPoint extends GameClientPacket {
 
         @Override
         public void run() {
-            if ((_player._inEventTvT && TvT.isStarted()) || (_player._inEventDM && DM.hasStarted()) || (_player._inEventCTF && CTF.isStarted())) {
+            if ((_player._inEventTvT && TvT.isStarted()) || (_player._inEventDM && DM.hasStarted()) || (_player.inEventCtf && CTF.isStarted())) {
                 _player.sendMessage("You cannot restart while participating in an event!");
                 return;
             }

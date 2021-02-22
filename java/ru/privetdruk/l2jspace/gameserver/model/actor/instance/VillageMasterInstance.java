@@ -266,7 +266,7 @@ public class VillageMasterInstance extends FolkInstance {
                         return;
                     }
                     // You can't add Subclass when you are registered in Events (TVT, CTF, DM)
-                    if (player._inEventTvT || player._inEventCTF || player._inEventDM) {
+                    if (player._inEventTvT || player.inEventCtf || player._inEventDM) {
                         player.sendMessage("You can't add a subclass while in an event.");
                         player.setLocked(false);
                         return;
@@ -343,7 +343,7 @@ public class VillageMasterInstance extends FolkInstance {
                         return;
                     }
                     // You can't change Subclass when you are registered in Events (TVT, CTF, DM)
-                    if (player._inEventTvT || player._inEventCTF || player._inEventDM) {
+                    if (player._inEventTvT || player.inEventCtf || player._inEventDM) {
                         player.sendMessage("You can't change subclass while in an event.");
                         player.setLocked(false);
                         return;
@@ -391,7 +391,7 @@ public class VillageMasterInstance extends FolkInstance {
                         return;
                     }
                     // You can't delete Subclass when you are registered in Events (TVT, CTF, DM)
-                    if (player._inEventTvT || player._inEventCTF || player._inEventDM) {
+                    if (player._inEventTvT || player.inEventCtf || player._inEventDM) {
                         player.sendMessage("You can't delete a subclass while in an event.");
                         player.setLocked(false);
                         return;

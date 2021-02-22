@@ -31,7 +31,7 @@ import ru.privetdruk.l2jspace.gameserver.instancemanager.CursedWeaponsManager;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Attackable;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Creature;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.model.itemcontainer.Inventory;
@@ -309,15 +309,15 @@ public class CursedWeapon {
             }
         }
 
-        if ((player._inEventTvT && !Config.TVT_JOIN_CURSED) && player._inEventTvT) {
+        if (player._inEventTvT && !Config.TVT_JOIN_CURSED) {
             TvT.removePlayer(player);
         }
 
-        if ((player._inEventCTF && !Config.CTF_JOIN_CURSED) && player._inEventCTF) {
-            CTF.removePlayer(player);
+        if (player.inEventCtf && !Config.CTF_JOIN_CURSED) {
+            CTF.findActive().excludePlayer(player);
         }
 
-        if ((player._inEventDM && !Config.DM_JOIN_CURSED) && player._inEventDM) {
+        if (player._inEventDM && !Config.DM_JOIN_CURSED) {
             DM.removePlayer(player);
         }
 

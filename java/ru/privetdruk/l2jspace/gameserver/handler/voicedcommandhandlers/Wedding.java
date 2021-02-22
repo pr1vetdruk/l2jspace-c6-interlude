@@ -30,7 +30,7 @@ import ru.privetdruk.l2jspace.gameserver.instancemanager.GrandBossManager;
 import ru.privetdruk.l2jspace.gameserver.model.Skill;
 import ru.privetdruk.l2jspace.gameserver.model.World;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.VIP;
@@ -257,7 +257,7 @@ public class Wedding implements IVoicedCommandHandler {
             activeChar.sendMessage("You may not use go to love in TvT.");
             return false;
         }
-        if (activeChar._inEventCTF && CTF.isStarted()) {
+        if (activeChar.inEventCtf && CTF.isStarted()) {
             activeChar.sendMessage("You may not use go to love in CTF.");
             return false;
         }

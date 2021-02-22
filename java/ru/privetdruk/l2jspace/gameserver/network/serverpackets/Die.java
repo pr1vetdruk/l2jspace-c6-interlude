@@ -23,7 +23,8 @@ import ru.privetdruk.l2jspace.gameserver.model.actor.Attackable;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Creature;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
 import ru.privetdruk.l2jspace.gameserver.model.clan.Clan;
-import ru.privetdruk.l2jspace.gameserver.model.entity.event.CTF;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.core.State;
+import ru.privetdruk.l2jspace.gameserver.model.entity.event.ctf.CTF;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.DM;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.TvT;
 import ru.privetdruk.l2jspace.gameserver.model.entity.siege.Castle;
@@ -40,14 +41,21 @@ public class Die extends GameServerPacket {
 
     public Die(Creature creature) {
         _creature = creature;
+
         if (creature instanceof PlayerInstance) {
-            final PlayerInstance player = creature.getActingPlayer();
+            PlayerInstance player = creature.getActingPlayer();
             _allowFixedRes = player.getAccessLevel().allowFixedRes();
             _clan = player.getClan();
-            _canTeleport = ((!TvT.isStarted() || !player._inEventTvT) && (!DM.hasStarted() || !player._inEventDM) && (!CTF.isStarted() || !player._inEventCTF) && !player.isInFunEvent() && !player.isPendingRevive());
+            _canTeleport = (!TvT.isStarted() || !player._inEventTvT) &&
+                    (!DM.hasStarted() || !player._inEventDM) &&
+                    (!player.inEventCtf || CTF.find(State.START) == null) &&
+                    !player.isInFunEvent() &&
+                    !player.isPendingRevive();
         }
+
         _objectId = creature.getObjectId();
         _fake = !creature.isDead();
+
         if (creature instanceof Attackable) {
             _sweepable = ((Attackable) creature).isSweepActive();
         }
