@@ -22,7 +22,7 @@
 package ru.privetdruk.l2jspace.commons.util;
 
 /**
- * Chronos updates an internal long value with Chronos.currentTimeMillis() approximately every 1 millisecond.<br>
+ * Chronos updates an internal long value with System.currentTimeMillis() approximately every 1 millisecond.<br>
  * To get the current time in milliseconds use Chronos.currentTimeMillis()
  *
  * @author Pantelis Andrianakis
@@ -41,7 +41,7 @@ public class Chronos extends Thread {
     @Override
     public void run() {
         while (true) {
-            currentTimeMillis = Chronos.currentTimeMillis();
+            currentTimeMillis = System.currentTimeMillis();
 
             // Sleep for approximately 1 millisecond.
             try {
