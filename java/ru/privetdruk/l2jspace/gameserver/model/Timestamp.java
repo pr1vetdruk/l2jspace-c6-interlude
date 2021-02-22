@@ -16,6 +16,8 @@
  */
 package ru.privetdruk.l2jspace.gameserver.model;
 
+import ru.privetdruk.l2jspace.commons.util.Chronos;
+
 /**
  * Simple class containing all necessary information to maintain<br>
  * valid time stamps and reuse for skills and items reuse upon re-login.<br>

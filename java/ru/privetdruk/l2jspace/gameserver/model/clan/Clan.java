@@ -31,6 +31,7 @@ import java.util.regex.PatternSyntaxException;
 
 import ru.privetdruk.l2jspace.Config;
 import ru.privetdruk.l2jspace.commons.database.DatabaseFactory;
+import ru.privetdruk.l2jspace.commons.util.Chronos;
 import ru.privetdruk.l2jspace.gameserver.communitybbs.BB.Forum;
 import ru.privetdruk.l2jspace.gameserver.communitybbs.Manager.ForumsBBSManager;
 import ru.privetdruk.l2jspace.gameserver.datatables.SkillTable;

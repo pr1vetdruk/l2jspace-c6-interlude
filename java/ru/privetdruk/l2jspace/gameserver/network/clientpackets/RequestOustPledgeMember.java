@@ -19,6 +19,7 @@ package ru.privetdruk.l2jspace.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import ru.privetdruk.l2jspace.Config;
+import ru.privetdruk.l2jspace.commons.util.Chronos;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
 import ru.privetdruk.l2jspace.gameserver.model.clan.Clan;
 import ru.privetdruk.l2jspace.gameserver.model.clan.ClanMember;

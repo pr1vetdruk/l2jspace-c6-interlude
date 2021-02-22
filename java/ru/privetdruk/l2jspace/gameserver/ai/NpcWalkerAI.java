@@ -18,6 +18,7 @@ package ru.privetdruk.l2jspace.gameserver.ai;
 
 import ru.privetdruk.l2jspace.Config;
 import ru.privetdruk.l2jspace.commons.concurrent.ThreadPool;
+import ru.privetdruk.l2jspace.commons.util.Chronos;
 import ru.privetdruk.l2jspace.gameserver.datatables.xml.WalkerRouteData;
 import ru.privetdruk.l2jspace.gameserver.model.Location;
 import ru.privetdruk.l2jspace.gameserver.model.NpcWalkerNode;

@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import ru.privetdruk.l2jspace.Config;
+import ru.privetdruk.l2jspace.commons.util.Chronos;
 
 public class BruteProtector {
     private static final Logger LOGGER = Logger.getLogger(BruteProtector.class.getName());

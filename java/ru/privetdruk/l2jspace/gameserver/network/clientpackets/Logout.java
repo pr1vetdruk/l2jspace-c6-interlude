@@ -17,6 +17,7 @@
 package ru.privetdruk.l2jspace.gameserver.network.clientpackets;
 
 import ru.privetdruk.l2jspace.Config;
+import ru.privetdruk.l2jspace.commons.util.Chronos;
 import ru.privetdruk.l2jspace.gameserver.datatables.SkillTable;
 import ru.privetdruk.l2jspace.gameserver.model.Party;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Creature;

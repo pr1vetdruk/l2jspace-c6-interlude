@@ -22,6 +22,10 @@ package ru.privetdruk.l2jspace.gameserver.handler.skillhandlers;
  * Return true if character clan place a flag<br>
  * <br>
  * @param activeChar The Creature of the creature placing the flag
+ * <p>
+ * Return true if character clan place a flag<br>
+ * <br>
+ * @param activeChar The Creature of the creature placing the flag
  */
 /*
  * public class TakeFort implements ISkillHandler { //private static final Logger LOGGER = Logger.getLogger(TakeFort.class); //private static final SkillType[] SKILL_IDS = { SkillType.TAKEFORT }; public void useSkill(Creature creature, @SuppressWarnings("unused") Skill
