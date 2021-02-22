@@ -29,7 +29,7 @@ package ru.privetdruk.l2jspace.commons.util;
  * @version February 3rd 2021
  */
 public class Chronos extends Thread {
-    private long currentTimeMillis = Chronos.currentTimeMillis();
+    private long currentTimeMillis = System.currentTimeMillis();
 
     public Chronos() {
         super.setName("Chronos");

@@ -18,6 +18,7 @@ package ai.bosses;
 
 import java.util.Collection;
 
+import ru.privetdruk.l2jspace.commons.util.Chronos;
 import ru.privetdruk.l2jspace.commons.util.Rnd;
 import ru.privetdruk.l2jspace.gameserver.ai.CtrlIntention;
 import ru.privetdruk.l2jspace.gameserver.datatables.xml.DoorData;
