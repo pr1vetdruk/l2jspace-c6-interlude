@@ -22,6 +22,7 @@ import java.nio.ByteOrder;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -124,13 +125,14 @@ public class GeoEngine {
         }
     }
 
-    /**
-     * @param geoX
-     * @param geoY
-     * @return the region
-     */
     private IRegion getRegion(int geoX, int geoY) {
-        return _regions.get(((geoX / IRegion.REGION_CELLS_X) * GEO_REGIONS_Y) + (geoY / IRegion.REGION_CELLS_Y));
+        int region = ((geoX / IRegion.REGION_CELLS_X) * GEO_REGIONS_Y) + (geoY / IRegion.REGION_CELLS_Y);
+
+        if (region < 0 || region >= _regions.length()) {
+            return null;
+        }
+
+        return _regions.get(region);
     }
 
     /**
@@ -160,18 +162,15 @@ public class GeoEngine {
      * @return if geodata exist
      */
     public boolean hasGeoPos(int geoX, int geoY) {
-        return getRegion(geoX, geoY).hasGeo();
+        return Optional.ofNullable(getRegion(geoX, geoY)).
+                map(IRegion::hasGeo)
+                .orElse(false);
     }
 
-    /**
-     * @param geoX
-     * @param geoY
-     * @param worldZ
-     * @param nswe
-     * @return the nearest nswe check
-     */
     public boolean checkNearestNswe(int geoX, int geoY, int worldZ, int nswe) {
-        return getRegion(geoX, geoY).checkNearestNswe(geoX, geoY, worldZ, nswe);
+        return Optional.ofNullable(getRegion(geoX, geoY))
+                .map(region -> region.checkNearestNswe(geoX, geoY, worldZ, nswe))
+                .orElse(false);
     }
 
     /**
