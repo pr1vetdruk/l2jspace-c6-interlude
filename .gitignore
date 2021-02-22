@@ -1,3 +1,5 @@
 # Project exclude paths
 /bin/
 /.idea
+/dist/login/log/
+/dist/game/log/

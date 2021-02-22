@@ -1,9 +1,0 @@
-2021.01.25 19:26:33,430	INFO	1	ru.privetdruk.l2jspace.commons.database.DatabaseFactory	Database: Initialized.
-2021.01.25 19:26:47,365	INFO	1	ru.privetdruk.l2jspace.loginserver.LoginController	Cached 10 KeyPairs for RSA communication.
-2021.01.25 19:26:47,406	INFO	1	ru.privetdruk.l2jspace.loginserver.LoginController	Stored 20 keys for Blowfish communication.
-2021.01.25 19:26:47,445	INFO	1	ru.privetdruk.l2jspace.loginserver.GameServerTable	Loaded 127 server names.
-2021.01.25 19:26:47,450	INFO	1	ru.privetdruk.l2jspace.loginserver.GameServerTable	Loaded 1 registered Game Servers.
-2021.01.25 19:26:47,494	INFO	1	ru.privetdruk.l2jspace.loginserver.GameServerTable	Cached 10 RSA keys for Game Server communication.
-2021.01.25 19:26:47,520	INFO	1	ru.privetdruk.l2jspace.loginserver.LoginServer	Listening for GameServers on 127.0.0.1:9014
-2021.01.25 19:26:47,521	INFO	1	ru.privetdruk.l2jspace.loginserver.LoginServer	Login Server ready on *:2106
-2021.01.25 19:26:47,523	INFO	1	ru.privetdruk.l2jspace.Config	Loaded 2 IP Bans.
