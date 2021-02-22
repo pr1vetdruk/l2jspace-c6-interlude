@@ -47,7 +47,7 @@ public class FrameAbout {
         jFrame.setType(Type.UTILITY);
         jFrame.getContentPane().setLayout(null);
 
-        final JLabel label = new JLabel("PrivetDruk");
+        final JLabel label = new JLabel("L2jSpace");
         label.setFont(new Font("Tahoma", Font.PLAIN, 32));
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setBounds(10, 11, 271, 39);
@@ -64,7 +64,7 @@ public class FrameAbout {
         lblLoginServer.setBounds(10, 86, 271, 23);
         jFrame.getContentPane().add(lblLoginServer);
 
-        String url = "www.privetdruk.ru/l2j";
+        String url = "www.privetdruk.ru/l2jspace";
 
         final JLabel site = new JLabel(url);
         site.setText("<html><font color=\"#000099\"><u>" + url + "</u></font></html>");

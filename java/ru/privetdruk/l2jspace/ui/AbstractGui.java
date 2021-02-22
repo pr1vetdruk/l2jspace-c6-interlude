@@ -19,18 +19,11 @@ package ru.privetdruk.l2jspace.ui;
 import ru.privetdruk.l2jspace.commons.util.LimitLinesDocumentListener;
 import ru.privetdruk.l2jspace.commons.util.SplashScreen;
 import ru.privetdruk.l2jspace.gameserver.Shutdown;
+import ru.privetdruk.l2jspace.loginserver.LoginServer;
 import ru.privetdruk.l2jspace.ui.FrameAbout;
 import ru.privetdruk.l2jspace.gameserver.util.Util;
 
-import javax.swing.DropMode;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JTextPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -124,6 +117,15 @@ public abstract class AbstractGui {
         return item;
     }
 
+    protected JCheckBoxMenuItem createCheckBox(String name, JMenu menu) {
+        JCheckBoxMenuItem checkBoxMenuItem = new JCheckBoxMenuItem(name);
+        checkBoxMenuItem.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+
+        menu.add(checkBoxMenuItem);
+
+        return checkBoxMenuItem;
+    }
+
     protected void addDialog(JMenuItem item, String message, String delayMessage, String[] options) {
         item.addActionListener(arg0 -> {
             if (isShowOptionDialog(message, options)) {
@@ -138,6 +140,14 @@ public abstract class AbstractGui {
                         }
                     }
                 }
+            }
+        });
+    }
+
+    protected void addDialog(JMenuItem item, String message, boolean isRestart, String[] options) {
+        item.addActionListener(arg0 -> {
+            if (isShowOptionDialog(message, options)) {
+                LoginServer.getInstance().shutdown(isRestart);
             }
         });
     }

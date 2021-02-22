@@ -42,14 +42,14 @@ import java.awt.event.WindowEvent;
 
 /**
  * @author Mobius
- * @author Somsin
+ * Modify by privetdruk
  */
 public class Gui extends AbstractGui {
     private final String[] CONFIRM_OPTIONS = {"Confirm", "Cancel"};
     private final String[] ABORT_OPTIONS = {"Abort", "Cancel"};
 
     public Gui() {
-        initialize("GameServer");
+        initialize("L2jSpace - GameServer");
     }
 
     @Override
