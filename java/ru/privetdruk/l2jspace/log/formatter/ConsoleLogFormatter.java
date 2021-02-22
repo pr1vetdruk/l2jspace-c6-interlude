@@ -26,12 +26,12 @@ import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
 public class ConsoleLogFormatter extends Formatter {
-    private final SimpleDateFormat dateFmt = new SimpleDateFormat("dd/MM HH:mm:ss");
+    private final SimpleDateFormat dateFmt = new SimpleDateFormat("dd.MM HH:mm:ss");
 
     @Override
     public String format(LogRecord record) {
         final StringBuilder output = new StringBuilder(500);
-        StringUtil.append(output, "[", dateFmt.format(new Date(record.getMillis())), "] " + record.getMessage(), Config.EOL);
+        StringUtil.append(output, record.getLevel().getName().substring(0, 4), " ", dateFmt.format(new Date(record.getMillis())), " " + record.getMessage(), Config.EOL);
 
         if (record.getThrown() != null) {
             try {

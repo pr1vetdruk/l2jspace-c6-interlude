@@ -31,12 +31,12 @@ import java.util.Calendar;
 /**
  * @author Mobius
  */
-public class frmAbout {
+public class FrameAbout {
     private JFrame frmAbout;
     private static final String URL = "www.privetdruk.ru/l2j";
     final URI uri;
 
-    public frmAbout() {
+    public FrameAbout() {
         initialize();
         uri = createURI(URL);
         frmAbout.setVisible(true);
@@ -51,7 +51,7 @@ public class frmAbout {
         frmAbout.setType(Type.UTILITY);
         frmAbout.getContentPane().setLayout(null);
 
-        final JLabel label = new JLabel("L2jSpace");
+        final JLabel label = new JLabel("L2J");
         label.setFont(new Font("Tahoma", Font.PLAIN, 32));
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setBounds(10, 11, 271, 39);

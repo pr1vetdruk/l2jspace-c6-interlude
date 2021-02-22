@@ -17,164 +17,86 @@
 package ru.privetdruk.l2jspace.gameserver.ui;
 
 import ru.privetdruk.l2jspace.Config;
-import ru.privetdruk.l2jspace.commons.util.LimitLinesDocumentListener;
-import ru.privetdruk.l2jspace.commons.util.SplashScreen;
 import ru.privetdruk.l2jspace.gameserver.Shutdown;
 import ru.privetdruk.l2jspace.gameserver.cache.HtmCache;
 import ru.privetdruk.l2jspace.gameserver.datatables.xml.MultisellData;
 import ru.privetdruk.l2jspace.gameserver.enums.ChatType;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.CreatureSay;
 import ru.privetdruk.l2jspace.gameserver.util.Broadcast;
-import ru.privetdruk.l2jspace.gameserver.util.Util;
+import ru.privetdruk.l2jspace.ui.AbstractGui;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Mobius
+ * @author Somsin
  */
-public class Gui {
-    JTextArea txtrConsole;
-
-    static final String[] shutdownOptions =
-            {
-                    "Shutdown",
-                    "Cancel"
-            };
-    static final String[] restartOptions =
-            {
-                    "Restart",
-                    "Cancel"
-            };
-    static final String[] abortOptions =
-            {
-                    "Abort",
-                    "Cancel"
-            };
-    static final String[] confirmOptions =
-            {
-                    "Confirm",
-                    "Cancel"
-            };
+public class Gui extends AbstractGui {
+    private final String[] CONFIRM_OPTIONS = {"Confirm", "Cancel"};
+    private final String[] ABORT_OPTIONS = {"Abort", "Cancel"};
 
     public Gui() {
-        // Initialize console.
-        txtrConsole = new JTextArea();
-        txtrConsole.setEditable(false);
-        txtrConsole.setLineWrap(true);
-        txtrConsole.setWrapStyleWord(true);
-        txtrConsole.setDropMode(DropMode.INSERT);
-        txtrConsole.setFont(new Font("Monospaced", Font.PLAIN, 16));
-        txtrConsole.getDocument().addDocumentListener(new LimitLinesDocumentListener(500));
+        initialize("GameServer");
+    }
 
-        // Initialize menu items.
-        final JMenuBar menuBar = new JMenuBar();
-        menuBar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+    @Override
+    protected void initialMenuItems() {
+        JMenu menuAction = createMenu("Actions");
 
-        final JMenu mnActions = new JMenu("Actions");
-        mnActions.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        menuBar.add(mnActions);
+        JMenuItem itemShutdown = createMenuItem("Shutdown", menuAction);
+        addDialog(itemShutdown, "Shutdown GameServer?", "Shutdown delay in seconds", SHUTDOWN_OPTIONS);
 
-        final JMenuItem mntmShutdown = new JMenuItem("Shutdown");
-        mntmShutdown.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        mntmShutdown.addActionListener(arg0 ->
-        {
-            if (JOptionPane.showOptionDialog(null, "Shutdown GameServer?", "Select an option", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, shutdownOptions, shutdownOptions[1]) == 0) {
-                final Object answer = JOptionPane.showInputDialog(null, "Shutdown delay in seconds", "Input", JOptionPane.INFORMATION_MESSAGE, null, null, "600");
-                if (answer != null) {
-                    final String input = ((String) answer).trim();
-                    if (Util.isDigit(input)) {
-                        final int delay = Integer.parseInt(input);
-                        if (delay > 0) {
-                            Shutdown.getInstance().startShutdown(null, delay, false);
-                        }
-                    }
-                }
-            }
-        });
-        mnActions.add(mntmShutdown);
+        JMenuItem itemRestart = createMenuItem("Restart", menuAction);
+        addDialog(itemRestart, "Restart GameServer?", "Restart delay in seconds", RESTART_OPTIONS);
 
-        final JMenuItem mntmRestart = new JMenuItem("Restart");
-        mntmRestart.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        mntmRestart.addActionListener(arg0 ->
-        {
-            if (JOptionPane.showOptionDialog(null, "Restart GameServer?", "Select an option", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, restartOptions, restartOptions[1]) == 0) {
-                final Object answer = JOptionPane.showInputDialog(null, "Restart delay in seconds", "Input", JOptionPane.INFORMATION_MESSAGE, null, null, "600");
-                if (answer != null) {
-                    final String input = ((String) answer).trim();
-                    if (Util.isDigit(input)) {
-                        final int delay = Integer.parseInt(input);
-                        if (delay > 0) {
-                            Shutdown.getInstance().startShutdown(null, delay, true);
-                        }
-                    }
-                }
-            }
-        });
-        mnActions.add(mntmRestart);
-
-        final JMenuItem mntmAbort = new JMenuItem("Abort");
-        mntmAbort.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        mntmAbort.addActionListener(arg0 ->
-        {
-            if (JOptionPane.showOptionDialog(null, "Abort server shutdown?", "Select an option", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, abortOptions, abortOptions[1]) == 0) {
+        JMenuItem itemAbort = createMenuItem("Abort", menuAction);
+        itemAbort.addActionListener(arg0 -> {
+            if (isShowOptionDialog("Abort server shutdown?", ABORT_OPTIONS)) {
                 Shutdown.getInstance().abort(null);
             }
         });
-        mnActions.add(mntmAbort);
 
-        final JMenu mnReload = new JMenu("Reload");
-        mnReload.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        menuBar.add(mnReload);
+        JMenu menuReload = createMenu("Reload");
 
-        final JMenuItem mntmConfigs = new JMenuItem("Configs");
-        mntmConfigs.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        mntmConfigs.addActionListener(arg0 ->
-        {
-            if (JOptionPane.showOptionDialog(null, "Reload configs?", "Select an option", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, confirmOptions, confirmOptions[1]) == 0) {
+        JMenuItem itemConfigs = createMenuItem("Configs", menuReload);
+        itemConfigs.addActionListener(arg0 -> {
+            if (isShowOptionDialog("Reload configs?", CONFIRM_OPTIONS)) {
                 Config.load(Config.SERVER_MODE);
             }
         });
-        mnReload.add(mntmConfigs);
 
-        final JMenuItem mntmHtml = new JMenuItem("HTML");
-        mntmHtml.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        mntmHtml.addActionListener(arg0 ->
-        {
-            if (JOptionPane.showOptionDialog(null, "Reload HTML files?", "Select an option", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, confirmOptions, confirmOptions[1]) == 0) {
+        JMenuItem itemHtml = createMenuItem("HTML", menuReload);
+        itemHtml.addActionListener(arg0 -> {
+            if (isShowOptionDialog("Reload HTML files?", CONFIRM_OPTIONS)) {
                 HtmCache.getInstance().reload();
             }
         });
-        mnReload.add(mntmHtml);
 
-        final JMenuItem mntmMultisells = new JMenuItem("Multisells");
-        mntmMultisells.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        mntmMultisells.addActionListener(arg0 ->
-        {
-            if (JOptionPane.showOptionDialog(null, "Reload multisells?", "Select an option", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, confirmOptions, confirmOptions[1]) == 0) {
+        JMenuItem itemMultisells = createMenuItem("Multisells", menuReload);
+        itemMultisells.addActionListener(arg0 -> {
+            if (isShowOptionDialog("Reload multisells?", CONFIRM_OPTIONS)) {
                 MultisellData.getInstance().reload();
             }
         });
-        mnReload.add(mntmMultisells);
 
-        final JMenu mnAnnounce = new JMenu("Announce");
-        mnAnnounce.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        menuBar.add(mnAnnounce);
+        JMenu menuAnnounce = createMenu("Announce");
 
-        final JMenuItem mntmNormal = new JMenuItem("Normal");
-        mntmNormal.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        mntmNormal.addActionListener(arg0 ->
-        {
-            final Object input = JOptionPane.showInputDialog(null, "Announce message", "Input", JOptionPane.INFORMATION_MESSAGE, null, null, "");
+        JMenuItem itemNormal = createMenuItem("Normal", menuAnnounce);
+        itemNormal.addActionListener(arg0 -> {
+            final Object input = showInputDialog("Announce message", "");
             if (input != null) {
                 final String message = ((String) input).trim();
                 if (!message.isEmpty()) {
@@ -182,13 +104,10 @@ public class Gui {
                 }
             }
         });
-        mnAnnounce.add(mntmNormal);
 
-        final JMenuItem mntmCritical = new JMenuItem("Critical");
-        mntmCritical.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        mntmCritical.addActionListener(arg0 ->
-        {
-            final Object input = JOptionPane.showInputDialog(null, "Critical announce message", "Input", JOptionPane.INFORMATION_MESSAGE, null, null, "");
+        JMenuItem itemCritical = createMenuItem("Critical", menuAnnounce);
+        itemCritical.addActionListener(arg0 -> {
+            final Object input = showInputDialog("Critical announce message", "");
             if (input != null) {
                 final String message = ((String) input).trim();
                 if (!message.isEmpty()) {
@@ -196,111 +115,43 @@ public class Gui {
                 }
             }
         });
-        mnAnnounce.add(mntmCritical);
 
-        final JMenu mnFont = new JMenu("Font");
-        mnFont.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        menuBar.add(mnFont);
+        initialDefaultMenuItems();
+    }
 
-        final String[] fonts =
-                {
-                        "16",
-                        "21",
-                        "27",
-                        "33"
-                };
-        for (String font : fonts) {
-            final JMenuItem mntmFont = new JMenuItem(font);
-            mntmFont.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-            mntmFont.addActionListener(arg0 -> txtrConsole.setFont(new Font("Monospaced", Font.PLAIN, Integer.parseInt(font))));
-            mnFont.add(mntmFont);
-        }
-
-        final JMenu mnHelp = new JMenu("Help");
-        mnHelp.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        menuBar.add(mnHelp);
-
-        final JMenuItem mntmAbout = new JMenuItem("About");
-        mntmAbout.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        mntmAbout.addActionListener(arg0 -> new frmAbout());
-        mnHelp.add(mntmAbout);
-
-        // Set icons.
-        final List<Image> icons = new ArrayList<>();
-        icons.add(new ImageIcon(".." + File.separator + "images" + File.separator + "l2j_16x16.png").getImage());
-        icons.add(new ImageIcon(".." + File.separator + "images" + File.separator + "l2j_32x32.png").getImage());
-        icons.add(new ImageIcon(".." + File.separator + "images" + File.separator + "l2j_64x64.png").getImage());
-        icons.add(new ImageIcon(".." + File.separator + "images" + File.separator + "l2j_128x128.png").getImage());
-
-        // Set Panels.
-        final JPanel systemPanel = new SystemPanel();
-        final JScrollPane scrollPanel = new JScrollPane(txtrConsole);
+    @Override
+    protected void initializeFrame(String windowTitle) {
+        JPanel systemPanel = new SystemPanel();
+        JScrollPane scrollPanel = new JScrollPane(textPane);
         scrollPanel.setBounds(0, 0, 800, 550);
-        final JLayeredPane layeredPanel = new JLayeredPane();
+
+        JLayeredPane layeredPanel = new JLayeredPane();
         layeredPanel.add(scrollPanel, 0, 0);
         layeredPanel.add(systemPanel, 1, 0);
 
-        // Set frame.
-        final JFrame frame = new JFrame("L2jSpace - GameServer");
-        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        frame.addWindowListener(new WindowAdapter() {
+        jFrame = new JFrame(windowTitle);
+        jFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        jFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent ev) {
-                if (JOptionPane.showOptionDialog(null, "Shutdown server immediately?", "Select an option", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, shutdownOptions, shutdownOptions[1]) == 0) {
+                if (JOptionPane.showOptionDialog(null, "Shutdown server immediately?", "Select an option", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, SHUTDOWN_OPTIONS, SHUTDOWN_OPTIONS[1]) == 0) {
                     Shutdown.getInstance().startShutdown(null, 1, false);
                 }
             }
         });
-        frame.addComponentListener(new ComponentAdapter() {
+        jFrame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent ev) {
-                scrollPanel.setSize(frame.getContentPane().getSize());
-                systemPanel.setLocation(frame.getContentPane().getWidth() - systemPanel.getWidth() - 34, systemPanel.getY());
+                scrollPanel.setSize(jFrame.getContentPane().getSize());
+                systemPanel.setLocation(jFrame.getContentPane().getWidth() - systemPanel.getWidth() - 34, systemPanel.getY());
             }
         });
-        frame.setJMenuBar(menuBar);
-        frame.setIconImages(icons);
-        frame.add(layeredPanel, BorderLayout.CENTER);
-        frame.getContentPane().setPreferredSize(new Dimension(800, 550));
-        frame.pack();
-        frame.setLocationRelativeTo(null);
 
-        // Redirect output to text area.
-        redirectSystemStreams();
-
-        // Show SplashScreen.
-        new SplashScreen(".." + File.separator + "images" + File.separator + "splash.png", 5000, frame);
-    }
-
-    // Set where the text is redirected. In this case, txtrConsole.
-    void updateTextArea(String text) {
-        SwingUtilities.invokeLater(() ->
-        {
-            txtrConsole.append(text);
-            txtrConsole.setCaretPosition(txtrConsole.getText().length());
-        });
-    }
-
-    // Method that manages the redirect.
-    private void redirectSystemStreams() {
-        final OutputStream out = new OutputStream() {
-            @Override
-            public void write(int b) {
-                updateTextArea(String.valueOf((char) b));
-            }
-
-            @Override
-            public void write(byte[] b, int off, int len) {
-                updateTextArea(new String(b, off, len));
-            }
-
-            @Override
-            public void write(byte[] b) {
-                write(b, 0, b.length);
-            }
-        };
-
-        System.setOut(new PrintStream(out, true));
-        System.setErr(new PrintStream(out, true));
+        jFrame.setJMenuBar(menuBar);
+        jFrame.setIconImages(ICONS);
+        jFrame.add(layeredPanel, BorderLayout.CENTER);
+        jFrame.getContentPane().setPreferredSize(new Dimension(800, 550));
+        jFrame.pack();
+        jFrame.setLocationRelativeTo(null);
     }
 }
