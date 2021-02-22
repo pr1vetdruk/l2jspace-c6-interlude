@@ -31,7 +31,7 @@ public class SkillCoolTime extends GameServerPacket {
     public Collection<Timestamp> _reuseTimestamps;
 
     public SkillCoolTime(PlayerInstance player) {
-        _currentTime = System.currentTimeMillis();
+        _currentTime = Chronos.currentTimeMillis();
         _reuseTimestamps = player.getReuseTimeStamps();
     }
 

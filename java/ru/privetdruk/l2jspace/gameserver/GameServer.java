@@ -145,7 +145,7 @@ public class GameServer {
     public static final Calendar dateTimeServerStarted = Calendar.getInstance();
 
     public GameServer() throws Exception {
-        final long serverLoadStart = System.currentTimeMillis();
+        final long serverLoadStart = Chronos.currentTimeMillis();
 
         // GUI
         if (!GraphicsEnvironment.isHeadless()) {
@@ -445,7 +445,7 @@ public class GameServer {
         LOGGER.info("Used memory: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576) + " MB");
 
         Util.printSection("Status");
-        LOGGER.info("Server Loaded in " + ((System.currentTimeMillis() - serverLoadStart) / 1000) + " seconds.");
+        LOGGER.info("Server Loaded in " + ((Chronos.currentTimeMillis() - serverLoadStart) / 1000) + " seconds.");
 
         // Load telnet status
         Util.printSection("Telnet");

@@ -144,7 +144,7 @@ public class NpcInstance extends Creature {
      */
     public void onRandomAnimation(int animationId) {
         // Send a packet SocialAction to all PlayerInstance in the _KnownPlayers of the NpcInstance
-        final long now = System.currentTimeMillis();
+        final long now = Chronos.currentTimeMillis();
         if ((now - _lastSocialBroadcast) > MINIMUM_SOCIAL_INTERVAL) {
             _lastSocialBroadcast = now;
             broadcastPacket(new SocialAction(getObjectId(), animationId));
@@ -593,7 +593,7 @@ public class NpcInstance extends Creature {
      */
     @Override
     public void onAction(PlayerInstance player) {
-        if (!canTarget(player) || ((System.currentTimeMillis() - player.getTimerToAttack()) < Config.CLICK_TASK)) {
+        if (!canTarget(player) || ((Chronos.currentTimeMillis() - player.getTimerToAttack()) < Config.CLICK_TASK)) {
             return;
         }
 
@@ -621,7 +621,7 @@ public class NpcInstance extends Creature {
                 player.sendPacket(new MyTargetSelected(getObjectId(), 0));
             }
 
-            player.setTimerToAttack(System.currentTimeMillis());
+            player.setTimerToAttack(Chronos.currentTimeMillis());
             // Send a Server->Client packet ValidateLocation to correct the NpcInstance position and heading on the client
             player.sendPacket(new ValidateLocation(this));
         } else {
@@ -841,7 +841,7 @@ public class NpcInstance extends Creature {
                     player.sendPacket(new MyTargetSelected(getObjectId(), 0));
                 }
 
-                player.setTimerToAttack(System.currentTimeMillis());
+                player.setTimerToAttack(Chronos.currentTimeMillis());
                 player.sendPacket(new ValidateLocation(this));
             } else {
                 player.sendPacket(new ValidateLocation(this));

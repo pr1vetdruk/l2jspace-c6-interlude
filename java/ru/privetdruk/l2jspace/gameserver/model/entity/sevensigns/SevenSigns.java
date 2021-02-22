@@ -428,7 +428,7 @@ public class SevenSigns {
      * @return the milli to period change
      */
     public long getMilliToPeriodChange() {
-        final long currTimeMillis = System.currentTimeMillis();
+        final long currTimeMillis = Chronos.currentTimeMillis();
         final long changeTimeMillis = _calendar.getTimeInMillis();
         return changeTimeMillis - currTimeMillis;
     }

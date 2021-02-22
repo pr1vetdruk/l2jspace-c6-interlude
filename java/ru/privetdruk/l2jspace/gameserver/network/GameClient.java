@@ -213,7 +213,7 @@ public class GameClient extends MMOClient<MMOConnection<GameClient>> implements 
                     deleteCharByObjId(objid);
                 } else {
                     statement = con.prepareStatement("UPDATE characters SET deletetime=? WHERE charId=?");
-                    statement.setLong(1, System.currentTimeMillis() + (Config.DELETE_DAYS * 86400000)); // 24*60*60*1000 = 86400000
+                    statement.setLong(1, Chronos.currentTimeMillis() + (Config.DELETE_DAYS * 86400000)); // 24*60*60*1000 = 86400000
                     statement.setInt(2, objid);
                     statement.execute();
                     statement.close();
@@ -566,7 +566,7 @@ public class GameClient extends MMOClient<MMOConnection<GameClient>> implements 
                             }
 
                             if (player.getOfflineStartTime() == 0) {
-                                player.setOfflineStartTime(System.currentTimeMillis());
+                                player.setOfflineStartTime(Chronos.currentTimeMillis());
                             }
 
                             OfflineTradeTable.storeOffliner(player);

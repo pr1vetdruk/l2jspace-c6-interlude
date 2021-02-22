@@ -73,7 +73,7 @@ public class ClanTable {
                 _clans.put(Integer.parseInt(result.getString("clan_id")), new Clan(Integer.parseInt(result.getString("clan_id"))));
                 clan = getClan(Integer.parseInt(result.getString("clan_id")));
                 if (clan.getDissolvingExpiryTime() != 0) {
-                    if (clan.getDissolvingExpiryTime() < System.currentTimeMillis()) {
+                    if (clan.getDissolvingExpiryTime() < Chronos.currentTimeMillis()) {
                         destroyClan(clan.getClanId());
                     } else {
                         scheduleRemoveClan(clan.getClanId());
@@ -155,7 +155,7 @@ public class ClanTable {
             return null;
         }
 
-        if (System.currentTimeMillis() < player.getClanCreateExpiryTime()) {
+        if (Chronos.currentTimeMillis() < player.getClanCreateExpiryTime()) {
             player.sendPacket(SystemMessageId.YOU_MUST_WAIT_10_DAYS_BEFORE_CREATING_A_NEW_CLAN);
             return null;
         }
@@ -346,7 +346,7 @@ public class ClanTable {
             if (getClan(clanId).getDissolvingExpiryTime() != 0) {
                 destroyClan(clanId);
             }
-        }, getClan(clanId).getDissolvingExpiryTime() - System.currentTimeMillis());
+        }, getClan(clanId).getDissolvingExpiryTime() - Chronos.currentTimeMillis());
     }
 
     public boolean isAllyExists(String allyName) {

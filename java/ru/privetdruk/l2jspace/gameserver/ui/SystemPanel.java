@@ -35,7 +35,7 @@ import java.util.jar.JarFile;
  * @author Mobius
  */
 public class SystemPanel extends JPanel {
-    private static final long START_TIME = System.currentTimeMillis();
+    private static final long START_TIME = Chronos.currentTimeMillis();
 
     public SystemPanel() {
         setBackground(Color.WHITE);
@@ -120,7 +120,7 @@ public class SystemPanel extends JPanel {
                 lblConnected.setText("Connected: " + playerCount);
                 lblMaxConnected.setText("Max connected: " + World.MAX_CONNECTED_COUNT);
                 lblOfflineShops.setText("Offline trade: " + World.OFFLINE_TRADE_COUNT);
-                lblElapsedTime.setText("Elapsed: " + getDurationBreakdown(System.currentTimeMillis() - START_TIME));
+                lblElapsedTime.setText("Elapsed: " + getDurationBreakdown(Chronos.currentTimeMillis() - START_TIME));
             }
         }, 1000, 1000);
     }

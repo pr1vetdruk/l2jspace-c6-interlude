@@ -49,7 +49,7 @@ public class AttackRequest extends GameClientPacket {
             return;
         }
 
-        if ((System.currentTimeMillis() - player.getLastAttackPacket()) < 500) {
+        if ((Chronos.currentTimeMillis() - player.getLastAttackPacket()) < 500) {
             player.sendPacket(ActionFailed.STATIC_PACKET);
             return;
         }

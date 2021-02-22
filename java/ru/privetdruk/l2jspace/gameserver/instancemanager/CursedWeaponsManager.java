@@ -310,7 +310,7 @@ public class CursedWeaponsManager {
                 SystemMessage sm = new SystemMessage(SystemMessageId.S1_HAS_S2_MINUTE_S_OF_USAGE_TIME_REMAINING);
                 sm.addString(cw.getName());
                 // sm.addItemName(cw.getItemId());
-                sm.addNumber((int) ((cw.getEndTime() - System.currentTimeMillis()) / 60000));
+                sm.addNumber((int) ((cw.getEndTime() - Chronos.currentTimeMillis()) / 60000));
                 player.sendPacket(sm);
 
                 sm = new SystemMessage(SystemMessageId.THE_OWNER_OF_S2_HAS_APPEARED_IN_THE_S1_REGION);

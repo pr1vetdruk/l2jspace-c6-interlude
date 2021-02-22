@@ -53,7 +53,7 @@ public class LoginController {
         @Override
         public void run() {
             for (; ; ) {
-                final long now = System.currentTimeMillis();
+                final long now = Chronos.currentTimeMillis();
                 if (_stopNow) {
                     break;
                 }
@@ -273,7 +273,7 @@ public class LoginController {
      * @param duration is miliseconds
      */
     public void addBanForAddress(InetAddress address, long duration) {
-        _bannedIps.put(address, new BanInfo(address, System.currentTimeMillis() + duration));
+        _bannedIps.put(address, new BanInfo(address, Chronos.currentTimeMillis() + duration));
     }
 
     public boolean isBannedAddress(InetAddress address) {
@@ -494,7 +494,7 @@ public class LoginController {
                         statement = con.prepareStatement("INSERT INTO accounts (login,password,lastactive,accessLevel,lastIP) values(?,?,?,?,?)");
                         statement.setString(1, user);
                         statement.setString(2, Base64.getEncoder().encodeToString(hash));
-                        statement.setLong(3, System.currentTimeMillis());
+                        statement.setLong(3, Chronos.currentTimeMillis());
                         statement.setInt(4, 0);
                         statement.setString(5, address.getHostAddress());
                         statement.execute();
@@ -533,7 +533,7 @@ public class LoginController {
                 client.setAccessLevel(access);
                 client.setLastServer(lastServer);
                 statement = con.prepareStatement("UPDATE accounts SET lastactive=?, lastIP=? WHERE login=?");
-                statement.setLong(1, System.currentTimeMillis());
+                statement.setLong(1, Chronos.currentTimeMillis());
                 statement.setString(2, address.getHostAddress());
                 statement.setString(3, user);
                 statement.execute();
@@ -601,24 +601,24 @@ public class LoginController {
         public FailedLoginAttempt(InetAddress address, String lastPassword) {
             // _ipAddress = address;
             _count = 1;
-            _lastAttempTime = System.currentTimeMillis();
+            _lastAttempTime = Chronos.currentTimeMillis();
             _lastPassword = lastPassword;
         }
 
         public void increaseCounter(String password) {
             if (!_lastPassword.equals(password)) {
                 // check if theres a long time since last wrong try
-                if ((System.currentTimeMillis() - _lastAttempTime) < (300 * 1000)) {
+                if ((Chronos.currentTimeMillis() - _lastAttempTime) < (300 * 1000)) {
                     _count++;
                 } else {
                     // restart the status
                     _count = 1;
                 }
                 _lastPassword = password;
-                _lastAttempTime = System.currentTimeMillis();
+                _lastAttempTime = Chronos.currentTimeMillis();
             } else // trying the same password is not brute force
             {
-                _lastAttempTime = System.currentTimeMillis();
+                _lastAttempTime = Chronos.currentTimeMillis();
             }
         }
 
@@ -642,7 +642,7 @@ public class LoginController {
         }
 
         public boolean hasExpired() {
-            return (System.currentTimeMillis() > _expiration) && (_expiration > 0);
+            return (Chronos.currentTimeMillis() > _expiration) && (_expiration > 0);
         }
     }
 
@@ -652,7 +652,7 @@ public class LoginController {
             for (; ; ) {
                 synchronized (_clients) {
                     for (LoginClient client : _clients) {
-                        if ((client.getConnectionStartTime() + LOGIN_TIMEOUT) >= System.currentTimeMillis()) {
+                        if ((client.getConnectionStartTime() + LOGIN_TIMEOUT) >= Chronos.currentTimeMillis()) {
                             client.close(LoginFail.LoginFailReason.REASON_ACCESS_FAILED);
                         }
                     }
@@ -661,7 +661,7 @@ public class LoginController {
                 synchronized (_loginServerClients) {
                     for (Entry<String, LoginClient> e : _loginServerClients.entrySet()) {
                         final LoginClient client = e.getValue();
-                        if ((client.getConnectionStartTime() + LOGIN_TIMEOUT) >= System.currentTimeMillis()) {
+                        if ((client.getConnectionStartTime() + LOGIN_TIMEOUT) >= Chronos.currentTimeMillis()) {
                             client.close(LoginFail.LoginFailReason.REASON_ACCESS_FAILED);
                         }
                     }

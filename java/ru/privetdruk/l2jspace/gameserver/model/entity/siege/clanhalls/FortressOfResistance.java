@@ -94,7 +94,7 @@ public class FortressOfResistance {
             final RunMessengerSpawn rms = new RunMessengerSpawn();
             ThreadPool.schedule(rms, milliToCapture);
 
-            final long total_millis = System.currentTimeMillis() + milliToCapture;
+            final long total_millis = Chronos.currentTimeMillis() + milliToCapture;
             final GregorianCalendar cal = (GregorianCalendar) Calendar.getInstance();
             cal.setTimeInMillis(total_millis);
             final String next_ch_siege_date = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(cal.getTimeInMillis());
@@ -129,7 +129,7 @@ public class FortressOfResistance {
     }
 
     private long getMilliToCapture() {
-        final long currTimeMillis = System.currentTimeMillis();
+        final long currTimeMillis = Chronos.currentTimeMillis();
         final long captureTimeMillis = _capturetime.getTimeInMillis();
         return captureTimeMillis - currTimeMillis;
     }
@@ -273,7 +273,7 @@ public class FortressOfResistance {
         try (Connection con = DatabaseFactory.getConnection()) {
             PreparedStatement statement;
             statement = con.prepareStatement("UPDATE clanhall SET paidUntil=?, paid=? WHERE id=?");
-            statement.setLong(1, System.currentTimeMillis() + 59760000);
+            statement.setLong(1, Chronos.currentTimeMillis() + 59760000);
             statement.setInt(2, 1);
             statement.setInt(3, 21);
             statement.execute();

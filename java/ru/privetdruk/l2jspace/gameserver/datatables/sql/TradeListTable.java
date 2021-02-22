@@ -137,7 +137,7 @@ public class TradeListTable {
             try {
                 int time = 0;
                 long savetimer = 0;
-                final long currentMillis = System.currentTimeMillis();
+                final long currentMillis = Chronos.currentTimeMillis();
                 final PreparedStatement statement2 = con.prepareStatement("SELECT DISTINCT time, savetimer FROM " + (custom ? "custom_merchant_buylists" : "merchant_buylists") + " WHERE time <> 0 ORDER BY time");
                 final ResultSet rset2 = statement2.executeQuery();
 
@@ -145,7 +145,7 @@ public class TradeListTable {
                     time = rset2.getInt("time");
                     savetimer = rset2.getLong("savetimer");
                     if ((savetimer - currentMillis) > 0) {
-                        ThreadPool.schedule(new RestoreCount(time), savetimer - System.currentTimeMillis());
+                        ThreadPool.schedule(new RestoreCount(time), savetimer - Chronos.currentTimeMillis());
                     } else {
                         ThreadPool.schedule(new RestoreCount(time), 0);
                     }
@@ -187,7 +187,7 @@ public class TradeListTable {
     }
 
     protected void dataTimerSave(int time) {
-        final long timerSave = System.currentTimeMillis() + (time * 3600000); // 60*60*1000
+        final long timerSave = Chronos.currentTimeMillis() + (time * 3600000); // 60*60*1000
 
         try (Connection con = DatabaseFactory.getConnection()) {
             final PreparedStatement statement = con.prepareStatement("UPDATE merchant_buylists SET savetimer =? WHERE time =?");

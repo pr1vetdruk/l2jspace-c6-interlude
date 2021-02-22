@@ -89,7 +89,7 @@ public class TaskManager {
         @Override
         public void run() {
             task.onTimeElapsed(this);
-            lastActivation = System.currentTimeMillis();
+            lastActivation = Chronos.currentTimeMillis();
 
             try (Connection con = DatabaseFactory.getConnection()) {
                 final PreparedStatement statement = con.prepareStatement(SQL_STATEMENTS[1]);
@@ -218,7 +218,7 @@ public class TaskManager {
         } else if (type == TYPE_TIME) {
             try {
                 final Date desired = DateFormat.getInstance().parse(task.getParams()[0]);
-                final long diff = desired.getTime() - System.currentTimeMillis();
+                final long diff = desired.getTime() - Chronos.currentTimeMillis();
                 if (diff >= 0) {
                     task.scheduled = ThreadPool.schedule(task, diff);
                     return true;
@@ -253,7 +253,7 @@ public class TaskManager {
                 return false;
             }
 
-            long delay = min.getTimeInMillis() - System.currentTimeMillis();
+            long delay = min.getTimeInMillis() - Chronos.currentTimeMillis();
             if (check.after(min) || (delay < 0)) {
                 delay += interval;
             }

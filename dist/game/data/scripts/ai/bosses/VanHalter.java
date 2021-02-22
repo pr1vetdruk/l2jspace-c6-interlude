@@ -1057,13 +1057,13 @@ public class VanHalter extends Quest {
         if (status != INTERVAL) {
             final long interval = Rnd.get(Config.HPH_FIXINTERVALOFHALTER, Config.HPH_FIXINTERVALOFHALTER + Config.HPH_RANDOMINTERVALOFHALTER)/* * 3600000 */;
             final StatSet info = GrandBossManager.getInstance().getStatSet(29062);
-            info.set("respawn_time", (System.currentTimeMillis() + interval));
+            info.set("respawn_time", (Chronos.currentTimeMillis() + interval));
             GrandBossManager.getInstance().setStatSet(29062, info);
             GrandBossManager.getInstance().setBossStatus(29062, INTERVAL);
         }
 
         final StatSet info = GrandBossManager.getInstance().getStatSet(29062);
-        final long temp = info.getLong("respawn_time") - System.currentTimeMillis();
+        final long temp = info.getLong("respawn_time") - Chronos.currentTimeMillis();
         _intervalTask = ThreadPool.schedule(new Interval(), temp);
     }
 

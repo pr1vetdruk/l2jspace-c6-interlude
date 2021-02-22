@@ -73,7 +73,7 @@ public class AllyDismiss extends GameClientPacket {
             return;
         }
 
-        final long currentTime = System.currentTimeMillis();
+        final long currentTime = Chronos.currentTimeMillis();
         leaderClan.setAllyPenaltyExpiryTime(currentTime + (Config.ALT_ACCEPT_CLAN_DAYS_WHEN_DISMISSED * 86400000), Clan.PENALTY_TYPE_DISMISS_CLAN); // 24*60*60*1000 = 86400000
         leaderClan.updateClanInDB();
 

@@ -31,11 +31,11 @@ public class BruteProtector {
     public static boolean canLogin(String ip) {
         if (!_clients.containsKey(ip)) {
             _clients.put(ip, new ArrayList<Integer>());
-            _clients.get(ip).add((int) (System.currentTimeMillis() / 1000));
+            _clients.get(ip).add((int) (Chronos.currentTimeMillis() / 1000));
             return true;
         }
 
-        _clients.get(ip).add((int) (System.currentTimeMillis() / 1000));
+        _clients.get(ip).add((int) (Chronos.currentTimeMillis() / 1000));
 
         /*
          * I am not quite sure because we can have a number of NATed clients with single IP if (currentAttemptTime - lastAttemptTime <= 2) // Time between last login attempt and current less or equal than 2 seconds return false;

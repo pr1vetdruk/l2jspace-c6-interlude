@@ -56,7 +56,7 @@ public class Lottery {
         _prize = Config.ALT_LOTTERY_PRIZE;
         _isSellingTickets = false;
         _isStarted = false;
-        _enddate = System.currentTimeMillis();
+        _enddate = Chronos.currentTimeMillis();
         if (Config.ALLOW_LOTTERY) {
             new startLottery().run();
         }
@@ -115,7 +115,7 @@ public class Lottery {
                     } else {
                         _prize = rset.getInt("prize");
                         _enddate = rset.getLong("enddate");
-                        if (_enddate <= (System.currentTimeMillis() + (2 * MINUTE))) {
+                        if (_enddate <= (Chronos.currentTimeMillis() + (2 * MINUTE))) {
                             new finishLottery().run();
                             rset.close();
                             statement.close();
@@ -123,12 +123,12 @@ public class Lottery {
                             return;
                         }
 
-                        if (_enddate > System.currentTimeMillis()) {
+                        if (_enddate > Chronos.currentTimeMillis()) {
                             _isStarted = true;
-                            ThreadPool.schedule(new finishLottery(), _enddate - System.currentTimeMillis());
-                            if (_enddate > (System.currentTimeMillis() + (12 * MINUTE))) {
+                            ThreadPool.schedule(new finishLottery(), _enddate - Chronos.currentTimeMillis());
+                            if (_enddate > (Chronos.currentTimeMillis() + (12 * MINUTE))) {
                                 _isSellingTickets = true;
-                                ThreadPool.schedule(new stopSellingTickets(), _enddate - System.currentTimeMillis() - (10 * MINUTE));
+                                ThreadPool.schedule(new stopSellingTickets(), _enddate - Chronos.currentTimeMillis() - (10 * MINUTE));
                             }
                             rset.close();
                             statement.close();
@@ -160,8 +160,8 @@ public class Lottery {
                 _enddate = finishtime.getTimeInMillis();
             }
 
-            ThreadPool.schedule(new stopSellingTickets(), _enddate - System.currentTimeMillis() - (10 * MINUTE));
-            ThreadPool.schedule(new finishLottery(), _enddate - System.currentTimeMillis());
+            ThreadPool.schedule(new stopSellingTickets(), _enddate - Chronos.currentTimeMillis() - (10 * MINUTE));
+            ThreadPool.schedule(new finishLottery(), _enddate - Chronos.currentTimeMillis());
 
             try (Connection con = DatabaseFactory.getConnection()) {
                 statement = con.prepareStatement(INSERT_LOTTERY);

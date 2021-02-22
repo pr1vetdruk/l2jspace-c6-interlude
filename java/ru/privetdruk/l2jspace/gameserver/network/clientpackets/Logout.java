@@ -115,7 +115,7 @@ public class Logout extends GameClientPacket {
                 player.closeNetConnection();
 
                 if (player.getOfflineStartTime() == 0) {
-                    player.setOfflineStartTime(System.currentTimeMillis());
+                    player.setOfflineStartTime(Chronos.currentTimeMillis());
                 }
                 return;
             }
@@ -124,7 +124,7 @@ public class Logout extends GameClientPacket {
             player.closeNetConnection();
 
             if (player.getOfflineStartTime() == 0) {
-                player.setOfflineStartTime(System.currentTimeMillis());
+                player.setOfflineStartTime(Chronos.currentTimeMillis());
             }
             return;
         }

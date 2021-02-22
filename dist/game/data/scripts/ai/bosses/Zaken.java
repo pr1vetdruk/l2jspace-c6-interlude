@@ -158,7 +158,7 @@ public class Zaken extends Quest {
         final Integer status = GrandBossManager.getInstance().getBossStatus(ZAKEN);
         if (status == DEAD) {
             // load the unlock date and time for zaken from DB
-            final long temp = info.getLong("respawn_time") - System.currentTimeMillis();
+            final long temp = info.getLong("respawn_time") - Chronos.currentTimeMillis();
             // if zaken is locked until a certain time, mark it so and start the unlock timer
             // the unlock time has not yet expired.
             if (temp > 0) {
@@ -694,7 +694,7 @@ public class Zaken extends Quest {
             cancelQuestTimer("1003", npc, null);
             // also save the respawn time so that the info is maintained past reboots
             final StatSet info = GrandBossManager.getInstance().getStatSet(ZAKEN);
-            info.set("respawn_time", System.currentTimeMillis() + respawnTime);
+            info.set("respawn_time", Chronos.currentTimeMillis() + respawnTime);
             GrandBossManager.getInstance().setStatSet(ZAKEN, info);
         } else if (status == ALIVE) {
             startQuestTimer("CreateOnePrivateEx", ((30 + Rnd.get(60)) * 1000), npc, null);

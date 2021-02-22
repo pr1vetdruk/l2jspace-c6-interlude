@@ -40,7 +40,7 @@ public class RandomAnimationTaskManager {
             }
             _working = true;
 
-            final long time = System.currentTimeMillis();
+            final long time = Chronos.currentTimeMillis();
             for (Entry<NpcInstance, Long> entry : PENDING_ANIMATIONS.entrySet()) {
                 if (time > entry.getValue().longValue()) {
                     final NpcInstance npc = entry.getKey();
@@ -57,7 +57,7 @@ public class RandomAnimationTaskManager {
 
     public void add(NpcInstance npc) {
         if (npc.hasRandomAnimation()) {
-            PENDING_ANIMATIONS.putIfAbsent(npc, System.currentTimeMillis() + (Rnd.get((npc.isAttackable() ? Config.MIN_MONSTER_ANIMATION : Config.MIN_NPC_ANIMATION), (npc.isAttackable() ? Config.MAX_MONSTER_ANIMATION : Config.MAX_NPC_ANIMATION)) * 1000));
+            PENDING_ANIMATIONS.putIfAbsent(npc, Chronos.currentTimeMillis() + (Rnd.get((npc.isAttackable() ? Config.MIN_MONSTER_ANIMATION : Config.MIN_NPC_ANIMATION), (npc.isAttackable() ? Config.MAX_MONSTER_ANIMATION : Config.MAX_NPC_ANIMATION)) * 1000));
         }
     }
 

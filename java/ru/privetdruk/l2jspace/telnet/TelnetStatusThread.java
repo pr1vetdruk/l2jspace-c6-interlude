@@ -102,7 +102,7 @@ public class TelnetStatusThread extends Thread {
         }
 
         statusServerSocket = new ServerSocket(_statusPort);
-        _uptime = (int) System.currentTimeMillis();
+        _uptime = (int) Chronos.currentTimeMillis();
         _loginStatus = new ArrayList<>();
     }
 

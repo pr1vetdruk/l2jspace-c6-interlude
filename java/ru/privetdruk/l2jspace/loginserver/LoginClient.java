@@ -81,7 +81,7 @@ public class LoginClient extends MMOClient<MMOConnection<LoginClient>> {
         _scrambledPair = LoginController.getInstance().getScrambledRSAKeyPair();
         _blowfishKey = LoginController.getInstance().getBlowfishKey();
         _sessionId = Rnd.get(Integer.MAX_VALUE);
-        _connectionStartTime = System.currentTimeMillis();
+        _connectionStartTime = Chronos.currentTimeMillis();
         _loginCrypt = new LoginCrypt();
         _loginCrypt.setKey(_blowfishKey);
         LoginController.getInstance().addLoginClient(this);
@@ -106,7 +106,7 @@ public class LoginClient extends MMOClient<MMOConnection<LoginClient>> {
         boolean ret = false;
         try {
             ret = _loginCrypt.decrypt(buf.array(), buf.position(), size);
-            _connectionStartTime = System.currentTimeMillis();
+            _connectionStartTime = Chronos.currentTimeMillis();
         } catch (IOException e) {
             LOGGER.warning(e.toString());
             super.getConnection().close((SendablePacket<LoginClient>) null);

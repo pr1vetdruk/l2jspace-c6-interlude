@@ -103,7 +103,7 @@ public class Core extends Quest {
         final StatSet info = GrandBossManager.getInstance().getStatSet(CORE);
         if (GrandBossManager.getInstance().getBossStatus(CORE) == DEAD) {
             // Load the unlock date and time for Core from DB.
-            final long temp = info.getLong("respawn_time") - System.currentTimeMillis();
+            final long temp = info.getLong("respawn_time") - Chronos.currentTimeMillis();
             // If Core is locked until a certain time, mark it so and start the unlock timer the unlock time has not yet expired.
             if (temp > 0) {
                 startQuestTimer("core_unlock", temp, null, null);
@@ -205,7 +205,7 @@ public class Core extends Quest {
             startQuestTimer("core_unlock", respawnTime, null, null);
             // Also save the respawn time so that the info is maintained past reboots.
             final StatSet info = GrandBossManager.getInstance().getStatSet(CORE);
-            info.set("respawn_time", System.currentTimeMillis() + respawnTime);
+            info.set("respawn_time", Chronos.currentTimeMillis() + respawnTime);
             GrandBossManager.getInstance().setStatSet(CORE, info);
             startQuestTimer("despawn_minions", 20000, null, null);
             cancelQuestTimers("spawn_minion");

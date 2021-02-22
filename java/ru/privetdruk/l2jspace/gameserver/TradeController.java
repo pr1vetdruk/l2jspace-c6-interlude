@@ -155,7 +155,7 @@ public class TradeController {
             try {
                 int time = 0;
                 long savetimer = 0;
-                final long currentMillis = System.currentTimeMillis();
+                final long currentMillis = Chronos.currentTimeMillis();
                 final PreparedStatement statement2 = con.prepareStatement("SELECT DISTINCT time, savetimer FROM merchant_buylists WHERE time <> 0 ORDER BY time");
                 final ResultSet rset2 = statement2.executeQuery();
 
@@ -287,7 +287,7 @@ public class TradeController {
                 try {
                     int time = 0;
                     long savetimer = 0;
-                    final long currentMillis = System.currentTimeMillis();
+                    final long currentMillis = Chronos.currentTimeMillis();
                     final PreparedStatement statement2 = con.prepareStatement("SELECT DISTINCT time, savetimer FROM custom_merchant_buylists WHERE time <> 0 ORDER BY time");
                     final ResultSet rset2 = statement2.executeQuery();
 
@@ -354,7 +354,7 @@ public class TradeController {
     }
 
     public void dataTimerSave(int time) {
-        final long timerSave = System.currentTimeMillis() + ((long) time * 60 * 60 * 1000);
+        final long timerSave = Chronos.currentTimeMillis() + ((long) time * 60 * 60 * 1000);
         try (Connection con = DatabaseFactory.getConnection()) {
             final PreparedStatement statement = con.prepareStatement("UPDATE merchant_buylists SET savetimer = ? WHERE time = ?");
             statement.setLong(1, timerSave);

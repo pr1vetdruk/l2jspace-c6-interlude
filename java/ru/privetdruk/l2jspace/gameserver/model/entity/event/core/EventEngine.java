@@ -203,13 +203,13 @@ public abstract class EventEngine implements EventTask {
 
     protected void waiter(int intervalMinutes) {
         long interval = TimeUnit.MINUTES.toMillis(intervalMinutes);
-        final long startWaiterTime = System.currentTimeMillis();
+        final long startWaiterTime = Chronos.currentTimeMillis();
         int seconds = (int) (interval / 1000);
 
         String eventName = generalSetting.getEventName();
         String registrationLocationName = generalSetting.getRegistrationLocationName();
 
-        while (((startWaiterTime + interval) > System.currentTimeMillis()) && eventState != ABORT) {
+        while (((startWaiterTime + interval) > Chronos.currentTimeMillis()) && eventState != ABORT) {
             seconds--; // Here because we don't want to see two time announce at the same time
 
             if (eventState == REGISTRATION || eventState == START || eventState == TELEPORTATION) {
@@ -257,11 +257,11 @@ public abstract class EventEngine implements EventTask {
                 }
             }
 
-            long startOneSecondWaiterStartTime = System.currentTimeMillis();
+            long startOneSecondWaiterStartTime = Chronos.currentTimeMillis();
 
             // TODO Какая-то печаль, нужно в будущем разобраться.
             // Only the try catch with Thread.sleep(1000) give bad countdown on high wait times
-            while ((startOneSecondWaiterStartTime + 1000) > System.currentTimeMillis()) {
+            while ((startOneSecondWaiterStartTime + 1000) > Chronos.currentTimeMillis()) {
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException ignored) {
@@ -271,7 +271,7 @@ public abstract class EventEngine implements EventTask {
     }
 
     protected int getIntervalBetweenMatches() {
-        final long actualTime = System.currentTimeMillis();
+        final long actualTime = Chronos.currentTimeMillis();
         final long totalTime = actualTime + generalSetting.getIntervalBetweenMatches();
         final long interval = totalTime - actualTime;
         final int seconds = (int) (interval / 1000);

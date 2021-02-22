@@ -54,7 +54,7 @@ public class AdminDonator implements IAdminCommandHandler {
                 if (donatorTime > 0) {
                     targetPlayer.setDonator(true);
                     targetPlayer.updateNameTitleColor();
-                    targetPlayer.getVariables().set("CustomDonatorEnd", System.currentTimeMillis() + donatorTime);
+                    targetPlayer.getVariables().set("CustomDonatorEnd", Chronos.currentTimeMillis() + donatorTime);
                     targetPlayer.sendMessage(activeChar.getName() + " has granted you donator status!");
                     activeChar.sendMessage("You have granted donator status to " + targetPlayer.getName());
                     AdminData.broadcastMessageToGMs("Warn: " + activeChar.getName() + " has set " + targetPlayer.getName() + " as donator !");

@@ -2686,9 +2686,9 @@ public abstract class Creature extends WorldObject implements ISkillsHolder {
         public void run() {
             // try
             // {
-            if (System.currentTimeMillis() > _pvpFlagLasts) {
+            if (Chronos.currentTimeMillis() > _pvpFlagLasts) {
                 stopPvPFlag();
-            } else if (System.currentTimeMillis() > (_pvpFlagLasts - 5000)) {
+            } else if (Chronos.currentTimeMillis() > (_pvpFlagLasts - 5000)) {
                 updatePvPFlag(2);
             } else {
                 updatePvPFlag(1);
@@ -7962,22 +7962,22 @@ public abstract class Creature extends WorldObject implements ISkillsHolder {
     private long _nextReducingHPByOverTime = -1;
 
     public void reduceCurrentHpByDamOverTime(double amount, Creature attacker, boolean awake, int period) {
-        if (_nextReducingHPByOverTime > System.currentTimeMillis()) {
+        if (_nextReducingHPByOverTime > Chronos.currentTimeMillis()) {
             return;
         }
 
-        _nextReducingHPByOverTime = System.currentTimeMillis() + (period * 1000);
+        _nextReducingHPByOverTime = Chronos.currentTimeMillis() + (period * 1000);
         reduceCurrentHp(amount, attacker, awake);
     }
 
     private long _nextReducingMPByOverTime = -1;
 
     public void reduceCurrentMpByDamOverTime(double amount, int period) {
-        if (_nextReducingMPByOverTime > System.currentTimeMillis()) {
+        if (_nextReducingMPByOverTime > Chronos.currentTimeMillis()) {
             return;
         }
 
-        _nextReducingMPByOverTime = System.currentTimeMillis() + (period * 1000);
+        _nextReducingMPByOverTime = Chronos.currentTimeMillis() + (period * 1000);
         reduceCurrentMp(amount);
     }
 
@@ -8320,7 +8320,7 @@ public abstract class Creature extends WorldObject implements ISkillsHolder {
      * Update attack stance.
      */
     public void updateAttackStance() {
-        attackStance = System.currentTimeMillis();
+        attackStance = Chronos.currentTimeMillis();
     }
 
     /**

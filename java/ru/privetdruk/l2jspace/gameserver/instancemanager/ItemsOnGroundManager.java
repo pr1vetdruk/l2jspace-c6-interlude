@@ -83,7 +83,7 @@ public class ItemsOnGroundManager {
                 }
 
                 final PreparedStatement statement = con.prepareStatement(str);
-                statement.setLong(1, System.currentTimeMillis());
+                statement.setLong(1, Chronos.currentTimeMillis());
                 statement.execute();
                 statement.close();
             } catch (Exception e) {

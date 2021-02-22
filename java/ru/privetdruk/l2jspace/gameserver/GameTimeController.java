@@ -58,7 +58,7 @@ public class GameTimeController {
     }
 
     private GameTimeController() {
-        gameStartTime = System.currentTimeMillis() - 3600000; // offset so that the server starts a day begin
+        gameStartTime = Chronos.currentTimeMillis() - 3600000; // offset so that the server starts a day begin
         gameTicks = 3600000 / MILLIS_IN_TICK; // offset so that the server starts a day begin
 
         timer = new TimerThread();
@@ -160,7 +160,7 @@ public class GameTimeController {
         public void run() {
             for (; ; ) {
                 final int _oldTicks = gameTicks; // save old ticks value to avoid moving objects 2x in same tick
-                long runtime = System.currentTimeMillis() - gameStartTime; // from server boot to now
+                long runtime = Chronos.currentTimeMillis() - gameStartTime; // from server boot to now
 
                 gameTicks = (int) (runtime / MILLIS_IN_TICK); // new ticks value (ticks now)
 
@@ -171,7 +171,7 @@ public class GameTimeController {
                     // (will happen very rarely but it will happen ... on garbage collection definitely)
                 }
 
-                runtime = System.currentTimeMillis() - gameStartTime - runtime;
+                runtime = Chronos.currentTimeMillis() - gameStartTime - runtime;
 
                 // calculate sleep time... time needed to next tick minus time it takes to call moveObjects()
                 final int sleepTime = (1 + MILLIS_IN_TICK) - ((int) runtime % MILLIS_IN_TICK);

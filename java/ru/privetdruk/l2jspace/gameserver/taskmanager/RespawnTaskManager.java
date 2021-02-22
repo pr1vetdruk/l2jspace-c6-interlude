@@ -39,7 +39,7 @@ public class RespawnTaskManager {
             }
             _working = true;
 
-            final long time = System.currentTimeMillis();
+            final long time = Chronos.currentTimeMillis();
             for (Entry<NpcInstance, Long> entry : PENDING_RESPAWNS.entrySet()) {
                 if (time > entry.getValue().longValue()) {
                     final NpcInstance npc = entry.getKey();

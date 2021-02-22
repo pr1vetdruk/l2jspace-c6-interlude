@@ -133,7 +133,7 @@ public class EventsGlobalTask implements Runnable {
         }
 
         final Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.setTimeInMillis(Chronos.currentTimeMillis());
 
         final int hour = calendar.get(Calendar.HOUR_OF_DAY);
         final int min = calendar.get(Calendar.MINUTE);

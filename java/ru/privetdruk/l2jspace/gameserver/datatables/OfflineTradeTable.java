@@ -159,7 +159,7 @@ public class OfflineTradeTable {
                     final Calendar cal = Calendar.getInstance();
                     cal.setTimeInMillis(time);
                     cal.add(Calendar.DAY_OF_YEAR, Config.OFFLINE_MAX_DAYS);
-                    if (cal.getTimeInMillis() <= System.currentTimeMillis()) {
+                    if (cal.getTimeInMillis() <= Chronos.currentTimeMillis()) {
                         LOGGER.info("Offline trader with id " + rs.getInt("charId") + " reached OfflineMaxDays, kicked.");
                         continue;
                     }

@@ -58,11 +58,11 @@ public class FishingChampionshipManager {
         refreshWinResult();
         recalculateMinLength();
 
-        if (_enddate <= System.currentTimeMillis()) {
-            _enddate = System.currentTimeMillis();
+        if (_enddate <= Chronos.currentTimeMillis()) {
+            _enddate = Chronos.currentTimeMillis();
             new finishChamp().run();
         } else {
-            ThreadPool.schedule(new finishChamp(), _enddate - System.currentTimeMillis());
+            ThreadPool.schedule(new finishChamp(), _enddate - Chronos.currentTimeMillis());
         }
     }
 
@@ -162,7 +162,7 @@ public class FishingChampionshipManager {
     }
 
     public long getTimeRemaining() {
-        return (_enddate - System.currentTimeMillis()) / 60000;
+        return (_enddate - Chronos.currentTimeMillis()) / 60000;
     }
 
     public String getWinnerName(int par) {
@@ -391,7 +391,7 @@ public class FishingChampionshipManager {
             shutdown();
 
             LOGGER.info("FishingChampionshipManager: new event period start.");
-            ThreadPool.schedule(new finishChamp(), _enddate - System.currentTimeMillis());
+            ThreadPool.schedule(new finishChamp(), _enddate - Chronos.currentTimeMillis());
         }
     }
 

@@ -34,7 +34,7 @@ public abstract class ManagedScript {
 
     public ManagedScript() {
         _scriptFile = getScriptPath();
-        setLastLoadTime(System.currentTimeMillis());
+        setLastLoadTime(Chronos.currentTimeMillis());
     }
 
     public abstract Path getScriptPath();

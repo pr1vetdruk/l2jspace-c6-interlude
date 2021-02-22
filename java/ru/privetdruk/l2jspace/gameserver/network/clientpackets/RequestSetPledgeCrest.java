@@ -57,7 +57,7 @@ public class RequestSetPledgeCrest extends GameClientPacket {
             return;
         }
 
-        if (clan.getDissolvingExpiryTime() > System.currentTimeMillis()) {
+        if (clan.getDissolvingExpiryTime() > Chronos.currentTimeMillis()) {
             player.sendPacket(SystemMessageId.DURING_THE_GRACE_PERIOD_FOR_DISSOLVING_A_CLAN_THE_REGISTRATION_OR_DELETION_OF_A_CLAN_S_CREST_IS_NOT_ALLOWED);
             return;
         }

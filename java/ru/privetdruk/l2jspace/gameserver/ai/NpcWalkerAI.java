@@ -86,7 +86,7 @@ public class NpcWalkerAI extends CreatureAI implements Runnable {
             return;
         }
 
-        if (_nextMoveTime < System.currentTimeMillis()) {
+        if (_nextMoveTime < Chronos.currentTimeMillis()) {
             walkToLocation();
         }
     }
@@ -139,7 +139,7 @@ public class NpcWalkerAI extends CreatureAI implements Runnable {
                 delay = DEFAULT_MOVE_DELAY;
             }
 
-            _nextMoveTime = System.currentTimeMillis() + delay;
+            _nextMoveTime = Chronos.currentTimeMillis() + delay;
             setWalkingToNextPoint(false);
         }
     }

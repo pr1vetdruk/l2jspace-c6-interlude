@@ -1078,7 +1078,7 @@ public class ItemInstance extends WorldObject {
             getPosition().getWorldRegion().addVisibleObject(this);
         }
 
-        setDropTime(System.currentTimeMillis());
+        setDropTime(Chronos.currentTimeMillis());
 
         // this can synchronize on others instancies, so it's out of synchronized, to avoid deadlocks
         // Add the ItemInstance dropped in the world as a visible object

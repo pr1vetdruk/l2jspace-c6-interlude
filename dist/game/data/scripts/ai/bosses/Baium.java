@@ -27,8 +27,10 @@ import java.util.logging.Logger;
 
 import ru.privetdruk.l2jspace.Config;
 import ru.privetdruk.l2jspace.commons.concurrent.ThreadPool;
+import ru.privetdruk.l2jspace.commons.util.Chronos;
 import ru.privetdruk.l2jspace.commons.util.Rnd;
 import ru.privetdruk.l2jspace.gameserver.datatables.SkillTable;
+import ru.privetdruk.l2jspace.gameserver.geoengine.GeoEngine;
 import ru.privetdruk.l2jspace.gameserver.instancemanager.GrandBossManager;
 import ru.privetdruk.l2jspace.gameserver.model.Effect;
 import ru.privetdruk.l2jspace.gameserver.model.Skill;
@@ -111,7 +113,7 @@ public class Baium extends Quest {
         final Integer status = GrandBossManager.getInstance().getBossStatus(LIVE_BAIUM);
         if (status == DEAD) {
             // load the unlock date and time for baium from DB
-            final long temp = (info.getLong("respawn_time") - System.currentTimeMillis());
+            final long temp = (info.getLong("respawn_time") - Chronos.currentTimeMillis());
             if (temp > 0) {
                 // the unlock time has not yet expired. Mark Baium as currently locked (dead). Setup a timer
                 // to fire at the correct time (calculate the time between now and the unlock time,
@@ -175,7 +177,7 @@ public class Baium extends Quest {
                 npc.broadcastPacket(new SocialAction(npc.getObjectId(), 1));
                 npc.broadcastPacket(new Earthquake(npc.getX(), npc.getY(), npc.getZ(), 40, 5));
                 // start monitoring baium's inactivity
-                _lastAttackVsBaiumTime = System.currentTimeMillis();
+                _lastAttackVsBaiumTime = Chronos.currentTimeMillis();
                 startQuestTimer("baium_despawn", 60000, npc, null, true);
                 if (player != null) {
                     player.reduceCurrentHp(99999999, player);
@@ -215,7 +217,7 @@ public class Baium extends Quest {
                 if (_zone == null) {
                     _zone = GrandBossManager.getInstance().getZone(113100, 14500, 10077);
                 }
-                if ((_lastAttackVsBaiumTime + (Config.BAIUM_SLEEP * 1000)) < System.currentTimeMillis()) {
+                if ((_lastAttackVsBaiumTime + (Config.BAIUM_SLEEP * 1000)) < Chronos.currentTimeMillis()) {
                     npc.deleteMe(); // despawn the live-baium
                     for (NpcInstance minion : _minions) {
                         if (minion != null) {
@@ -228,7 +230,7 @@ public class Baium extends Quest {
                     GrandBossManager.getInstance().setBossStatus(LIVE_BAIUM, ASLEEP); // mark that Baium is not awake any more
                     _zone.oustAllPlayers();
                     cancelQuestTimer("baium_despawn", npc, null);
-                } else if (((_lastAttackVsBaiumTime + 300000) < System.currentTimeMillis()) && (npc.getCurrentHp() < ((npc.getMaxHp() * 3) / 4.0))) {
+                } else if (((_lastAttackVsBaiumTime + 300000) < Chronos.currentTimeMillis()) && (npc.getCurrentHp() < ((npc.getMaxHp() * 3) / 4.0))) {
                     npc.setTarget(npc);
                     npc.doCast(SkillTable.getInstance().getSkill(4135, 1));
                     if (GrandBossManager.getInstance().getBossStatus(LIVE_BAIUM) != AWAKE) {
@@ -332,7 +334,7 @@ public class Baium extends Quest {
                 }
             }
             // update a variable with the last action against baium
-            _lastAttackVsBaiumTime = System.currentTimeMillis();
+            _lastAttackVsBaiumTime = Chronos.currentTimeMillis();
             callSkillAI(npc);
         }
         return super.onAttack(npc, attacker, damage, isPet);
@@ -350,7 +352,7 @@ public class Baium extends Quest {
         startQuestTimer("baium_unlock", respawnTime, null, null);
         // also save the respawn time so that the info is maintained past reboots
         final StatSet info = GrandBossManager.getInstance().getStatSet(LIVE_BAIUM);
-        info.set("respawn_time", System.currentTimeMillis() + respawnTime);
+        info.set("respawn_time", Chronos.currentTimeMillis() + respawnTime);
         GrandBossManager.getInstance().setStatSet(LIVE_BAIUM, info);
         for (NpcInstance minion : _minions) {
             if (minion != null) {

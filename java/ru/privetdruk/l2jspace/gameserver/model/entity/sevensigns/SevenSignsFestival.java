@@ -3583,7 +3583,7 @@ public class SevenSignsFestival implements SpawnListener {
      * Sets the next cycle start.
      */
     public void setNextCycleStart() {
-        _nextFestivalCycleStart = System.currentTimeMillis() + Config.ALT_FESTIVAL_CYCLE_LENGTH;
+        _nextFestivalCycleStart = Chronos.currentTimeMillis() + Config.ALT_FESTIVAL_CYCLE_LENGTH;
     }
 
     /**
@@ -3592,7 +3592,7 @@ public class SevenSignsFestival implements SpawnListener {
      * @param milliFromNow the new next festival start
      */
     public void setNextFestivalStart(long milliFromNow) {
-        _nextFestivalStart = System.currentTimeMillis() + milliFromNow;
+        _nextFestivalStart = Chronos.currentTimeMillis() + milliFromNow;
     }
 
     /**
@@ -3604,7 +3604,7 @@ public class SevenSignsFestival implements SpawnListener {
         if (SevenSigns.getInstance().isSealValidationPeriod()) {
             return -1;
         }
-        return Math.round((_nextFestivalCycleStart - System.currentTimeMillis()) / 60000);
+        return Math.round((_nextFestivalCycleStart - Chronos.currentTimeMillis()) / 60000);
     }
 
     /**
@@ -3616,7 +3616,7 @@ public class SevenSignsFestival implements SpawnListener {
         if (SevenSigns.getInstance().isSealValidationPeriod()) {
             return -1;
         }
-        return Math.round((_nextFestivalStart - System.currentTimeMillis()) / 60000) + 1;
+        return Math.round((_nextFestivalStart - Chronos.currentTimeMillis()) / 60000) + 1;
     }
 
     /**
@@ -3904,7 +3904,7 @@ public class SevenSignsFestival implements SpawnListener {
             }
 
             // Update the highest scores and party list.
-            currFestData.set("date", String.valueOf(System.currentTimeMillis()));
+            currFestData.set("date", String.valueOf(Chronos.currentTimeMillis()));
             currFestData.set("score", offeringScore);
             currFestData.set("members", Util.implodeString(partyMembers, ","));
 

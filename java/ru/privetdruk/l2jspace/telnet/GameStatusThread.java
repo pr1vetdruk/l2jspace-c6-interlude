@@ -712,7 +712,7 @@ public class GameStatusThread extends Thread {
     }
 
     private String getUptime(int time) {
-        int uptime = (int) System.currentTimeMillis() - time;
+        int uptime = (int) Chronos.currentTimeMillis() - time;
         uptime = uptime / 1000;
         final int h = uptime / 3600;
         final int m = (uptime - (h * 3600)) / 60;

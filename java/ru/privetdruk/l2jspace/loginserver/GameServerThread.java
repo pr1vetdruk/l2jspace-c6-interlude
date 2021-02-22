@@ -77,7 +77,7 @@ public class GameServerThread extends Thread {
     @Override
     public void run() {
         boolean checkTime = true;
-        final long time = System.currentTimeMillis();
+        final long time = Chronos.currentTimeMillis();
         _connectionIPAddress = _connection.getInetAddress().getHostAddress();
         if (isBannedGameserverIP(_connectionIPAddress)) {
             LOGGER.info("GameServerRegistration: IP Address " + _connectionIPAddress + " is on Banned IP list.");
@@ -95,7 +95,7 @@ public class GameServerThread extends Thread {
             int length = 0;
             boolean checksumOk = false;
             while (true) {
-                if (((time - System.currentTimeMillis()) > 10000) && checkTime) {
+                if (((time - Chronos.currentTimeMillis()) > 10000) && checkTime) {
                     _connection.close();
                     break;
                 }

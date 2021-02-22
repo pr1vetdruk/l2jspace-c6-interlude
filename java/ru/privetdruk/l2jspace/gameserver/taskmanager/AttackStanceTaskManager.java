@@ -53,7 +53,7 @@ public class AttackStanceTaskManager {
             }
             _working = true;
 
-            final long current = System.currentTimeMillis();
+            final long current = Chronos.currentTimeMillis();
             try {
                 final Iterator<Entry<Creature, Long>> iterator = _attackStanceTasks.entrySet().iterator();
                 Entry<Creature, Long> entry;
@@ -98,7 +98,7 @@ public class AttackStanceTaskManager {
                 }
             }
         }
-        _attackStanceTasks.put(creature, System.currentTimeMillis());
+        _attackStanceTasks.put(creature, Chronos.currentTimeMillis());
     }
 
     /**

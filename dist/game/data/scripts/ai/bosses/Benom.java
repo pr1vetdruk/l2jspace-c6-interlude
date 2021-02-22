@@ -140,9 +140,9 @@ public class Benom extends Quest {
 
         final int castleOwner = CastleManager.getInstance().getCastleById(8).getOwnerId();
         final long siegeDate = CastleManager.getInstance().getCastleById(8).getSiegeDate().getTimeInMillis();
-        long benomTeleporterSpawn = (siegeDate - System.currentTimeMillis()) - 86400000;
-        final long benomRaidRoomSpawn = (siegeDate - System.currentTimeMillis()) - 86400000;
-        long benomRaidSiegeSpawn = (siegeDate - System.currentTimeMillis());
+        long benomTeleporterSpawn = (siegeDate - Chronos.currentTimeMillis()) - 86400000;
+        final long benomRaidRoomSpawn = (siegeDate - Chronos.currentTimeMillis()) - 86400000;
+        long benomRaidSiegeSpawn = (siegeDate - Chronos.currentTimeMillis());
         if (benomTeleporterSpawn < 0) {
             benomTeleporterSpawn = 1;
         }
@@ -153,7 +153,7 @@ public class Benom extends Quest {
             if (benomTeleporterSpawn >= 1) {
                 startQuestTimer("BenomTeleSpawn", benomTeleporterSpawn, null, null);
             }
-            if ((siegeDate - System.currentTimeMillis()) > 0) {
+            if ((siegeDate - Chronos.currentTimeMillis()) > 0) {
                 startQuestTimer("BenomRaidRoomSpawn", benomRaidRoomSpawn, null, null);
             }
             startQuestTimer("BenomRaidSiegeSpawn", benomRaidSiegeSpawn, null, null);

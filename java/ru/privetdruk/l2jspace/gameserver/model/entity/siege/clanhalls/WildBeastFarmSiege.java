@@ -410,9 +410,9 @@ public class WildBeastFarmSiege extends ClanHallSiege {
             }
             final Calendar siegeStart = Calendar.getInstance();
             siegeStart.setTimeInMillis(getSiegeDate().getTimeInMillis());
-            final long registerTimeRemaining = siegeStart.getTimeInMillis() - System.currentTimeMillis();
+            final long registerTimeRemaining = siegeStart.getTimeInMillis() - Chronos.currentTimeMillis();
             siegeStart.add(Calendar.HOUR, 1);
-            final long siegeTimeRemaining = siegeStart.getTimeInMillis() - System.currentTimeMillis();
+            final long siegeTimeRemaining = siegeStart.getTimeInMillis() - Chronos.currentTimeMillis();
             long remaining = registerTimeRemaining;
             if ((registerTimeRemaining <= 0) && !_registrationPeriod) {
                 if (clanhall.getOwnerClan() != null) {
@@ -462,7 +462,7 @@ public class WildBeastFarmSiege extends ClanHallSiege {
                 cancel();
                 return;
             }
-            final long timeRemaining = _siegeEndDate.getTimeInMillis() - System.currentTimeMillis();
+            final long timeRemaining = _siegeEndDate.getTimeInMillis() - Chronos.currentTimeMillis();
             if (timeRemaining <= 0) {
                 endSiege(true);
                 cancel();

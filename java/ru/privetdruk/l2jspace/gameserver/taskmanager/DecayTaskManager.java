@@ -39,11 +39,11 @@ public class DecayTaskManager {
     }
 
     public void addDecayTask(Creature actor) {
-        _decayTasks.put(actor, System.currentTimeMillis());
+        _decayTasks.put(actor, Chronos.currentTimeMillis());
     }
 
     public void addDecayTask(Creature actor, int interval) {
-        _decayTasks.put(actor, System.currentTimeMillis() + interval);
+        _decayTasks.put(actor, Chronos.currentTimeMillis() + interval);
     }
 
     public void cancelDecayTask(Creature actor) {
@@ -59,7 +59,7 @@ public class DecayTaskManager {
 
         @Override
         public void run() {
-            final Long current = System.currentTimeMillis();
+            final Long current = Chronos.currentTimeMillis();
             int delay;
             try {
                 if (_decayTasks != null) {
@@ -89,7 +89,7 @@ public class DecayTaskManager {
         ret += "Tasks count: " + _decayTasks.size() + "\r\n";
         ret += "Tasks dump:\r\n";
 
-        final Long current = System.currentTimeMillis();
+        final Long current = Chronos.currentTimeMillis();
         for (Creature actor : _decayTasks.keySet()) {
             ret += "Class/Name: " + actor.getClass().getSimpleName() + "/" + actor.getName() + " decay timer: " + (current - _decayTasks.get(actor)) + "\r\n";
         }

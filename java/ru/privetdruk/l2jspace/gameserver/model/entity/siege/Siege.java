@@ -275,11 +275,11 @@ public class Siege {
                 player.sendPacket(sound);
             }
 
-            LOGGER.info("[SIEGE] The siege of " + getCastle().getName() + " has finished! " + fmt.format(new Date(System.currentTimeMillis())));
+            LOGGER.info("[SIEGE] The siege of " + getCastle().getName() + " has finished! " + fmt.format(new Date(Chronos.currentTimeMillis())));
             if (getCastle().getOwnerId() <= 0) {
                 announceToPlayer("The siege of " + getCastle().getName() + " has ended in a draw.", false);
 
-                LOGGER.info("[SIEGE] The siege of " + getCastle().getName() + " has ended in a draw. " + fmt.format(new Date(System.currentTimeMillis())));
+                LOGGER.info("[SIEGE] The siege of " + getCastle().getName() + " has ended in a draw. " + fmt.format(new Date(Chronos.currentTimeMillis())));
             }
 
             // Removes all flags. Note: Remove flag before teleporting players
@@ -531,7 +531,7 @@ public class Siege {
                 player.sendPacket(sound);
             }
 
-            LOGGER.info("[SIEGE] The siege of " + getCastle().getName() + " has started! " + fmt.format(new Date(System.currentTimeMillis())));
+            LOGGER.info("[SIEGE] The siege of " + getCastle().getName() + " has started! " + fmt.format(new Date(Chronos.currentTimeMillis())));
         }
     }
 

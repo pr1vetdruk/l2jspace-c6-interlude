@@ -60,7 +60,7 @@ public class Orfen extends Quest {
 
         switch (status) {
             case DEAD: {
-                final long temp = info.getLong("respawn_time") - System.currentTimeMillis();
+                final long temp = info.getLong("respawn_time") - Chronos.currentTimeMillis();
                 if (temp > 0) {
                     startQuestTimer("ORFEN_SPAWN", temp, null, null);
                 } else {
@@ -204,7 +204,7 @@ public class Orfen extends Quest {
             startQuestTimer("ORFEN_SPAWN", respawnTime, null, null);
             // also save the respawn time so that the info is maintained past reboots
             final StatSet info = GrandBossManager.getInstance().getStatSet(ORFEN);
-            info.set("respawn_time", System.currentTimeMillis() + respawnTime);
+            info.set("respawn_time", Chronos.currentTimeMillis() + respawnTime);
             GrandBossManager.getInstance().setStatSet(ORFEN, info);
         }
         return super.onKill(npc, killer, isPet);

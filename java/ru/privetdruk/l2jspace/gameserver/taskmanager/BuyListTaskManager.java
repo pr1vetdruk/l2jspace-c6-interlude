@@ -37,7 +37,7 @@ public class BuyListTaskManager {
             }
             _workingTimes = true;
 
-            final long currentTime = System.currentTimeMillis();
+            final long currentTime = Chronos.currentTimeMillis();
             for (Map.Entry<Integer, Long> entry : REFRESH_TIME.entrySet()) {
                 if (currentTime > entry.getValue()) {
                     final Integer time = entry.getKey();
@@ -78,7 +78,7 @@ public class BuyListTaskManager {
             synchronized (PENDING_UPDATES) {
                 PENDING_UPDATES.add(time);
             }
-            REFRESH_TIME.put(time, System.currentTimeMillis() + (time * 60 * 60 * 1000L));
+            REFRESH_TIME.put(time, Chronos.currentTimeMillis() + (time * 60 * 60 * 1000L));
         } else {
             REFRESH_TIME.put(time, refreshTime);
         }

@@ -404,7 +404,7 @@ public class Attackable extends NpcInstance {
                         _firstCommandChannelAttacked = attacker.getParty().getCommandChannel();
                         if (_firstCommandChannelAttacked != null) {
                             _commandChannelTimer = new CommandChannelTimer(this);
-                            _commandChannelLastAttack = System.currentTimeMillis();
+                            _commandChannelLastAttack = Chronos.currentTimeMillis();
                             ThreadPool.schedule(_commandChannelTimer, 10000); // check for last attack
                             _firstCommandChannelAttacked.broadcastToChannelMembers(new CreatureSay(0, ChatType.PARTYROOM_ALL, "", "You have looting rights!")); // TODO: retail msg
                         }
@@ -412,7 +412,7 @@ public class Attackable extends NpcInstance {
                 }
             } else if (attacker.getParty().getCommandChannel().equals(_firstCommandChannelAttacked)) // is in same channel
             {
-                _commandChannelLastAttack = System.currentTimeMillis(); // update last attack time
+                _commandChannelLastAttack = Chronos.currentTimeMillis(); // update last attack time
             }
         }
 
@@ -2589,7 +2589,7 @@ public class Attackable extends NpcInstance {
 
         @Override
         public void run() {
-            if ((System.currentTimeMillis() - _monster.getCommandChannelLastAttack()) > 900000) {
+            if ((Chronos.currentTimeMillis() - _monster.getCommandChannelLastAttack()) > 900000) {
                 _monster.setCommandChannelTimer(null);
                 _monster.setFirstCommandChannelAttacked(null);
                 _monster.setCommandChannelLastAttack(0);

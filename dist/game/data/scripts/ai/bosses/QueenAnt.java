@@ -92,7 +92,7 @@ public class QueenAnt extends Quest {
 
         switch (status) {
             case DEAD: {
-                final long temp = info.getLong("respawn_time") - System.currentTimeMillis();
+                final long temp = info.getLong("respawn_time") - Chronos.currentTimeMillis();
                 if (temp > 0) {
                     startQuestTimer("QUEEN_SPAWN", temp, null, null);
                 } else {
@@ -318,7 +318,7 @@ public class QueenAnt extends Quest {
             // cancelQuestTimer("CHECK_QA_ZONE", npc, null);
             // also save the respawn time so that the info is maintained past reboots
             final StatSet info = GrandBossManager.getInstance().getStatSet(QUEEN);
-            info.set("respawn_time", System.currentTimeMillis() + respawnTime);
+            info.set("respawn_time", Chronos.currentTimeMillis() + respawnTime);
             GrandBossManager.getInstance().setStatSet(QUEEN, info);
             startQuestTimer("DESPAWN_MINIONS", 10000, null, null);
         } else if ((status == LIVE) && ((npcId == ROYAL) || (npcId == NURSE))) {

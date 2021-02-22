@@ -313,7 +313,7 @@ public class Frintezza extends Quest {
         final StatSet info = GrandBossManager.getInstance().getStatSet(FRINTEZZA);
         final Integer status = GrandBossManager.getInstance().getBossStatus(FRINTEZZA);
         if (status == DEAD) {
-            final long temp = (info.getLong("respawn_time") - System.currentTimeMillis());
+            final long temp = (info.getLong("respawn_time") - Chronos.currentTimeMillis());
             if (temp > 0) {
                 startQuestTimer("frintezza_unlock", temp, null, null);
             } else {
@@ -1072,7 +1072,7 @@ public class Frintezza extends Quest {
             startQuestTimer("room2_del", 1000, npc, null);
             GrandBossManager.getInstance().setBossStatus(FRINTEZZA, DORMANT);
         } else if (event.equals("frintezza_despawn")) {
-            temp = (System.currentTimeMillis() - _lastAction);
+            temp = (Chronos.currentTimeMillis() - _lastAction);
             if (temp > 900000) {
                 _zone.oustAllPlayers();
                 cancelQuestTimers("waiting");
@@ -1160,7 +1160,7 @@ public class Frintezza extends Quest {
                     startQuestTimer("room1_spawn", 5000, npc, null);
                     startQuestTimer("room_final", 2100000, npc, null);
                     startQuestTimer("frintezza_despawn", 60000, npc, null);
-                    _lastAction = System.currentTimeMillis();
+                    _lastAction = Chronos.currentTimeMillis();
                     if (Config.BYPASS_FRINTEZZA_PARTIES_CHECK) {
                         if (player.getParty() != null) {
                             final CommandChannel cc = player.getParty().getCommandChannel();
@@ -1277,7 +1277,7 @@ public class Frintezza extends Quest {
 
     @Override
     public String onAttack(NpcInstance npc, PlayerInstance attacker, int damage, boolean isPet) {
-        _lastAction = System.currentTimeMillis();
+        _lastAction = Chronos.currentTimeMillis();
         if (npc.getNpcId() == FRINTEZZA) {
             npc.setCurrentHpMp(npc.getMaxHp(), 0);
             return null;
@@ -1339,7 +1339,7 @@ public class Frintezza extends Quest {
             startQuestTimer("frintezza_unlock", respawnTime, npc, null);
             // also save the respawn time so that the info is maintained past reboots
             final StatSet info = GrandBossManager.getInstance().getStatSet(FRINTEZZA);
-            info.set("respawn_time", System.currentTimeMillis() + respawnTime);
+            info.set("respawn_time", Chronos.currentTimeMillis() + respawnTime);
             GrandBossManager.getInstance().setStatSet(FRINTEZZA, info);
         } else if (npc.getNpcId() == 18328) {
             _killHallAlarmDevice++;

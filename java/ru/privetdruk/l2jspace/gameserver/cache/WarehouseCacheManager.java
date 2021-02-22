@@ -38,7 +38,7 @@ public class WarehouseCacheManager {
     }
 
     public void addCacheTask(PlayerInstance pc) {
-        _cachedWh.put(pc, System.currentTimeMillis());
+        _cachedWh.put(pc, Chronos.currentTimeMillis());
     }
 
     public void remCacheTask(PlayerInstance pc) {
@@ -48,7 +48,7 @@ public class WarehouseCacheManager {
     public class CacheScheduler implements Runnable {
         @Override
         public void run() {
-            final long cTime = System.currentTimeMillis();
+            final long cTime = Chronos.currentTimeMillis();
             for (Entry<PlayerInstance, Long> entry : _cachedWh.entrySet()) {
                 if ((cTime - entry.getValue().longValue()) > _cacheTime) {
                     final PlayerInstance player = entry.getKey();

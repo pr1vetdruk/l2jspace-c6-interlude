@@ -298,7 +298,7 @@ public class Spawn {
             _scheduledCount++;
 
             // Schedule the next respawn.
-            RespawnTaskManager.getInstance().add(oldNpc, System.currentTimeMillis() + _respawnDelay);
+            RespawnTaskManager.getInstance().add(oldNpc, Chronos.currentTimeMillis() + _respawnDelay);
         }
     }
 

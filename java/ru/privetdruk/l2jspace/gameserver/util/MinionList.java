@@ -84,7 +84,7 @@ public class MinionList {
     }
 
     public void moveMinionToRespawnList(MinionInstance minion) {
-        final Long current = System.currentTimeMillis();
+        final Long current = Chronos.currentTimeMillis();
         _spawnedMinions.remove(minion);
         if (_respawnTasks.get(current) == null) {
             _respawnTasks.put(current, minion.getNpcId());
@@ -121,7 +121,7 @@ public class MinionList {
             return;
         }
 
-        final Long current = System.currentTimeMillis();
+        final Long current = Chronos.currentTimeMillis();
         if (_respawnTasks != null) {
             for (Entry<Long, Integer> entry : _respawnTasks.entrySet()) {
                 final long deathTime = entry.getKey();

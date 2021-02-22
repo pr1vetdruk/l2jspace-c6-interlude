@@ -70,7 +70,7 @@ public class PetitionManager {
     }
 
     private class Petition {
-        private final long _submitTime = System.currentTimeMillis();
+        private final long _submitTime = Chronos.currentTimeMillis();
 
         private final int _id;
         private final PetitionType _type;

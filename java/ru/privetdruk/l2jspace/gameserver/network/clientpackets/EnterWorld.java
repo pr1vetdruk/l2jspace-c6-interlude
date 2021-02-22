@@ -329,7 +329,7 @@ public class EnterWorld extends GameClientPacket {
             DimensionalRiftManager.getInstance().teleportToWaitingRoom(player);
         }
 
-        if (player.getClanJoinExpiryTime() > System.currentTimeMillis()) {
+        if (player.getClanJoinExpiryTime() > Chronos.currentTimeMillis()) {
             player.sendPacket(SystemMessageId.YOU_HAVE_RECENTLY_BEEN_DISMISSED_FROM_A_CLAN_YOU_ARE_NOT_ALLOWED_TO_JOIN_ANOTHER_CLAN_FOR_24_HOURS);
         }
 
@@ -564,7 +564,7 @@ public class EnterWorld extends GameClientPacket {
         }
 
         if (Config.SERVER_TIME_ON_START) {
-            player.sendMessage("SVR time is " + fmt.format(new Date(System.currentTimeMillis())));
+            player.sendMessage("SVR time is " + fmt.format(new Date(Chronos.currentTimeMillis())));
         }
     }
 

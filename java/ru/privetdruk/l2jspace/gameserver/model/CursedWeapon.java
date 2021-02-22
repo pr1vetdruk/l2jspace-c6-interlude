@@ -179,7 +179,7 @@ public class CursedWeapon {
 
         @Override
         public void run() {
-            if (System.currentTimeMillis() >= _endTime) {
+            if (Chronos.currentTimeMillis() >= _endTime) {
                 endOfLife();
             }
         }
@@ -275,7 +275,7 @@ public class CursedWeapon {
 
     public void reActivate() {
         _isActivated = true;
-        if ((_endTime - System.currentTimeMillis()) <= 0) {
+        if ((_endTime - Chronos.currentTimeMillis()) <= 0) {
             endOfLife();
         } else {
             _removeTask = ThreadPool.scheduleAtFixedRate(new RemoveTask(), _durationLost * 12000, _durationLost * 12000);
@@ -288,7 +288,7 @@ public class CursedWeapon {
             dropIt(attackable, player);
 
             // Start the Life Task
-            _endTime = System.currentTimeMillis() + (_duration * 60000);
+            _endTime = Chronos.currentTimeMillis() + (_duration * 60000);
             _removeTask = ThreadPool.scheduleAtFixedRate(new RemoveTask(), _durationLost * 12000, _durationLost * 12000);
             return true;
         }
@@ -535,7 +535,7 @@ public class CursedWeapon {
     }
 
     public long getTimeLeft() {
-        return _endTime - System.currentTimeMillis();
+        return _endTime - Chronos.currentTimeMillis();
     }
 
     public int getDuration() {

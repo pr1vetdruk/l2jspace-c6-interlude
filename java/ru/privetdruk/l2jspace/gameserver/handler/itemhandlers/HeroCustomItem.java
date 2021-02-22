@@ -57,7 +57,7 @@ public class HeroCustomItem implements IItemHandler {
 
                 final long heroTime = Config.HERO_CUSTOM_DAY * 24 * 60 * 60 * 1000;
                 player.getVariables().set("CustomHero", true);
-                player.getVariables().set("CustomHeroEnd", heroTime == 0 ? 0 : System.currentTimeMillis() + heroTime);
+                player.getVariables().set("CustomHeroEnd", heroTime == 0 ? 0 : Chronos.currentTimeMillis() + heroTime);
             }
         }
     }
