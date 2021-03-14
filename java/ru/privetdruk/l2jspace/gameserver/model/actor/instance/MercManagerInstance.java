@@ -119,9 +119,9 @@ public class MercManagerInstance extends FolkInstance {
 
         final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%npcId%", String.valueOf(getNpcId()));
-        html.replace("%npcname%", getName());
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%npcId%", String.valueOf(getNpcId()));
+        html.replaceAll("%npcname%", getName());
         player.sendPacket(html);
     }
 

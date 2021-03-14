@@ -264,13 +264,13 @@ public class FishingChampionshipManager {
             str += "<td width=110 align=center>" + getCurrentName(x) + "</td>";
             str += "<td width=80 align=center>" + getCurrentFishLength(x) + "</td></tr>";
         }
-        html.replace("%TABLE%", str);
-        html.replace("%prizeItem%", ItemTable.getInstance().getTemplate(Config.ALT_FISH_CHAMPIONSHIP_REWARD_ITEM).getName());
-        html.replace("%prizeFirst%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_1);
-        html.replace("%prizeTwo%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_2);
-        html.replace("%prizeThree%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_3);
-        html.replace("%prizeFour%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_4);
-        html.replace("%prizeFive%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_5);
+        html.replaceAll("%TABLE%", str);
+        html.replaceAll("%prizeItem%", ItemTable.getInstance().getTemplate(Config.ALT_FISH_CHAMPIONSHIP_REWARD_ITEM).getName());
+        html.replaceAll("%prizeFirst%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_1);
+        html.replaceAll("%prizeTwo%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_2);
+        html.replaceAll("%prizeThree%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_3);
+        html.replaceAll("%prizeFour%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_4);
+        html.replaceAll("%prizeFive%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_5);
         pl.sendPacket(html);
     }
 
@@ -284,15 +284,15 @@ public class FishingChampionshipManager {
             str += "<td width=110 align=center>" + getWinnerName(x) + "</td>";
             str += "<td width=80 align=center>" + getFishLength(x) + "</td></tr>";
         }
-        html.replace("%TABLE%", str);
-        html.replace("%prizeItem%", ItemTable.getInstance().getTemplate(Config.ALT_FISH_CHAMPIONSHIP_REWARD_ITEM).getName());
-        html.replace("%prizeFirst%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_1);
-        html.replace("%prizeTwo%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_2);
-        html.replace("%prizeThree%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_3);
-        html.replace("%prizeFour%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_4);
-        html.replace("%prizeFive%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_5);
-        html.replace("%refresh%", getTimeRemaining());
-        html.replace("%objectId%", objectId);
+        html.replaceAll("%TABLE%", str);
+        html.replaceAll("%prizeItem%", ItemTable.getInstance().getTemplate(Config.ALT_FISH_CHAMPIONSHIP_REWARD_ITEM).getName());
+        html.replaceAll("%prizeFirst%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_1);
+        html.replaceAll("%prizeTwo%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_2);
+        html.replaceAll("%prizeThree%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_3);
+        html.replaceAll("%prizeFour%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_4);
+        html.replaceAll("%prizeFive%", Config.ALT_FISH_CHAMPIONSHIP_REWARD_5);
+        html.replaceAll("%refresh%", getTimeRemaining());
+        html.replaceAll("%objectId%", objectId);
         pl.sendPacket(html);
     }
 

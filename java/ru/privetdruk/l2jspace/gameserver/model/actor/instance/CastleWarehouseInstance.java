@@ -165,8 +165,8 @@ public class CastleWarehouseInstance extends FolkInstance {
 
         final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%npcname%", getName());
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%npcname%", getName());
         player.sendPacket(html);
     }
 

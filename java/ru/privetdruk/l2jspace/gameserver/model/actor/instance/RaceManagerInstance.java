@@ -75,13 +75,13 @@ public class RaceManagerInstance extends FolkInstance {
                 for (int i = 0; i < 8; i++) {
                     int n = i + 1;
                     search = "Mob" + n;
-                    html.replace(search, MonsterRace.getInstance().getMonsters()[i].getTemplate().getName());
+                    html.replaceAll(search, MonsterRace.getInstance().getMonsters()[i].getTemplate().getName());
                 }
                 search = "No1";
                 if (val == 0) {
-                    html.replace(search, "");
+                    html.replaceAll(search, "");
                 } else {
-                    html.replace(search, val);
+                    html.replaceAll(search, val);
                     player.setRace(0, val);
                 }
             } else if (val < 20) {
@@ -90,15 +90,15 @@ public class RaceManagerInstance extends FolkInstance {
                 }
 
                 html.setFile(getHtmlPath(npcId, 3));
-                html.replace("0place", player.getRace(0));
+                html.replaceAll("0place", player.getRace(0));
                 search = "Mob1";
                 replace = MonsterRace.getInstance().getMonsters()[player.getRace(0) - 1].getTemplate().getName();
-                html.replace(search, replace);
+                html.replaceAll(search, replace);
                 search = "0adena";
                 if (val == 10) {
-                    html.replace(search, "");
+                    html.replaceAll(search, "");
                 } else {
-                    html.replace(search, TICKET_PRICES[val - 11]);
+                    html.replaceAll(search, TICKET_PRICES[val - 11]);
                     player.setRace(1, val - 10);
                 }
             } else if (val == 20) {
@@ -107,19 +107,19 @@ public class RaceManagerInstance extends FolkInstance {
                 }
 
                 html.setFile(getHtmlPath(npcId, 4));
-                html.replace("0place", player.getRace(0));
+                html.replaceAll("0place", player.getRace(0));
                 search = "Mob1";
                 replace = MonsterRace.getInstance().getMonsters()[player.getRace(0) - 1].getTemplate().getName();
-                html.replace(search, replace);
+                html.replaceAll(search, replace);
                 search = "0adena";
                 int price = TICKET_PRICES[player.getRace(1) - 1];
-                html.replace(search, price);
+                html.replaceAll(search, price);
                 search = "0tax";
                 int tax = 0;
-                html.replace(search, tax);
+                html.replaceAll(search, tax);
                 search = "0total";
                 int total = price + tax;
-                html.replace(search, total);
+                html.replaceAll(search, total);
             } else {
                 if ((player.getRace(0) == 0) || (player.getRace(1) == 0)) {
                     return;
@@ -146,8 +146,8 @@ public class RaceManagerInstance extends FolkInstance {
                 super.onBypassFeedback(player, "Chat 0");
                 return;
             }
-            html.replace("1race", MonsterRace.getInstance().getRaceNumber());
-            html.replace("%objectId%", getObjectId());
+            html.replaceAll("1race", MonsterRace.getInstance().getRaceNumber());
+            html.replaceAll("%objectId%", getObjectId());
             player.sendPacket(html);
             player.sendPacket(ActionFailed.STATIC_PACKET);
         } else if (command.equals("ShowOdds")) {
@@ -161,14 +161,14 @@ public class RaceManagerInstance extends FolkInstance {
             html.setFile(getHtmlPath(getTemplate().getNpcId(), 5));
             for (int i = 0; i < 8; i++) {
                 final int n = i + 1;
-                html.replace("Mob" + n, MonsterRace.getInstance().getMonsters()[i].getTemplate().getName());
+                html.replaceAll("Mob" + n, MonsterRace.getInstance().getMonsters()[i].getTemplate().getName());
 
                 // Odd
                 final double odd = MonsterRace.getInstance().getOdds().get(i);
-                html.replace("Odd" + n, (odd > 0D) ? String.format(Locale.ENGLISH, "%.1f", odd) : "&$804;");
+                html.replaceAll("Odd" + n, (odd > 0D) ? String.format(Locale.ENGLISH, "%.1f", odd) : "&$804;");
             }
-            html.replace("1race", MonsterRace.getInstance().getRaceNumber());
-            html.replace("%objectId%", getObjectId());
+            html.replaceAll("1race", MonsterRace.getInstance().getRaceNumber());
+            html.replaceAll("%objectId%", getObjectId());
             player.sendPacket(html);
             player.sendPacket(ActionFailed.STATIC_PACKET);
         } else if (command.equals("ShowInfo")) {
@@ -181,9 +181,9 @@ public class RaceManagerInstance extends FolkInstance {
             for (int i = 0; i < 8; i++) {
                 int n = i + 1;
                 String search = "Mob" + n;
-                html.replace(search, MonsterRace.getInstance().getMonsters()[i].getTemplate().getName());
+                html.replaceAll(search, MonsterRace.getInstance().getMonsters()[i].getTemplate().getName());
             }
-            html.replace("%objectId%", getObjectId());
+            html.replaceAll("%objectId%", getObjectId());
             player.sendPacket(html);
             player.sendPacket(ActionFailed.STATIC_PACKET);
         } else if (command.equals("ShowTickets")) {
@@ -207,8 +207,8 @@ public class RaceManagerInstance extends FolkInstance {
 
             final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             html.setFile(getHtmlPath(getTemplate().getNpcId(), 7));
-            html.replace("%tickets%", sb.toString());
-            html.replace("%objectId%", getObjectId());
+            html.replaceAll("%tickets%", sb.toString());
+            html.replaceAll("%objectId%", getObjectId());
             player.sendPacket(html);
             player.sendPacket(ActionFailed.STATIC_PACKET);
         } else if (command.startsWith("ShowTicket")) {
@@ -239,13 +239,13 @@ public class RaceManagerInstance extends FolkInstance {
 
             final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             html.setFile(getHtmlPath(getTemplate().getNpcId(), 8));
-            html.replace("%raceId%", raceId);
-            html.replace("%lane%", lane);
-            html.replace("%bet%", bet);
-            html.replace("%firstLane%", info.getFirst());
-            html.replace("%odd%", (lane == info.getFirst()) ? String.format(Locale.ENGLISH, "%.2f", info.getOddRate()) : "0.01");
-            html.replace("%objectId%", getObjectId());
-            html.replace("%ticketObjectId%", val);
+            html.replaceAll("%raceId%", raceId);
+            html.replaceAll("%lane%", lane);
+            html.replaceAll("%bet%", bet);
+            html.replaceAll("%firstLane%", info.getFirst());
+            html.replaceAll("%odd%", (lane == info.getFirst()) ? String.format(Locale.ENGLISH, "%.2f", info.getOddRate()) : "0.01");
+            html.replaceAll("%objectId%", getObjectId());
+            html.replaceAll("%ticketObjectId%", val);
             player.sendPacket(html);
             player.sendPacket(ActionFailed.STATIC_PACKET);
         } else if (command.startsWith("CalculateWin")) {
@@ -299,8 +299,8 @@ public class RaceManagerInstance extends FolkInstance {
 
             final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             html.setFile(getHtmlPath(getTemplate().getNpcId(), 9));
-            html.replace("%infos%", sb.toString());
-            html.replace("%objectId%", getObjectId());
+            html.replaceAll("%infos%", sb.toString());
+            html.replaceAll("%objectId%", getObjectId());
             player.sendPacket(html);
             player.sendPacket(ActionFailed.STATIC_PACKET);
         } else {

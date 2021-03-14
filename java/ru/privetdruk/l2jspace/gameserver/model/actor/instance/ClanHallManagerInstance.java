@@ -150,7 +150,7 @@ public class ClanHallManagerInstance extends FolkInstance {
                         html.setFile("data/html/clanHallManager/chamberlain-nac.htm");
                     } else {
                         html.setFile("data/html/clanHallManager/support" + getClanHall().getFunction(ClanHall.FUNC_SUPPORT).getLvl() + ".htm");
-                        html.replace("%mp%", String.valueOf(getCurrentMp()));
+                        html.replaceAll("%mp%", String.valueOf(getCurrentMp()));
                     }
                     sendHtmlMessage(player, html);
                 } else if (val.equalsIgnoreCase("back")) {
@@ -159,19 +159,19 @@ public class ClanHallManagerInstance extends FolkInstance {
                     final NpcHtmlMessage html = new NpcHtmlMessage(1);
                     html.setFile("data/html/clanHallManager/functions.htm");
                     if (getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP) != null) {
-                        html.replace("%xp_regen%", getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP).getLvl() + "%");
+                        html.replaceAll("%xp_regen%", getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP).getLvl() + "%");
                     } else {
-                        html.replace("%xp_regen%", "0");
+                        html.replaceAll("%xp_regen%", "0");
                     }
                     if (getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP) != null) {
-                        html.replace("%hp_regen%", getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP).getLvl() + "%");
+                        html.replaceAll("%hp_regen%", getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP).getLvl() + "%");
                     } else {
-                        html.replace("%hp_regen%", "0");
+                        html.replaceAll("%hp_regen%", "0");
                     }
                     if (getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP) != null) {
-                        html.replace("%mp_regen%", getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP).getLvl() + "%");
+                        html.replaceAll("%mp_regen%", getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP).getLvl() + "%");
                     } else {
-                        html.replace("%mp_regen", "0");
+                        html.replaceAll("%mp_regen", "0");
                     }
                     sendHtmlMessage(player, html);
                 }
@@ -340,37 +340,37 @@ public class ClanHallManagerInstance extends FolkInstance {
                         final NpcHtmlMessage html = new NpcHtmlMessage(1);
                         html.setFile("data/html/clanHallManager/edit_recovery" + getClanHall().getGrade() + ".htm");
                         if (getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP) != null) {
-                            html.replace("%hp%", getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP).getLvl() + "%");
-                            html.replace("%hpPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP).getLease()));
-                            html.replace("%hpDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP).getEndTime()));
-                            html.replace("%hpRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP).getRate() / 86400000));
+                            html.replaceAll("%hp%", getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP).getLvl() + "%");
+                            html.replaceAll("%hpPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP).getLease()));
+                            html.replaceAll("%hpDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP).getEndTime()));
+                            html.replaceAll("%hpRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP).getRate() / 86400000));
                         } else {
-                            html.replace("%hp%", "0");
-                            html.replace("%hpPrice%", "0");
-                            html.replace("%hpDate%", "0");
-                            html.replace("%hpRate%", String.valueOf(Config.CH_HPREG_FEE_RATIO / 86400000));
+                            html.replaceAll("%hp%", "0");
+                            html.replaceAll("%hpPrice%", "0");
+                            html.replaceAll("%hpDate%", "0");
+                            html.replaceAll("%hpRate%", String.valueOf(Config.CH_HPREG_FEE_RATIO / 86400000));
                         }
                         if (getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP) != null) {
-                            html.replace("%exp%", getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP).getLvl() + "%");
-                            html.replace("%expPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP).getLease()));
-                            html.replace("%expDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP).getEndTime()));
-                            html.replace("%expRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP).getRate() / 86400000));
+                            html.replaceAll("%exp%", getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP).getLvl() + "%");
+                            html.replaceAll("%expPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP).getLease()));
+                            html.replaceAll("%expDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP).getEndTime()));
+                            html.replaceAll("%expRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP).getRate() / 86400000));
                         } else {
-                            html.replace("%exp%", "0");
-                            html.replace("%expPrice%", "0");
-                            html.replace("%expDate%", "0");
-                            html.replace("%expRate%", String.valueOf(Config.CH_EXPREG_FEE_RATIO / 86400000));
+                            html.replaceAll("%exp%", "0");
+                            html.replaceAll("%expPrice%", "0");
+                            html.replaceAll("%expDate%", "0");
+                            html.replaceAll("%expRate%", String.valueOf(Config.CH_EXPREG_FEE_RATIO / 86400000));
                         }
                         if (getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP) != null) {
-                            html.replace("%mp%", getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP).getLvl() + "%");
-                            html.replace("%mpPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP).getLease()));
-                            html.replace("%mpDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP).getEndTime()));
-                            html.replace("%mpRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP).getRate() / 86400000));
+                            html.replaceAll("%mp%", getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP).getLvl() + "%");
+                            html.replaceAll("%mpPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP).getLease()));
+                            html.replaceAll("%mpDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP).getEndTime()));
+                            html.replaceAll("%mpRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP).getRate() / 86400000));
                         } else {
-                            html.replace("%mp%", "0");
-                            html.replace("%mpPrice%", "0");
-                            html.replace("%mpDate%", "0");
-                            html.replace("%mpRate%", String.valueOf(Config.CH_MPREG_FEE_RATIO / 86400000));
+                            html.replaceAll("%mp%", "0");
+                            html.replaceAll("%mpPrice%", "0");
+                            html.replaceAll("%mpDate%", "0");
+                            html.replaceAll("%mpRate%", String.valueOf(Config.CH_MPREG_FEE_RATIO / 86400000));
                         }
                         sendHtmlMessage(player, html);
                     } else if (val.equalsIgnoreCase("other")) {
@@ -492,37 +492,37 @@ public class ClanHallManagerInstance extends FolkInstance {
                         final NpcHtmlMessage html = new NpcHtmlMessage(1);
                         html.setFile("data/html/clanHallManager/edit_other" + getClanHall().getGrade() + ".htm");
                         if (getClanHall().getFunction(ClanHall.FUNC_TELEPORT) != null) {
-                            html.replace("%tele%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_TELEPORT).getLvl()));
-                            html.replace("%telePrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_TELEPORT).getLease()));
-                            html.replace("%teleDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_TELEPORT).getEndTime()));
-                            html.replace("%teleRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_TELEPORT).getRate() / 86400000));
+                            html.replaceAll("%tele%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_TELEPORT).getLvl()));
+                            html.replaceAll("%telePrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_TELEPORT).getLease()));
+                            html.replaceAll("%teleDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_TELEPORT).getEndTime()));
+                            html.replaceAll("%teleRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_TELEPORT).getRate() / 86400000));
                         } else {
-                            html.replace("%tele%", "0");
-                            html.replace("%telePrice%", "0");
-                            html.replace("%teleDate%", "0");
-                            html.replace("%teleRate%", String.valueOf(Config.CH_TELE_FEE_RATIO / 86400000));
+                            html.replaceAll("%tele%", "0");
+                            html.replaceAll("%telePrice%", "0");
+                            html.replaceAll("%teleDate%", "0");
+                            html.replaceAll("%teleRate%", String.valueOf(Config.CH_TELE_FEE_RATIO / 86400000));
                         }
                         if (getClanHall().getFunction(ClanHall.FUNC_SUPPORT) != null) {
-                            html.replace("%support%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_SUPPORT).getLvl()));
-                            html.replace("%supportPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_SUPPORT).getLease()));
-                            html.replace("%supportDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_SUPPORT).getEndTime()));
-                            html.replace("%supportRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_SUPPORT).getRate() / 86400000));
+                            html.replaceAll("%support%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_SUPPORT).getLvl()));
+                            html.replaceAll("%supportPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_SUPPORT).getLease()));
+                            html.replaceAll("%supportDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_SUPPORT).getEndTime()));
+                            html.replaceAll("%supportRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_SUPPORT).getRate() / 86400000));
                         } else {
-                            html.replace("%support%", "0");
-                            html.replace("%supportPrice%", "0");
-                            html.replace("%supportDate%", "0");
-                            html.replace("%supportRate%", String.valueOf(Config.CH_SUPPORT_FEE_RATIO / 86400000));
+                            html.replaceAll("%support%", "0");
+                            html.replaceAll("%supportPrice%", "0");
+                            html.replaceAll("%supportDate%", "0");
+                            html.replaceAll("%supportRate%", String.valueOf(Config.CH_SUPPORT_FEE_RATIO / 86400000));
                         }
                         if (getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE) != null) {
-                            html.replace("%item%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE).getLvl()));
-                            html.replace("%itemPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE).getLease()));
-                            html.replace("%itemDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE).getEndTime()));
-                            html.replace("%itemRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE).getRate() / 86400000));
+                            html.replaceAll("%item%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE).getLvl()));
+                            html.replaceAll("%itemPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE).getLease()));
+                            html.replaceAll("%itemDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE).getEndTime()));
+                            html.replaceAll("%itemRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE).getRate() / 86400000));
                         } else {
-                            html.replace("%item%", "0");
-                            html.replace("%itemPrice%", "0");
-                            html.replace("%itemDate%", "0");
-                            html.replace("%itemRate%", String.valueOf(Config.CH_ITEM_FEE_RATIO / 86400000));
+                            html.replaceAll("%item%", "0");
+                            html.replaceAll("%itemPrice%", "0");
+                            html.replaceAll("%itemDate%", "0");
+                            html.replaceAll("%itemRate%", String.valueOf(Config.CH_ITEM_FEE_RATIO / 86400000));
                         }
                         sendHtmlMessage(player, html);
                     } else if (val.equalsIgnoreCase("deco")) {
@@ -587,26 +587,26 @@ public class ClanHallManagerInstance extends FolkInstance {
                         final NpcHtmlMessage html = new NpcHtmlMessage(1);
                         html.setFile("data/html/clanHallManager/deco.htm");
                         if (getClanHall().getFunction(ClanHall.FUNC_DECO_CURTAINS) != null) {
-                            html.replace("%curtain%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_DECO_CURTAINS).getLvl()));
-                            html.replace("%curtainPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_DECO_CURTAINS).getLease()));
-                            html.replace("%curtainDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_DECO_CURTAINS).getEndTime()));
-                            html.replace("%curtainRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_DECO_CURTAINS).getRate() / 86400000));
+                            html.replaceAll("%curtain%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_DECO_CURTAINS).getLvl()));
+                            html.replaceAll("%curtainPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_DECO_CURTAINS).getLease()));
+                            html.replaceAll("%curtainDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_DECO_CURTAINS).getEndTime()));
+                            html.replaceAll("%curtainRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_DECO_CURTAINS).getRate() / 86400000));
                         } else {
-                            html.replace("%curtain%", "0");
-                            html.replace("%curtainPrice%", "0");
-                            html.replace("%curtainDate%", "0");
-                            html.replace("%curtainRate%", String.valueOf(Config.CH_CURTAIN_FEE_RATIO / 86400000));
+                            html.replaceAll("%curtain%", "0");
+                            html.replaceAll("%curtainPrice%", "0");
+                            html.replaceAll("%curtainDate%", "0");
+                            html.replaceAll("%curtainRate%", String.valueOf(Config.CH_CURTAIN_FEE_RATIO / 86400000));
                         }
                         if (getClanHall().getFunction(ClanHall.FUNC_DECO_FRONTPLATEFORM) != null) {
-                            html.replace("%porch%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_DECO_FRONTPLATEFORM).getLvl()));
-                            html.replace("%porchPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_DECO_FRONTPLATEFORM).getLease()));
-                            html.replace("%porchDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_DECO_FRONTPLATEFORM).getEndTime()));
-                            html.replace("%porchRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_DECO_FRONTPLATEFORM).getRate() / 86400000));
+                            html.replaceAll("%porch%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_DECO_FRONTPLATEFORM).getLvl()));
+                            html.replaceAll("%porchPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_DECO_FRONTPLATEFORM).getLease()));
+                            html.replaceAll("%porchDate%", format.format(getClanHall().getFunction(ClanHall.FUNC_DECO_FRONTPLATEFORM).getEndTime()));
+                            html.replaceAll("%porchRate%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_DECO_FRONTPLATEFORM).getRate() / 86400000));
                         } else {
-                            html.replace("%porch%", "0");
-                            html.replace("%porchPrice%", "0");
-                            html.replace("%porchDate%", "0");
-                            html.replace("%porchRate%", String.valueOf(Config.CH_FRONT_FEE_RATIO / 86400000));
+                            html.replaceAll("%porch%", "0");
+                            html.replaceAll("%porchPrice%", "0");
+                            html.replaceAll("%porchDate%", "0");
+                            html.replaceAll("%porchRate%", String.valueOf(Config.CH_FRONT_FEE_RATIO / 86400000));
                         }
                         sendHtmlMessage(player, html);
                     } else if (val.equalsIgnoreCase("back")) {
@@ -650,7 +650,7 @@ public class ClanHallManagerInstance extends FolkInstance {
                             return;
                         }
                         html.setFile("data/html/clanHallManager/support" + getClanHall().getFunction(ClanHall.FUNC_SUPPORT).getLvl() + ".htm");
-                        html.replace("%mp%", String.valueOf(getCurrentMp()));
+                        html.replaceAll("%mp%", String.valueOf(getCurrentMp()));
                         sendHtmlMessage(player, html);
                     } catch (Exception e) {
                         player.sendMessage("Invalid skill level!");
@@ -710,9 +710,9 @@ public class ClanHallManagerInstance extends FolkInstance {
      * @param html   the html
      */
     private void sendHtmlMessage(PlayerInstance player, NpcHtmlMessage html) {
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%npcname%", getName());
-        html.replace("%npcId%", String.valueOf(getNpcId()));
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%npcname%", getName());
+        html.replaceAll("%npcId%", String.valueOf(getNpcId()));
         player.sendPacket(html);
     }
 
@@ -734,9 +734,9 @@ public class ClanHallManagerInstance extends FolkInstance {
         }
         final NpcHtmlMessage html = new NpcHtmlMessage(1);
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%npcId%", String.valueOf(getNpcId()));
-        html.replace("%npcname%", getName());
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%npcId%", String.valueOf(getNpcId()));
+        html.replaceAll("%npcname%", getName());
         player.sendPacket(html);
     }
 

@@ -96,7 +96,7 @@ public class Config {
     private static final String MERCHANT_ZERO_SELL_PRICE_CONFIG_FILE = "./config/custom/MerchantZeroSellPrice.ini";
     private static final String OFFLINE_CONFIG_FILE = "./config/custom/Offline.ini";
     private static final String OTHER_CONFIG_FILE = "./config/custom/Other.ini";
-    private static final String SCHEME_BUFFER_CONFIG_FILE = "./config/custom/SchemeBuffer.ini";
+    private static final String SCHEME_BUFFER_CONFIG_FILE = "./config/custom/Buffer.ini";
     private static final String EVENT_REBIRTH_CONFIG_FILE = "./config/custom/Rebirth.ini";
     private static final String EVENT_WEDDING_CONFIG_FILE = "./config/custom/Wedding.ini";
     // login

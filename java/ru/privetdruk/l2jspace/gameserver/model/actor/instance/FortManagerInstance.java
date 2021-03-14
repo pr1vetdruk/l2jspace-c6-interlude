@@ -43,8 +43,8 @@ public class FortManagerInstance extends MerchantInstance {
     }
 
     private void sendHtmlMessage(PlayerInstance player, NpcHtmlMessage html) {
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%npcId%", String.valueOf(getNpcId()));
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%npcId%", String.valueOf(getNpcId()));
         player.sendPacket(html);
     }
 
@@ -108,7 +108,7 @@ public class FortManagerInstance extends MerchantInstance {
                     html.setFile("data/html/fortress/foreman-noprivs.htm");
                 }
 
-                html.replace("%objectId%", String.valueOf(getObjectId()));
+                html.replaceAll("%objectId%", String.valueOf(getObjectId()));
                 player.sendPacket(html);
             } else if (actualCommand.equalsIgnoreCase("manage_vault")) {
                 if ((player.getClanPrivileges() & Clan.CP_CL_VIEW_WAREHOUSE) == Clan.CP_CL_VIEW_WAREHOUSE) {
@@ -124,7 +124,7 @@ public class FortManagerInstance extends MerchantInstance {
                 } else {
                     final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile("data/html/fortress/foreman-noprivs.htm");
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
                     player.sendPacket(html);
                 }
             } else if (actualCommand.equalsIgnoreCase("operate_door")) // Door Control
@@ -139,13 +139,13 @@ public class FortManagerInstance extends MerchantInstance {
 
                     final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile("data/html/fortress/" + getTemplate().getNpcId() + "-d.htm");
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
-                    html.replace("%npcname%", getName());
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%npcname%", getName());
                     player.sendPacket(html);
                 } else {
                     final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile("data/html/fortress/foreman-noprivs.htm");
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
                     player.sendPacket(html);
                 }
             } else {
@@ -169,8 +169,8 @@ public class FortManagerInstance extends MerchantInstance {
 
         final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%npcname%", getName());
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%npcname%", getName());
         player.sendPacket(html);
     }
 
@@ -188,7 +188,7 @@ public class FortManagerInstance extends MerchantInstance {
         } else {
             final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             html.setFile("data/html/fortress/foreman-noprivs.htm");
-            html.replace("%objectId%", String.valueOf(getObjectId()));
+            html.replaceAll("%objectId%", String.valueOf(getObjectId()));
             player.sendPacket(html);
         }
     }

@@ -139,14 +139,14 @@ public class AdminFortSiege implements IAdminCommandHandler {
             }
         }
 
-        adminReply.replace("%forts%", cList.toString());
+        adminReply.replaceAll("%forts%", cList.toString());
         activeChar.sendPacket(adminReply);
     }
 
     private void showFortSiegePage(PlayerInstance activeChar, String fortName) {
         final NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
         adminReply.setFile("data/html/admin/fort.htm");
-        adminReply.replace("%fortName%", fortName);
+        adminReply.replaceAll("%fortName%", fortName);
         activeChar.sendPacket(adminReply);
     }
 

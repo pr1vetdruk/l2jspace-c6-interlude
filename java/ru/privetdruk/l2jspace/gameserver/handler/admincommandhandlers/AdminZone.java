@@ -77,28 +77,28 @@ public class AdminZone implements IAdminCommandHandler {
         final NpcHtmlMessage html = new NpcHtmlMessage(0);
         html.setFile("data/html/admin/zone.htm");
 
-        html.replace("%MAPREGION%", "[x:" + MapRegionData.getInstance().getMapRegionX(x) + " y:" + MapRegionData.getInstance().getMapRegionY(y) + "]");
-        html.replace("%GEOREGION%", rx + "_" + ry);
-        html.replace("%CLOSESTTOWN%", MapRegionData.getInstance().getClosestTownName(activeChar));
-        html.replace("%CURRENTLOC%", x + ", " + y + ", " + activeChar.getZ());
-        html.replace("%PVP%", (activeChar.isInsideZone(ZoneId.PVP) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%PEACE%", (activeChar.isInsideZone(ZoneId.PEACE) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%SIEGE%", (activeChar.isInsideZone(ZoneId.SIEGE) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%MOTHERTREE%", (activeChar.isInsideZone(ZoneId.MOTHERTREE) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%CLANHALL%", (activeChar.isInsideZone(ZoneId.CLAN_HALL) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%NOLANDING%", (activeChar.isInsideZone(ZoneId.NO_LANDING) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%WATER%", (activeChar.isInsideZone(ZoneId.WATER) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%JAIL%", (activeChar.isInsideZone(ZoneId.JAIL) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%MONSTERTRACK%", (activeChar.isInsideZone(ZoneId.MONSTER_TRACK) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%CASTLE%", (activeChar.isInsideZone(ZoneId.CASTLE) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%SWAMP%", (activeChar.isInsideZone(ZoneId.SWAMP) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%NOSUMMONFRIEND%", (activeChar.isInsideZone(ZoneId.NO_SUMMON_FRIEND) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%NOSTORE%", (activeChar.isInsideZone(ZoneId.NO_STORE) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%TOWN%", (activeChar.isInsideZone(ZoneId.TOWN) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%HQ%", (activeChar.isInsideZone(ZoneId.HQ) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%DANGERAREA%", (activeChar.isInsideZone(ZoneId.DANGER_AREA) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%BOSS%", (activeChar.isInsideZone(ZoneId.BOSS) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-        html.replace("%NORESTART%", (activeChar.isInsideZone(ZoneId.NO_RESTART) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%MAPREGION%", "[x:" + MapRegionData.getInstance().getMapRegionX(x) + " y:" + MapRegionData.getInstance().getMapRegionY(y) + "]");
+        html.replaceAll("%GEOREGION%", rx + "_" + ry);
+        html.replaceAll("%CLOSESTTOWN%", MapRegionData.getInstance().getClosestTownName(activeChar));
+        html.replaceAll("%CURRENTLOC%", x + ", " + y + ", " + activeChar.getZ());
+        html.replaceAll("%PVP%", (activeChar.isInsideZone(ZoneId.PVP) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%PEACE%", (activeChar.isInsideZone(ZoneId.PEACE) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%SIEGE%", (activeChar.isInsideZone(ZoneId.SIEGE) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%MOTHERTREE%", (activeChar.isInsideZone(ZoneId.MOTHERTREE) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%CLANHALL%", (activeChar.isInsideZone(ZoneId.CLAN_HALL) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%NOLANDING%", (activeChar.isInsideZone(ZoneId.NO_LANDING) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%WATER%", (activeChar.isInsideZone(ZoneId.WATER) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%JAIL%", (activeChar.isInsideZone(ZoneId.JAIL) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%MONSTERTRACK%", (activeChar.isInsideZone(ZoneId.MONSTER_TRACK) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%CASTLE%", (activeChar.isInsideZone(ZoneId.CASTLE) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%SWAMP%", (activeChar.isInsideZone(ZoneId.SWAMP) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%NOSUMMONFRIEND%", (activeChar.isInsideZone(ZoneId.NO_SUMMON_FRIEND) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%NOSTORE%", (activeChar.isInsideZone(ZoneId.NO_STORE) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%TOWN%", (activeChar.isInsideZone(ZoneId.TOWN) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%HQ%", (activeChar.isInsideZone(ZoneId.HQ) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%DANGERAREA%", (activeChar.isInsideZone(ZoneId.DANGER_AREA) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%BOSS%", (activeChar.isInsideZone(ZoneId.BOSS) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
+        html.replaceAll("%NORESTART%", (activeChar.isInsideZone(ZoneId.NO_RESTART) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
 
         final StringBuilder sb = new StringBuilder(100);
         for (ZoneType zone : World.getInstance().getRegion(x, y).getZones()) {
@@ -106,7 +106,7 @@ public class AdminZone implements IAdminCommandHandler {
                 StringUtil.append(sb, zone.getId(), " ");
             }
         }
-        html.replace("%ZLIST%", sb.toString());
+        html.replaceAll("%ZLIST%", sb.toString());
         activeChar.sendPacket(html);
     }
 

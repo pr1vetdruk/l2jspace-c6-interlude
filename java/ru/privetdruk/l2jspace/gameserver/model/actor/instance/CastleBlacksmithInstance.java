@@ -104,9 +104,9 @@ public class CastleBlacksmithInstance extends FolkInstance {
 
         final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%npcname%", getName());
-        html.replace("%castleid%", Integer.toString(getCastle().getCastleId()));
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%npcname%", getName());
+        html.replaceAll("%castleid%", Integer.toString(getCastle().getCastleId()));
         player.sendPacket(html);
     }
 

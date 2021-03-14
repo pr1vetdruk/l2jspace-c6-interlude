@@ -120,27 +120,27 @@ public class AdminPForge implements IAdminCommandHandler {
     private void showPage2(PlayerInstance activeChar, String format) {
         final NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
         adminReply.setFile("data/html/admin/pforge2.htm");
-        adminReply.replace("%format%", format);
+        adminReply.replaceAll("%format%", format);
         StringBuilder replyMSG = new StringBuilder();
         for (int i = 0; i < format.length(); i++) {
             replyMSG.append(format.charAt(i) + " : <edit var=\"v" + i + "\" width=100><br1>");
         }
 
-        adminReply.replace("%valueditors%", replyMSG.toString());
+        adminReply.replaceAll("%valueditors%", replyMSG.toString());
         replyMSG = new StringBuilder();
         for (int i = 0; i < format.length(); i++) {
             replyMSG.append(" \\$v" + i);
         }
 
-        adminReply.replace("%send%", replyMSG.toString());
+        adminReply.replaceAll("%send%", replyMSG.toString());
         activeChar.sendPacket(adminReply);
     }
 
     private void showPage3(PlayerInstance activeChar, String format, String command) {
         final NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
         adminReply.setFile("data/html/admin/pforge3.htm");
-        adminReply.replace("%format%", format);
-        adminReply.replace("%command%", command);
+        adminReply.replaceAll("%format%", format);
+        adminReply.replaceAll("%command%", command);
         activeChar.sendPacket(adminReply);
     }
 

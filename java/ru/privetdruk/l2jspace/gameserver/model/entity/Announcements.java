@@ -98,7 +98,7 @@ public class Announcements {
             replyMSG.append("<button value=\"Delete\" action=\"bypass -h admin_del_announcement " + i + "\" width=60 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td></tr></table>");
         }
 
-        adminReply.replace("%announces%", replyMSG.toString());
+        adminReply.replaceAll("%announces%", replyMSG.toString());
         player.sendPacket(adminReply);
     }
 

@@ -62,13 +62,13 @@ public class FortWyvernManagerInstance extends NpcInstance {
                 player.sendMessage("Ride your strider first...");
                 final NpcHtmlMessage html = new NpcHtmlMessage(1);
                 html.setFile("data/html/fortress/wyvernmanager-explain.htm");
-                html.replace("%count%", String.valueOf(10));
+                html.replaceAll("%count%", String.valueOf(10));
                 player.sendPacket(html);
                 return;
             } else if (player.isMounted() && (petItem != null) && (petItem.getEnchantLevel() < 55)) {
                 final NpcHtmlMessage html = new NpcHtmlMessage(1);
                 html.setFile("data/html/fortress/wyvernmanager-explain.htm");
-                html.replace("%count%", String.valueOf(10));
+                html.replaceAll("%count%", String.valueOf(10));
                 player.sendPacket(html);
                 return;
             }
@@ -99,7 +99,7 @@ public class FortWyvernManagerInstance extends NpcInstance {
             } else {
                 final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                 html.setFile("data/html/fortress/wyvernmanager-explain.htm");
-                html.replace("%count%", String.valueOf(10));
+                html.replaceAll("%count%", String.valueOf(10));
                 player.sendPacket(html);
                 player.sendMessage("You need 10 Crystals: B Grade.");
             }
@@ -139,8 +139,8 @@ public class FortWyvernManagerInstance extends NpcInstance {
 
         final NpcHtmlMessage html = new NpcHtmlMessage(1);
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%count%", String.valueOf(10));
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%count%", String.valueOf(10));
         player.sendPacket(html);
     }
 

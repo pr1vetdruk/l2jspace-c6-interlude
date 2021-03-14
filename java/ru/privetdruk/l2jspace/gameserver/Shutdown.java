@@ -23,7 +23,7 @@ import ru.privetdruk.l2jspace.commons.concurrent.ThreadPool;
 import ru.privetdruk.l2jspace.commons.database.DatabaseBackup;
 import ru.privetdruk.l2jspace.commons.database.DatabaseFactory;
 import ru.privetdruk.l2jspace.gameserver.datatables.OfflineTradeTable;
-import ru.privetdruk.l2jspace.gameserver.datatables.SchemeBufferTable;
+import ru.privetdruk.l2jspace.gameserver.datatables.BufferTable;
 import ru.privetdruk.l2jspace.gameserver.instancemanager.CastleManorManager;
 import ru.privetdruk.l2jspace.gameserver.instancemanager.CursedWeaponsManager;
 import ru.privetdruk.l2jspace.gameserver.instancemanager.FishingChampionshipManager;
@@ -385,7 +385,7 @@ public class Shutdown extends Thread {
         LOGGER.info("Fishing Championship data have been saved!!");
 
         // Schemes save.
-        SchemeBufferTable.getInstance().saveSchemes();
+        BufferTable.getInstance().saveSchemes();
         LOGGER.info("BufferTable data has been saved!!");
 
         // Save all global (non-player specific) Quest data that needs to persist after reboot

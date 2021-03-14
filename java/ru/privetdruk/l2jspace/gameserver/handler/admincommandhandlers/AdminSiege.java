@@ -201,7 +201,7 @@ public class AdminSiege implements IAdminCommandHandler {
             }
         }
 
-        adminReply.replace("%castles%", cList.toString());
+        adminReply.replaceAll("%castles%", cList.toString());
         cList = new StringBuilder();
         i = 0;
         for (ClanHall clanhall : ClanHallManager.getInstance().getClanHalls().values()) {
@@ -217,7 +217,7 @@ public class AdminSiege implements IAdminCommandHandler {
             }
         }
 
-        adminReply.replace("%clanhalls%", cList.toString());
+        adminReply.replaceAll("%clanhalls%", cList.toString());
         cList = new StringBuilder();
         i = 0;
         for (ClanHall clanhall : ClanHallManager.getInstance().getFreeClanHalls().values()) {
@@ -232,27 +232,27 @@ public class AdminSiege implements IAdminCommandHandler {
                 i = 0;
             }
         }
-        adminReply.replace("%freeclanhalls%", cList.toString());
+        adminReply.replaceAll("%freeclanhalls%", cList.toString());
         activeChar.sendPacket(adminReply);
     }
 
     private void showSiegePage(PlayerInstance activeChar, String castleName) {
         final NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
         adminReply.setFile("data/html/admin/castle.htm");
-        adminReply.replace("%castleName%", castleName);
+        adminReply.replaceAll("%castleName%", castleName);
         activeChar.sendPacket(adminReply);
     }
 
     private void showClanHallPage(PlayerInstance activeChar, ClanHall clanhall) {
         final NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
         adminReply.setFile("data/html/admin/clanhall.htm");
-        adminReply.replace("%clanhallName%", clanhall.getName());
-        adminReply.replace("%clanhallId%", String.valueOf(clanhall.getId()));
+        adminReply.replaceAll("%clanhallName%", clanhall.getName());
+        adminReply.replaceAll("%clanhallId%", String.valueOf(clanhall.getId()));
         final Clan owner = ClanTable.getInstance().getClan(clanhall.getOwnerId());
         if (owner == null) {
-            adminReply.replace("%clanhallOwner%", "None");
+            adminReply.replaceAll("%clanhallOwner%", "None");
         } else {
-            adminReply.replace("%clanhallOwner%", owner.getName());
+            adminReply.replaceAll("%clanhallOwner%", owner.getName());
         }
 
         activeChar.sendPacket(adminReply);

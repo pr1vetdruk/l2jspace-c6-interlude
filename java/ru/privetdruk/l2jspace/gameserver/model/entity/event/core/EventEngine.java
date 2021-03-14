@@ -30,7 +30,7 @@ import ru.privetdruk.l2jspace.gameserver.model.entity.Announcements;
 import ru.privetdruk.l2jspace.gameserver.model.entity.event.core.manager.EventTask;
 import ru.privetdruk.l2jspace.gameserver.model.entity.olympiad.Olympiad;
 import ru.privetdruk.l2jspace.gameserver.model.entity.siege.Castle;
-import ru.privetdruk.l2jspace.gameserver.model.skills.Skill;
+import ru.privetdruk.l2jspace.gameserver.model.skills.SkillEnum;
 import ru.privetdruk.l2jspace.gameserver.model.spawn.Spawn;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.MagicSkillUse;
 
@@ -110,7 +110,7 @@ public abstract class EventEngine implements EventTask {
                     new MagicSkillUse(
                             npcSpawn.getLastSpawn(),
                             npcSpawn.getLastSpawn(),
-                            Skill.Bishop.REPOSE.getId(),
+                            SkillEnum.Bishop.REPOSE.getId(),
                             1,
                             1,
                             1

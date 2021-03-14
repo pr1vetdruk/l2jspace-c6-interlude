@@ -1589,7 +1589,7 @@ public class FourSepulchersManager extends GrandBossManager {
         final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
         html.setFile("data/html/SepulcherNpc/" + file);
         if (member != null) {
-            html.replace("%member%", member.getName());
+            html.replaceAll("%member%", member.getName());
         }
         player.sendPacket(html);
     }

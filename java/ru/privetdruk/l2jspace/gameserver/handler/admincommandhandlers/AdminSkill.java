@@ -260,9 +260,9 @@ public class AdminSkill implements IAdminCommandHandler {
 
         final NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
         adminReply.setFile("data/html/admin/charskills.htm");
-        adminReply.replace("%name%", player.getName());
-        adminReply.replace("%level%", String.valueOf(player.getLevel()));
-        adminReply.replace("%class%", player.getTemplate().getClassName());
+        adminReply.replaceAll("%name%", player.getName());
+        adminReply.replaceAll("%level%", String.valueOf(player.getLevel()));
+        adminReply.replaceAll("%class%", player.getTemplate().getClassName());
         activeChar.sendPacket(adminReply);
     }
 

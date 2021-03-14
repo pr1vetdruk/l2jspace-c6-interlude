@@ -28,8 +28,6 @@ import java.util.Stack;
 import static ru.privetdruk.l2jspace.gameserver.ai.CtrlIntention.*;
 
 public class PlayerAI extends CreatureAI {
-    private boolean _thinking; // to prevent recursive thinking
-
     class IntentionCommand {
         protected CtrlIntention _crtlIntention;
         protected Object _arg0;
@@ -161,45 +159,6 @@ public class PlayerAI extends CreatureAI {
         _accessor.doAttack(target);
     }
 
-    private void thinkCast() {
-        final Creature target = getCastTarget();
-        final Skill skill = getSkill();
-        // if (Config.DEBUG) LOGGER.warning("PlayerAI: thinkCast -> Start");
-        if (checkTargetLost(target)) {
-            if (skill.isOffensive() && (getAttackTarget() != null)) {
-                // Notify the target
-                setCastTarget(null);
-            }
-            return;
-        }
-
-        if ((target != null) && maybeMoveToPawn(target, _actor.getMagicalAttackRange(skill))) {
-            return;
-        }
-
-        if (skill.getHitTime() > 50) {
-            clientStopMoving(null);
-        }
-
-        final WorldObject oldTarget = _actor.getTarget();
-        if (oldTarget != null) {
-            // Replace the current target by the cast target
-            if ((target != null) && (oldTarget != target)) {
-                _actor.setTarget(getCastTarget());
-            }
-
-            // Launch the Cast of the skill
-            _accessor.doCast(getSkill());
-
-            // Restore the initial target
-            if ((target != null) && (oldTarget != target)) {
-                _actor.setTarget(oldTarget);
-            }
-        } else {
-            _accessor.doCast(skill);
-        }
-    }
-
     private void thinkPickUp() {
         if (_actor.isAllSkillsDisabled()) {
             return;
@@ -241,11 +200,12 @@ public class PlayerAI extends CreatureAI {
 
     @Override
     public void onEvtThink() {
-        if (_thinking || _actor.isAllSkillsDisabled()) {
+        if (isThinking() || _actor.isAllSkillsDisabled()) {
             return;
         }
 
-        _thinking = true;
+        setThinking(true);
+
         try {
             if (getIntention() == AI_INTENTION_ATTACK) {
                 thinkAttack();
@@ -257,7 +217,7 @@ public class PlayerAI extends CreatureAI {
                 thinkInteract();
             }
         } finally {
-            _thinking = false;
+            setThinking(false);
         }
     }
 

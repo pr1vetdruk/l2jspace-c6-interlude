@@ -107,11 +107,11 @@ public class AdminLogin implements IAdminCommandHandler {
     private void showMainPage(PlayerInstance activeChar) {
         final NpcHtmlMessage html = new NpcHtmlMessage(1);
         html.setFile("data/html/admin/login.htm");
-        html.replace("%server_name%", LoginServerThread.getInstance().getServerName());
-        html.replace("%status%", LoginServerThread.getInstance().getStatusString());
-        html.replace("%clock%", String.valueOf(Config.SERVER_LIST_CLOCK));
-        html.replace("%brackets%", String.valueOf(Config.SERVER_LIST_BRACKET));
-        html.replace("%max_players%", String.valueOf(LoginServerThread.getInstance().getMaxPlayer()));
+        html.replaceAll("%server_name%", LoginServerThread.getInstance().getServerName());
+        html.replaceAll("%status%", LoginServerThread.getInstance().getStatusString());
+        html.replaceAll("%clock%", String.valueOf(Config.SERVER_LIST_CLOCK));
+        html.replaceAll("%brackets%", String.valueOf(Config.SERVER_LIST_BRACKET));
+        html.replaceAll("%max_players%", String.valueOf(LoginServerThread.getInstance().getMaxPlayer()));
         activeChar.sendPacket(html);
     }
 

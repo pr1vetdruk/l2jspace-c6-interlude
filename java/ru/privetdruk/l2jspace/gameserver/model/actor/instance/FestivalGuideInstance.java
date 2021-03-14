@@ -391,26 +391,26 @@ public class FestivalGuideInstance extends FolkInstance {
         // Send a Server->Client NpcHtmlMessage containing the text of the NpcInstance to the PlayerInstance
         final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%festivalType%", SevenSignsFestival.getFestivalName(_festivalType));
-        html.replace("%cycleMins%", String.valueOf(SevenSignsFestival.getInstance().getMinsToNextCycle()));
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%festivalType%", SevenSignsFestival.getFestivalName(_festivalType));
+        html.replaceAll("%cycleMins%", String.valueOf(SevenSignsFestival.getInstance().getMinsToNextCycle()));
         if (!isDescription && "2b".equals(value + suffix)) {
-            html.replace("%minFestivalPartyMembers%", String.valueOf(Config.ALT_FESTIVAL_MIN_PLAYER));
+            html.replaceAll("%minFestivalPartyMembers%", String.valueOf(Config.ALT_FESTIVAL_MIN_PLAYER));
         }
 
         // If the stats or bonus table is required, construct them.
         if (value == 5) {
-            html.replace("%statsTable%", getStatsTable());
+            html.replaceAll("%statsTable%", getStatsTable());
         }
         if (value == 6) {
-            html.replace("%bonusTable%", getBonusTable());
+            html.replaceAll("%bonusTable%", getBonusTable());
         }
 
         // festival's fee
         if (value == 1) {
-            html.replace("%blueStoneNeeded%", String.valueOf(_blueStonesNeeded));
-            html.replace("%greenStoneNeeded%", String.valueOf(_greenStonesNeeded));
-            html.replace("%redStoneNeeded%", String.valueOf(_redStonesNeeded));
+            html.replaceAll("%blueStoneNeeded%", String.valueOf(_blueStonesNeeded));
+            html.replaceAll("%greenStoneNeeded%", String.valueOf(_greenStonesNeeded));
+            html.replaceAll("%redStoneNeeded%", String.valueOf(_redStonesNeeded));
         }
 
         player.sendPacket(html);

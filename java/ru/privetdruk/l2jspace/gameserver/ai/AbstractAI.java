@@ -24,11 +24,15 @@ import ru.privetdruk.l2jspace.gameserver.model.actor.Attackable;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Creature;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Playable;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Summon;
+import ru.privetdruk.l2jspace.gameserver.model.actor.instance.DoorInstance;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.NpcInstance;
 import ru.privetdruk.l2jspace.gameserver.model.actor.instance.PlayerInstance;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.*;
 import ru.privetdruk.l2jspace.gameserver.taskmanager.AttackStanceTaskManager;
 import ru.privetdruk.l2jspace.gameserver.taskmanager.CreatureFollowTaskManager;
+
+import static ru.privetdruk.l2jspace.gameserver.ai.CtrlIntention.AI_INTENTION_ACTIVE;
+import static ru.privetdruk.l2jspace.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
 
 /**
  * Mother class of all objects AI in the world.<br>
@@ -37,6 +41,13 @@ import ru.privetdruk.l2jspace.gameserver.taskmanager.CreatureFollowTaskManager;
  * <li>CreatureAI</li>
  */
 abstract class AbstractAI implements Ctrl {
+    private boolean thinking; // to prevent recursive thinking
+
+    /**
+     * The skill we are curently casting by INTENTION_CAST
+     */
+    private Skill skill;
+
     /**
      * The creature that this AI manages
      */
@@ -744,5 +755,188 @@ abstract class AbstractAI implements Ctrl {
     @Override
     public synchronized CtrlIntention getIntention() {
         return _intention;
+    }
+
+    protected void thinkCast() {
+        final Creature target = getCastTarget();
+        final Skill skill = getSkill();
+        // if (Config.DEBUG) LOGGER.warning("PlayerAI: thinkCast -> Start");
+        if (checkTargetLost(target)) {
+            if (skill.isOffensive() && (getAttackTarget() != null)) {
+                // Notify the target
+                setCastTarget(null);
+            }
+            return;
+        }
+
+        if ((target != null) && maybeMoveToPawn(target, _actor.getMagicalAttackRange(skill))) {
+            return;
+        }
+
+        if (skill.getHitTime() > 50) {
+            clientStopMoving(null);
+        }
+
+        final WorldObject oldTarget = _actor.getTarget();
+        if (oldTarget != null) {
+            // Replace the current target by the cast target
+            if ((target != null) && (oldTarget != target)) {
+                _actor.setTarget(getCastTarget());
+            }
+
+            // Launch the Cast of the skill
+            _accessor.doCast(getSkill());
+
+            // Restore the initial target
+            if ((target != null) && (oldTarget != target)) {
+                _actor.setTarget(oldTarget);
+            }
+        } else {
+            _accessor.doCast(skill);
+        }
+    }
+
+    /**
+     * Manage the Move to Pawn action in function of the distance and of the Interact area.<br>
+     * <br>
+     * <b><u>Actions</u>:</b><br>
+     * <li>Get the distance between the current position of the Creature and the target (x,y)</li>
+     * <li>If the distance > offset+20, move the actor (by running) to Pawn server side AND client side by sending Server->Client packet MoveToPawn (broadcast)</li>
+     * <li>If the distance <= offset+20, Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)</li><br>
+     * <br>
+     * <b><u>Example of use</u>:</b><br>
+     * <li>PLayerAI, SummonAI</li><br>
+     *
+     * @param target      The targeted WorldObject
+     * @param offsetValue The Interact area radius
+     * @return True if a movement must be done
+     */
+    protected boolean maybeMoveToPawn(WorldObject target, int offsetValue) {
+        // Get the distance between the current position of the Creature and the target (x,y)
+        if (target == null) {
+            // LOGGER.warning("maybeMoveToPawn: target == NULL!");
+            return false;
+        }
+
+        // skill radius -1
+        if (offsetValue < 0) {
+            return false;
+        }
+
+        int offsetWithCollision = offsetValue + _actor.getTemplate().getCollisionRadius();
+        if (target instanceof Creature) {
+            offsetWithCollision += ((Creature) target).getTemplate().getCollisionRadius();
+        }
+
+        if (!_actor.isInsideRadius(target, offsetWithCollision, false, false)) {
+            final Creature follow = getFollowTarget();
+
+            // Caller should be Playable and thinkAttack/thinkCast/thinkInteract/thinkPickUp
+            if (follow != null) {
+                // prevent attack-follow into peace zones
+                if ((getAttackTarget() != null) && (_actor instanceof Playable) && (target instanceof Playable) && (getAttackTarget() == follow)) {
+                    // allow GMs to keep following
+                    final boolean isGM = (_actor instanceof PlayerInstance) && ((PlayerInstance) _actor).isGM();
+                    if (Creature.isInsidePeaceZone(_actor, target) && !isGM) {
+                        stopFollow();
+                        setIntention(AI_INTENTION_IDLE);
+                        return true;
+                    }
+                }
+                // if the target is too far (maybe also teleported)
+                if (!_actor.isInsideRadius(target, 2000, false, false)) {
+                    stopFollow();
+                    setIntention(AI_INTENTION_IDLE);
+                    return true;
+                }
+                // allow larger hit range when the target is moving (check is run only once per second)
+                if (!_actor.isInsideRadius(target, offsetWithCollision + 30, false, false)) {
+                    return true;
+                }
+                stopFollow();
+                return false;
+            }
+
+            if (_actor.isMovementDisabled()) {
+                return true;
+            }
+
+            // If not running, set the Creature movement type to run and send Server->Client packet ChangeMoveType to all others PlayerInstance
+            if (!_actor.isRunning() && !(this instanceof PlayerAI)) {
+                _actor.setRunning();
+            }
+
+            stopFollow();
+            int offset = offsetValue;
+            if ((target instanceof Creature) && !(target instanceof DoorInstance)) {
+                if (((Creature) target).isMoving()) {
+                    offset -= 100;
+                }
+                if (offset < 5) {
+                    offset = 5;
+                }
+                startFollow((Creature) target, offset);
+            } else {
+                // Move the actor to Pawn server side AND client side by sending Server->Client packet MoveToPawn (broadcast)
+                moveToPawn(target, offset);
+            }
+            return true;
+        }
+
+        if (getFollowTarget() != null) {
+            stopFollow();
+        }
+
+        // Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)
+        // clientStopMoving(null);
+        return false;
+    }
+
+    /**
+     * Modify current Intention and actions if the target is lost.<br>
+     * <br>
+     * <b><u>Actions</u> : <i>If the target is lost</i></b><br>
+     * <li>Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop (broadcast)</li>
+     * <li>Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)</li>
+     * <li>Set the Intention of this AbstractAI to AI_INTENTION_ACTIVE</li><br>
+     * <br>
+     * <b><u>Example of use</u>:</b><br>
+     * <li>PLayerAI, SummonAI</li><br>
+     *
+     * @param target The targeted WorldObject
+     * @return True if the target is lost
+     */
+    protected boolean checkTargetLost(WorldObject target) {
+        // check if player is fakedeath
+        if (target instanceof PlayerInstance) {
+            final PlayerInstance target2 = (PlayerInstance) target; // convert object to chara
+            if (target2.isFakeDeath()) {
+                target2.stopFakeDeath(null);
+                return false;
+            }
+        }
+        if (target == null) {
+            // Set the Intention of this AbstractAI to AI_INTENTION_ACTIVE
+            setIntention(AI_INTENTION_ACTIVE);
+
+            return true;
+        }
+        return false;
+    }
+
+    public synchronized Skill getSkill() {
+        return skill;
+    }
+
+    public synchronized void setSkill(Skill skill) {
+        this.skill = skill;
+    }
+
+    public boolean isThinking() {
+        return thinking;
+    }
+
+    public void setThinking(boolean thinking) {
+        this.thinking = thinking;
     }
 }

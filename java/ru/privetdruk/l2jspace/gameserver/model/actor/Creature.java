@@ -1755,6 +1755,17 @@ public abstract class Creature extends WorldObject implements ISkillsHolder {
     }
 
     /**
+     * Imitation of the use of the skill on the player.
+     */
+    public Skill useSkill(PlayerInstance player, int skillId, int skillLevel) {
+        Skill skill = SkillTable.getInstance().getSkill(skillId, skillLevel);
+
+        this.broadcastPacket(new MagicSkillUse(this, player, skill.getId(), 1, 444, 666));
+
+        return skill;
+    }
+
+    /**
      * Gets this creature's AI.
      *
      * @return the AI

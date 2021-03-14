@@ -686,7 +686,7 @@ public class Quest extends ManagedScript {
             } else if (res.startsWith("<html>")) {
                 final NpcHtmlMessage npcReply = new NpcHtmlMessage(5);
                 npcReply.setHtml(res);
-                npcReply.replace("%playername%", player.getName());
+                npcReply.replaceAll("%playername%", player.getName());
                 player.sendPacket(npcReply);
             } else {
                 player.sendMessage(res);
@@ -1433,7 +1433,7 @@ public class Quest extends ManagedScript {
             if (content != null) {
                 final NpcHtmlMessage npcReply = new NpcHtmlMessage(5);
                 npcReply.setHtml(content);
-                npcReply.replace("%playername%", player.getName());
+                npcReply.replaceAll("%playername%", player.getName());
                 player.sendPacket(npcReply);
             }
         }

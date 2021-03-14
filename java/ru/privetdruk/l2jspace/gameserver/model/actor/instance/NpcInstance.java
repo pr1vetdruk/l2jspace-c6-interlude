@@ -999,9 +999,9 @@ public class NpcInstance extends Creature {
 
             final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             html.setFile("/data/html/npcbusy.htm");
-            html.replace("%busymessage%", _busyMessage);
-            html.replace("%npcname%", getName());
-            html.replace("%playername%", player.getName());
+            html.replaceAll("%busymessage%", _busyMessage);
+            html.replaceAll("%npcname%", getName());
+            html.replaceAll("%playername%", player.getName());
             player.sendPacket(html);
         } else if (command.equalsIgnoreCase("TerritoryStatus")) {
             final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
@@ -1009,20 +1009,20 @@ public class NpcInstance extends Creature {
                 if (getCastle().getOwnerId() > 0) {
                     html.setFile("/data/html/territorystatus.htm");
                     final Clan clan = ClanTable.getInstance().getClan(getCastle().getOwnerId());
-                    html.replace("%clanname%", clan.getName());
-                    html.replace("%clanleadername%", clan.getLeaderName());
+                    html.replaceAll("%clanname%", clan.getName());
+                    html.replaceAll("%clanleadername%", clan.getLeaderName());
                 } else {
                     html.setFile("/data/html/territorynoclan.htm");
                 }
             }
-            html.replace("%castlename%", getCastle().getName());
-            html.replace("%taxpercent%", "" + getCastle().getTaxPercent());
-            html.replace("%objectId%", String.valueOf(getObjectId()));
+            html.replaceAll("%castlename%", getCastle().getName());
+            html.replaceAll("%taxpercent%", "" + getCastle().getTaxPercent());
+            html.replaceAll("%objectId%", String.valueOf(getObjectId()));
             {
                 if (getCastle().getCastleId() > 6) {
-                    html.replace("%territory%", "The Kingdom of Elmore");
+                    html.replaceAll("%territory%", "The Kingdom of Elmore");
                 } else {
-                    html.replace("%territory%", "The Kingdom of Aden");
+                    html.replaceAll("%territory%", "The Kingdom of Aden");
                 }
             }
             player.sendPacket(html);
@@ -1052,15 +1052,15 @@ public class NpcInstance extends Creature {
             final String filename = "/data/html/" + path;
             final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             html.setFile(filename);
-            html.replace("%objectId%", String.valueOf(getObjectId()));
+            html.replaceAll("%objectId%", String.valueOf(getObjectId()));
             player.sendPacket(html);
         } else if (command.startsWith("NobleTeleport")) {
             if (!player.isNoble()) {
                 final String filename = "/data/html/teleporter/nobleteleporter-no.htm";
                 final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                 html.setFile(filename);
-                html.replace("%objectId%", String.valueOf(getObjectId()));
-                html.replace("%npcname%", getName());
+                html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+                html.replaceAll("%npcname%", getName());
                 player.sendPacket(html);
                 return;
             }
@@ -1596,14 +1596,14 @@ public class NpcInstance extends Creature {
                     }
                     final String search = "fore=\"L2UI.lottoNum" + button + "\" back=\"L2UI.lottoNum" + button + "a_check\"";
                     final String replace = "fore=\"L2UI.lottoNum" + button + "a_check\" back=\"L2UI.lottoNum" + button + "\"";
-                    html.replace(search, replace);
+                    html.replaceAll(search, replace);
                 }
             }
 
             if (count == 5) {
                 final String search = "0\">Return";
                 final String replace = "22\">The winner selected the numbers above.";
-                html.replace(search, replace);
+                html.replaceAll(search, replace);
             }
         } else if (value == 22) // 22 - selected ticket with 5 numbers
         {
@@ -1712,7 +1712,7 @@ public class NpcInstance extends Creature {
             if (message == "") {
                 message += "There is no winning lottery ticket...<br>";
             }
-            html.replace("%result%", message);
+            html.replaceAll("%result%", message);
         } else if (value > 24) // >24 - check lottery ticket by item object id
         {
             final int lotonumber = Lottery.getInstance().getId();
@@ -1732,15 +1732,15 @@ public class NpcInstance extends Creature {
             player.destroyItem("Loto", item, this, false);
             return;
         }
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%race%", "" + Lottery.getInstance().getId());
-        html.replace("%adena%", "" + Lottery.getInstance().getPrize());
-        html.replace("%ticket_price%", "" + Config.ALT_LOTTERY_TICKET_PRICE);
-        html.replace("%prize5%", "" + (Config.ALT_LOTTERY_5_NUMBER_RATE * 100));
-        html.replace("%prize4%", "" + (Config.ALT_LOTTERY_4_NUMBER_RATE * 100));
-        html.replace("%prize3%", "" + (Config.ALT_LOTTERY_3_NUMBER_RATE * 100));
-        html.replace("%prize2%", "" + Config.ALT_LOTTERY_2_AND_1_NUMBER_PRIZE);
-        html.replace("%enddate%", "" + DateFormat.getDateInstance().format(Lottery.getInstance().getEndDate()));
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%race%", "" + Lottery.getInstance().getId());
+        html.replaceAll("%adena%", "" + Lottery.getInstance().getPrize());
+        html.replaceAll("%ticket_price%", "" + Config.ALT_LOTTERY_TICKET_PRICE);
+        html.replaceAll("%prize5%", "" + (Config.ALT_LOTTERY_5_NUMBER_RATE * 100));
+        html.replaceAll("%prize4%", "" + (Config.ALT_LOTTERY_4_NUMBER_RATE * 100));
+        html.replaceAll("%prize3%", "" + (Config.ALT_LOTTERY_3_NUMBER_RATE * 100));
+        html.replaceAll("%prize2%", "" + Config.ALT_LOTTERY_2_AND_1_NUMBER_PRIZE);
+        html.replaceAll("%enddate%", "" + DateFormat.getDateInstance().format(Lottery.getInstance().getEndDate()));
         player.sendPacket(html);
 
         // Send a Server->Client ActionFailed to the PlayerInstance in order to avoid that the client wait another packet
@@ -2267,12 +2267,18 @@ public class NpcInstance extends Creature {
         html.setFile(filename);
 
         if ((this instanceof MerchantInstance) && Config.LIST_PET_RENT_NPC.contains(npcId)) {
-            html.replace("_Quest", "_RentPet\">Rent Pet</a><br><a action=\"bypass -h npc_%objectId%_Quest");
+            html.replaceAll("_Quest", "_RentPet\">Rent Pet</a><br><a action=\"bypass -h npc_%objectId%_Quest");
         }
-        html.replace("%npcname%", getName());
-        html.replace("%playername%", player.getName());
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%festivalMins%", SevenSignsFestival.getInstance().getTimeToNextFestivalStart());
+
+        if (npcId == 50008) {
+            BufferInstance.configurePage(player, html);
+        }
+
+        html.replaceAll("%npcname%", getName());
+        html.replaceAll("%playername%", player.getName());
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%festivalMins%", SevenSignsFestival.getInstance().getTimeToNextFestivalStart());
+
         player.sendPacket(html);
 
         // Send a Server->Client ActionFailed to the PlayerInstance in order to avoid that the client wait another packet
@@ -2291,7 +2297,7 @@ public class NpcInstance extends Creature {
         // Send a Server->Client NpcHtmlMessage containing the text of the NpcInstance to the PlayerInstance
         final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
         player.sendPacket(html);
 
         // Send a Server->Client ActionFailed to the PlayerInstance in order to avoid that the client wait another packet

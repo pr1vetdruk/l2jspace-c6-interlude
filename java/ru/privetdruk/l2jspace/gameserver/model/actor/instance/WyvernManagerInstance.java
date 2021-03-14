@@ -130,8 +130,8 @@ public class WyvernManagerInstance extends CastleChamberlainInstance {
         }
         final NpcHtmlMessage html = new NpcHtmlMessage(1);
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%npcname%", getName());
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%npcname%", getName());
         player.sendPacket(html);
     }
 

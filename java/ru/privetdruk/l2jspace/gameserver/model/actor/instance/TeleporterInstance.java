@@ -170,8 +170,8 @@ public class TeleporterInstance extends FolkInstance {
 
         final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%npcname%", getName());
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%npcname%", getName());
         player.sendPacket(html);
     }
 
@@ -205,8 +205,8 @@ public class TeleporterInstance extends FolkInstance {
                 final String filename = "data/html/teleporter/nobleteleporter-no.htm";
                 final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                 html.setFile(filename);
-                html.replace("%objectId%", String.valueOf(getObjectId()));
-                html.replace("%npcname%", getName());
+                html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+                html.replaceAll("%npcname%", getName());
                 player.sendPacket(html);
                 return;
             } else if (player.isAlikeDead()) {
@@ -221,7 +221,7 @@ public class TeleporterInstance extends FolkInstance {
                 final String filename = "data/html/teleporter/30483-biglvl.htm";
                 final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                 html.setFile(filename);
-                html.replace("%allowedmaxLevel%", "" + maxLevel + "");
+                html.replaceAll("%allowedmaxLevel%", "" + maxLevel + "");
                 player.sendPacket(html);
                 return;
             }

@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='utf-8'?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="xsd/BufferSkills.xsd">
+	<category type="Buffs">
+		<buff id="1356" level="1" price="0" desc="Fire" /> <!-- Prophecy of Fire -->
+		<buff id="1355" level="1" price="0" desc="Water" /> <!-- Prophecy of Water -->
+		<buff id="1413" level="1" price="0" desc="Magnus" /> <!-- Magnus' Chant -->
+		<buff id="1363" level="1" price="0" desc="Victory" /> <!-- Chant of Victory -->
+		<buff id="1045" level="6" price="0" desc="Blessed Body" /> <!-- Blessed Body -->
+		<buff id="1048" level="6" price="0" desc="Blessed Soul" /> <!-- Blessed Soul -->
+		<buff id="1391" level="3" price="0" desc="Earth Chant" /> <!-- Earth Chant -->
+		<buff id="1390" level="3" price="0" desc="War Chant" /> <!-- War Chant -->
+		<buff id="1040" level="3" price="0" desc="Shield" /> <!-- Shield -->
+		<buff id="1036" level="2" price="0" desc="Magic Barrier" /> <!-- Magic Barrier -->
+		<buff id="1035" level="4" price="0" desc="Mental Shield" /> <!-- Mental Shield -->
+		<buff id="1304" level="3" price="0" desc="Block" /> <!-- Advanced Block -->
+		<buff id="1062" level="2" price="0" desc="Berserker" /> <!-- Berserker Spirit -->
+		<buff id="1204" level="2" price="0" desc="Wind Walk" /> <!-- Wind Walk -->
+		<buff id="1085" level="3" price="0" desc="Acumen" /> <!-- Acumen -->
+		<buff id="1078" level="6" price="0" desc="Concentrat" /> <!-- Concentration -->
+		<buff id="1059" level="3" price="0" desc="Empower" /> <!-- Empower -->
+		<buff id="1303" level="2" price="0" desc="Wild Magic" /> <!-- Wild Magic -->
+		<buff id="1397" level="3" price="0" desc="Clarity" /> <!-- Clarity -->
+		<buff id="1077" level="3" price="0" desc="Focus" /> <!-- Focus -->
+		<buff id="1068" level="3" price="0" desc="Might" /> <!-- Might -->
+		<buff id="1086" level="2" price="0" desc="Haste" /> <!-- Haste -->
+		<buff id="1087" level="3" price="0" desc="Agility" /> <!-- Agility -->
+		<buff id="1240" level="3" price="0" desc="Guidance" /> <!-- Guidance -->
+		<buff id="1242" level="3" price="0" desc="D. Whisper" /> <!-- Death Whisper -->
+		<buff id="1268" level="4" price="0" desc="Vampiric" /> <!-- Vampiric Rage -->
+		<buff id="1243" level="6" price="0" desc="Bless Shield" /> <!-- Bless Shield -->
+		<buff id="1357" level="1" price="0" desc="Wind" /> <!-- Prophecy of Wind -->
+	</category>
+	<category type="Dances">
+		<buff id="271" level="1" price="0" desc="Warrior" /> <!-- Dance of the Warrior -->
+		<buff id="272" level="1" price="0" desc="Inspiration" /> <!-- Dance of Inspiration -->
+		<buff id="274" level="1" price="0" desc="Fire" /> <!-- Dance of Fire -->
+		<buff id="275" level="1" price="0" desc="Fury" /> <!-- Dance of Fury -->
+		<buff id="310" level="1" price="0" desc="Vampire" /> <!-- Dance of the Vampire -->
+		<buff id="273" level="1" price="0" desc="Mystic" /> <!-- Dance of the Mystic -->
+		<buff id="365" level="1" price="0" desc="Siren's" /> <!-- Siren's Dance -->
+		<buff id="276" level="1" price="0" desc="Concentrat" /> <!-- Dance of Concentration -->
+		<buff id="277" level="1" price="0" desc="Light" /> <!-- Dance of Light -->
+	</category>
+	<category type="Songs">
+		<buff id="264" level="1" price="0" desc="Earth" /> <!-- Song of Earth -->
+		<buff id="265" level="1" price="0" desc="Life" /> <!-- Song of Life -->
+		<buff id="266" level="1" price="0" desc="Water" /> <!-- Song of Water -->
+		<buff id="267" level="1" price="0" desc="Warding" /> <!-- Song of Warding -->
+		<buff id="268" level="1" price="0" desc="Wind" /> <!-- Song of Wind -->
+		<buff id="269" level="1" price="0" desc="Hunter" /> <!-- Song of Hunter -->
+		<buff id="304" level="1" price="0" desc="Vitality" /> <!-- Song of Vitality -->
+		<buff id="305" level="1" price="0" desc="Vengeance" /> <!-- Song of Vengeance -->
+		<buff id="349" level="1" price="0" desc="Renewal" /> <!-- Song of Renewal -->
+		<buff id="363" level="1" price="0" desc="Meditation" /> <!-- Song of Meditation -->
+		<buff id="364" level="1" price="0" desc="Champion" /> <!-- Song of Champion -->
+	</category>
+	<category type="Premium">
+		<buff id="4553" level="4" price="1" desc="Flu" /> <!-- Hot Springs Flu -->
+		<buff id="4554" level="4" price="1" desc="Malaria" /> <!-- Hot Springs Malaria -->
+		<buff id="4703" level="13" price="1" desc="Seraphim" /> <!-- Gift of Seraphim -->
+		<buff id="4699" level="13" price="1" desc="Queen" /> <!-- Blessing of Queen -->
+		<buff id="1259" level="4" price="1" desc="Resist Shock" /> <!-- Resist Shock -->
+		<buff id="1352" level="1" price="1" desc="Elemental" /> <!-- Elemental Protection -->
+		<buff id="1353" level="1" price="1" desc="Divine" /> <!-- Divine Protection -->
+		<buff id="1354" level="1" price="1" desc="Arcane" /> <!-- Arcane Protection -->
+		<buff id="307" level="1" price="1" desc="Aqua" /> <!-- Dance of Aqua Guard -->
+		<buff id="1392" level="3" price="1" desc="Holy" /> <!-- Holy Resistance -->
+		<buff id="1393" level="3" price="1" desc="Unholy" /> <!-- Unholy Resistance -->
+		<buff id="270" level="1" price="1" desc="Invocation" /> <!-- Song of Invocation -->
+		<buff id="306" level="1" price="1" desc="Flame" /> <!-- Song of Flame Guard -->
+		<buff id="308" level="1" price="1" desc="Storm" /> <!-- Song of Storm Guard -->
+		<buff id="1189" level="3" price="1" desc="Wind" /> <!-- Resist Wind -->
+		<buff id="1182" level="3" price="1" desc="Aqua" /> <!-- Resist Aqua -->
+		<buff id="1191" level="3" price="1" desc="Fire" /> <!-- Resist Fire -->
+	</category>
+</list>

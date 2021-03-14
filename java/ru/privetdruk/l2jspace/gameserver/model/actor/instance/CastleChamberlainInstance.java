@@ -112,7 +112,7 @@ public class CastleChamberlainInstance extends FolkInstance {
                 } else {
                     final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile("data/html/chamberlain/chamberlain-noprivs.htm");
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
                     player.sendPacket(html);
                 }
                 return;
@@ -122,7 +122,7 @@ public class CastleChamberlainInstance extends FolkInstance {
                 } else {
                     final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile("data/html/chamberlain/chamberlain-noprivs.htm");
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
                     player.sendPacket(html);
                 }
                 return;
@@ -130,28 +130,28 @@ public class CastleChamberlainInstance extends FolkInstance {
                 if (player.isClanLeader()) {
                     final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile("data/html/chamberlain/chamberlain-report.htm");
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
                     final Clan clan = ClanTable.getInstance().getClan(getCastle().getOwnerId());
-                    html.replace("%clanname%", clan.getName());
-                    html.replace("%clanleadername%", clan.getLeaderName());
-                    html.replace("%castlename%", getCastle().getName());
+                    html.replaceAll("%clanname%", clan.getName());
+                    html.replaceAll("%clanleadername%", clan.getLeaderName());
+                    html.replaceAll("%castlename%", getCastle().getName());
                     {
                         final int currentPeriod = SevenSigns.getInstance().getCurrentPeriod();
                         switch (currentPeriod) {
                             case SevenSigns.PERIOD_COMP_RECRUITING: {
-                                html.replace("%ss_event%", "Quest Event Initialization");
+                                html.replaceAll("%ss_event%", "Quest Event Initialization");
                                 break;
                             }
                             case SevenSigns.PERIOD_COMPETITION: {
-                                html.replace("%ss_event%", "Competition (Quest Event)");
+                                html.replaceAll("%ss_event%", "Competition (Quest Event)");
                                 break;
                             }
                             case SevenSigns.PERIOD_COMP_RESULTS: {
-                                html.replace("%ss_event%", "Quest Event Results");
+                                html.replaceAll("%ss_event%", "Quest Event Results");
                                 break;
                             }
                             case SevenSigns.PERIOD_SEAL_VALIDATION: {
-                                html.replace("%ss_event%", "Seal Validation");
+                                html.replaceAll("%ss_event%", "Seal Validation");
                                 break;
                             }
                         }
@@ -160,15 +160,15 @@ public class CastleChamberlainInstance extends FolkInstance {
                         final int sealOwner1 = SevenSigns.getInstance().getSealOwner(1);
                         switch (sealOwner1) {
                             case SevenSigns.CABAL_NULL: {
-                                html.replace("%ss_avarice%", "Not in Possession");
+                                html.replaceAll("%ss_avarice%", "Not in Possession");
                                 break;
                             }
                             case SevenSigns.CABAL_DAWN: {
-                                html.replace("%ss_avarice%", "Lords of Dawn");
+                                html.replaceAll("%ss_avarice%", "Lords of Dawn");
                                 break;
                             }
                             case SevenSigns.CABAL_DUSK: {
-                                html.replace("%ss_avarice%", "Revolutionaries of Dusk");
+                                html.replaceAll("%ss_avarice%", "Revolutionaries of Dusk");
                                 break;
                             }
                         }
@@ -177,15 +177,15 @@ public class CastleChamberlainInstance extends FolkInstance {
                         final int sealOwner2 = SevenSigns.getInstance().getSealOwner(2);
                         switch (sealOwner2) {
                             case SevenSigns.CABAL_NULL: {
-                                html.replace("%ss_gnosis%", "Not in Possession");
+                                html.replaceAll("%ss_gnosis%", "Not in Possession");
                                 break;
                             }
                             case SevenSigns.CABAL_DAWN: {
-                                html.replace("%ss_gnosis%", "Lords of Dawn");
+                                html.replaceAll("%ss_gnosis%", "Lords of Dawn");
                                 break;
                             }
                             case SevenSigns.CABAL_DUSK: {
-                                html.replace("%ss_gnosis%", "Revolutionaries of Dusk");
+                                html.replaceAll("%ss_gnosis%", "Revolutionaries of Dusk");
                                 break;
                             }
                         }
@@ -194,15 +194,15 @@ public class CastleChamberlainInstance extends FolkInstance {
                         final int sealOwner3 = SevenSigns.getInstance().getSealOwner(3);
                         switch (sealOwner3) {
                             case SevenSigns.CABAL_NULL: {
-                                html.replace("%ss_strife%", "Not in Possession");
+                                html.replaceAll("%ss_strife%", "Not in Possession");
                                 break;
                             }
                             case SevenSigns.CABAL_DAWN: {
-                                html.replace("%ss_strife%", "Lords of Dawn");
+                                html.replaceAll("%ss_strife%", "Lords of Dawn");
                                 break;
                             }
                             case SevenSigns.CABAL_DUSK: {
-                                html.replace("%ss_strife%", "Revolutionaries of Dusk");
+                                html.replaceAll("%ss_strife%", "Revolutionaries of Dusk");
                                 break;
                             }
                         }
@@ -211,7 +211,7 @@ public class CastleChamberlainInstance extends FolkInstance {
                 } else {
                     final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile("data/html/chamberlain/chamberlain-noprivs.htm");
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
                     player.sendPacket(html);
                 }
                 return;
@@ -246,7 +246,7 @@ public class CastleChamberlainInstance extends FolkInstance {
                 } else {
                     final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile("data/html/chamberlain/chamberlain-noprivs.htm");
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
                     player.sendPacket(html);
                     return;
                 }
@@ -282,15 +282,15 @@ public class CastleChamberlainInstance extends FolkInstance {
 
                     final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile(filename);
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
-                    html.replace("%npcname%", getName());
-                    html.replace("%tax_income%", Util.formatAdena(getCastle().getTreasury()));
-                    html.replace("%withdraw_amount%", Util.formatAdena(amount));
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%npcname%", getName());
+                    html.replaceAll("%tax_income%", Util.formatAdena(getCastle().getTreasury()));
+                    html.replaceAll("%withdraw_amount%", Util.formatAdena(amount));
                     player.sendPacket(html);
                 } else {
                     final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile("data/html/chamberlain/chamberlain-noprivs.htm");
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
                     player.sendPacket(html);
                 }
                 return;
@@ -320,14 +320,14 @@ public class CastleChamberlainInstance extends FolkInstance {
                     if (filename.length() != 0) {
                         final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                         html.setFile(filename);
-                        html.replace("%objectId%", String.valueOf(getObjectId()));
-                        html.replace("%npcname%", getName());
+                        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+                        html.replaceAll("%npcname%", getName());
                         player.sendPacket(html);
                     }
                 } else {
                     final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile("data/html/chamberlain/chamberlain-noprivs.htm");
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
                     player.sendPacket(html);
                 }
                 return;
@@ -398,7 +398,7 @@ public class CastleChamberlainInstance extends FolkInstance {
                 } else {
                     final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile("data/html/chamberlain/chamberlain-noprivs.htm");
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
                     player.sendPacket(html);
                     return;
                 }
@@ -414,13 +414,13 @@ public class CastleChamberlainInstance extends FolkInstance {
 
                     final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile("data/html/chamberlain/" + getTemplate().getNpcId() + "-d.htm");
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
-                    html.replace("%npcname%", getName());
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%npcname%", getName());
                     player.sendPacket(html);
                 } else {
                     final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile("data/html/chamberlain/chamberlain-noprivs.htm");
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
                     player.sendPacket(html);
                 }
                 return;
@@ -448,8 +448,8 @@ public class CastleChamberlainInstance extends FolkInstance {
                 } else {
                     final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile("data/html/chamberlain/chamberlain-tax.htm");
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
-                    html.replace("%tax%", String.valueOf(getCastle().getTaxPercent()));
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%tax%", String.valueOf(getCastle().getTaxPercent()));
                     player.sendPacket(html);
                 }
                 return;
@@ -461,8 +461,8 @@ public class CastleChamberlainInstance extends FolkInstance {
     private void sendHtmlMessage(PlayerInstance player, String htmlMessage) {
         final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setHtml(htmlMessage);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%npcname%", getName());
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%npcname%", getName());
         player.sendPacket(html);
     }
 
@@ -481,9 +481,9 @@ public class CastleChamberlainInstance extends FolkInstance {
 
         final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%npcId%", String.valueOf(getNpcId()));
-        html.replace("%npcname%", getName());
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%npcId%", String.valueOf(getNpcId()));
+        html.replaceAll("%npcname%", getName());
         player.sendPacket(html);
     }
 

@@ -90,7 +90,7 @@ public class SignsPriestInstance extends FolkInstance {
                         final String filename = "data/html/seven_signs/noadena.htm";
                         final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                         html.setFile(filename);
-                        html.replace("%objectId%", String.valueOf(getObjectId()));
+                        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
                         player.sendPacket(html);
                         break;
                     }

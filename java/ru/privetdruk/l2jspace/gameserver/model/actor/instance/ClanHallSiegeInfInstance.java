@@ -162,7 +162,7 @@ public class ClanHallSiegeInfInstance extends NpcInstance {
 
             str += "</body></html>";
             html.setHtml(str);
-            html.replace("%objectId%", String.valueOf(getObjectId()));
+            html.replaceAll("%objectId%", String.valueOf(getObjectId()));
             player.sendPacket(html);
         } else if (command.startsWith("UnRegister")) {
             final Clan playerClan = player.getClan();
@@ -182,7 +182,7 @@ public class ClanHallSiegeInfInstance extends NpcInstance {
                     str += "Your clan : <font color=\"LEVEL\">" + player.getClan().getName() + "</font>, successfully removed from the register at the siege clan hall.<br>";
                     str += "</body></html>";
                     html.setHtml(str);
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
+                    html.replaceAll("%objectId%", String.valueOf(getObjectId()));
                     player.sendPacket(html);
                 }
             } else {
@@ -261,7 +261,7 @@ public class ClanHallSiegeInfInstance extends NpcInstance {
         str += "</table>";
         str += "</body></html>";
         html.setHtml(str);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
         player.sendPacket(html);
     }
 
@@ -305,7 +305,7 @@ public class ClanHallSiegeInfInstance extends NpcInstance {
                 clanCount++;
             }
             clans += "</table>";
-            html.replace("%clan%", clans);
+            html.replaceAll("%clan%", clans);
             final Clan clan = clanhall == null ? null : clanhall.getOwnerClan();
             String clanName;
             if (clan == null) {
@@ -313,12 +313,12 @@ public class ClanHallSiegeInfInstance extends NpcInstance {
             } else {
                 clanName = clan.getName();
             }
-            html.replace("%clanname%", clanName);
+            html.replaceAll("%clanname%", clanName);
         }
 
         final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        html.replace("%SiegeDate%", format.format(startSiege));
-        html.replace("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%SiegeDate%", format.format(startSiege));
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
         player.sendPacket(html);
     }
 }

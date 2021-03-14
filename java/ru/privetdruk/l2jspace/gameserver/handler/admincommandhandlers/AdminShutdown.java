@@ -107,13 +107,13 @@ public class AdminShutdown implements IAdminCommandHandler {
         cal.set(Calendar.HOUR_OF_DAY, h);
         cal.set(Calendar.MINUTE, m);
         adminReply.setFile("data/html/admin/shutdown.htm");
-        adminReply.replace("%count%", String.valueOf(World.getAllPlayersCount()));
-        adminReply.replace("%used%", String.valueOf(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
-        adminReply.replace("%xp%", String.valueOf(Config.RATE_XP));
-        adminReply.replace("%sp%", String.valueOf(Config.RATE_SP));
-        adminReply.replace("%adena%", String.valueOf(Config.RATE_DROP_ADENA));
-        adminReply.replace("%drop%", String.valueOf(Config.RATE_DROP_ITEMS));
-        adminReply.replace("%time%", format.format(cal.getTime()));
+        adminReply.replaceAll("%count%", String.valueOf(World.getAllPlayersCount()));
+        adminReply.replaceAll("%used%", String.valueOf(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
+        adminReply.replaceAll("%xp%", String.valueOf(Config.RATE_XP));
+        adminReply.replaceAll("%sp%", String.valueOf(Config.RATE_SP));
+        adminReply.replaceAll("%adena%", String.valueOf(Config.RATE_DROP_ADENA));
+        adminReply.replaceAll("%drop%", String.valueOf(Config.RATE_DROP_ITEMS));
+        adminReply.replaceAll("%time%", format.format(cal.getTime()));
         activeChar.sendPacket(adminReply);
     }
 

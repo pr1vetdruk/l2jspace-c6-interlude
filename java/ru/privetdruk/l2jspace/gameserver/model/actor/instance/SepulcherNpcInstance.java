@@ -236,7 +236,7 @@ public class SepulcherNpcInstance extends NpcInstance {
         final String filename = getHtmlPath(getNpcId(), value);
         final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
         player.sendPacket(html);
         player.sendPacket(ActionFailed.STATIC_PACKET);
     }
@@ -246,9 +246,9 @@ public class SepulcherNpcInstance extends NpcInstance {
         if (isBusy()) {
             final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             html.setFile("data/html/npcbusy.htm");
-            html.replace("%busymessage%", getBusyMessage());
-            html.replace("%npcname%", getName());
-            html.replace("%playername%", player.getName());
+            html.replaceAll("%busymessage%", getBusyMessage());
+            html.replaceAll("%npcname%", getName());
+            html.replaceAll("%playername%", player.getName());
             player.sendPacket(html);
         } else if (command.startsWith("Chat")) {
             int val = 0;
@@ -369,7 +369,7 @@ public class SepulcherNpcInstance extends NpcInstance {
     public void showHtmlFile(PlayerInstance player, String file) {
         final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile("data/html/SepulcherNpc/" + file);
-        html.replace("%npcname%", getName());
+        html.replaceAll("%npcname%", getName());
         player.sendPacket(html);
     }
 }

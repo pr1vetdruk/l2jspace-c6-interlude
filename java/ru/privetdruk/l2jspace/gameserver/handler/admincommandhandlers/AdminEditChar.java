@@ -720,13 +720,13 @@ public class AdminEditChar implements IAdminCommandHandler {
             replyMSG.append("<center><a action=\"bypass -h admin_show_characters " + x + "\">Page " + pagenr + "</a></center>");
         }
 
-        adminReply.replace("%pages%", replyMSG.toString());
+        adminReply.replaceAll("%pages%", replyMSG.toString());
         replyMSG = new StringBuilder();
         for (int i = CharactersStart; i < charactersEnd; i++) {
             replyMSG.append("<tr><td width=80><a action=\"bypass -h admin_character_info " + players[i].getName() + "\">" + players[i].getName() + "</a></td><td width=110>" + players[i].getTemplate().getClassName() + "</td><td width=40>" + players[i].getLevel() + "</td></tr>");
         }
 
-        adminReply.replace("%players%", replyMSG.toString());
+        adminReply.replaceAll("%players%", replyMSG.toString());
         activeChar.sendPacket(adminReply);
     }
 
@@ -740,49 +740,49 @@ public class AdminEditChar implements IAdminCommandHandler {
 
         final NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
         adminReply.setFile("data/html/admin/" + filename);
-        adminReply.replace("%name%", player.getName());
-        adminReply.replace("%level%", String.valueOf(player.getLevel()));
+        adminReply.replaceAll("%name%", player.getName());
+        adminReply.replaceAll("%level%", String.valueOf(player.getLevel()));
         final Clan playerClan = ClanTable.getInstance().getClan(player.getClanId());
         if (playerClan != null) {
-            adminReply.replace("%clan%", playerClan.getName());
+            adminReply.replaceAll("%clan%", playerClan.getName());
         } else {
-            adminReply.replace("%clan%", "no Clan");
+            adminReply.replaceAll("%clan%", "no Clan");
         }
-        adminReply.replace("%xp%", String.valueOf(player.getExp()));
-        adminReply.replace("%sp%", String.valueOf(player.getSp()));
-        adminReply.replace("%class%", player.getTemplate().getClassName());
-        adminReply.replace("%ordinal%", String.valueOf(player.getClassId().ordinal()));
-        adminReply.replace("%classid%", String.valueOf(player.getClassId()));
-        adminReply.replace("%x%", String.valueOf(player.getX()));
-        adminReply.replace("%y%", String.valueOf(player.getY()));
-        adminReply.replace("%z%", String.valueOf(player.getZ()));
-        adminReply.replace("%currenthp%", String.valueOf((int) player.getCurrentHp()));
-        adminReply.replace("%maxhp%", String.valueOf(player.getMaxHp()));
-        adminReply.replace("%karma%", String.valueOf(player.getKarma()));
-        adminReply.replace("%currentmp%", String.valueOf((int) player.getCurrentMp()));
-        adminReply.replace("%maxmp%", String.valueOf(player.getMaxMp()));
-        adminReply.replace("%pvpflag%", String.valueOf(player.getPvpFlag()));
-        adminReply.replace("%currentcp%", String.valueOf((int) player.getCurrentCp()));
-        adminReply.replace("%maxcp%", String.valueOf(player.getMaxCp()));
-        adminReply.replace("%pvpkills%", String.valueOf(player.getPvpKills()));
-        adminReply.replace("%pkkills%", String.valueOf(player.getPkKills()));
-        adminReply.replace("%currentload%", String.valueOf(player.getCurrentLoad()));
-        adminReply.replace("%maxload%", String.valueOf(player.getMaxLoad()));
-        adminReply.replace("%percent%", String.valueOf(Util.roundTo(((float) player.getCurrentLoad() / player.getMaxLoad()) * 100, 2)));
-        adminReply.replace("%patk%", String.valueOf(player.getPAtk(null)));
-        adminReply.replace("%matk%", String.valueOf(player.getMAtk(null, null)));
-        adminReply.replace("%pdef%", String.valueOf(player.getPDef(null)));
-        adminReply.replace("%mdef%", String.valueOf(player.getMDef(null, null)));
-        adminReply.replace("%accuracy%", String.valueOf(player.getAccuracy()));
-        adminReply.replace("%evasion%", String.valueOf(player.getEvasionRate(null)));
-        adminReply.replace("%critical%", String.valueOf(player.getCriticalHit(null, null)));
-        adminReply.replace("%runspeed%", String.valueOf(player.getRunSpeed()));
-        adminReply.replace("%patkspd%", String.valueOf(player.getPAtkSpd()));
-        adminReply.replace("%matkspd%", String.valueOf(player.getMAtkSpd()));
-        adminReply.replace("%access%", String.valueOf(player.getAccessLevel().getLevel()));
-        adminReply.replace("%account%", account);
-        adminReply.replace("%ip%", ip);
-        adminReply.replace("%protocol%", String.valueOf(player.getClient() != null ? player.getClient().getProtocolVersion() : "NULL"));
+        adminReply.replaceAll("%xp%", String.valueOf(player.getExp()));
+        adminReply.replaceAll("%sp%", String.valueOf(player.getSp()));
+        adminReply.replaceAll("%class%", player.getTemplate().getClassName());
+        adminReply.replaceAll("%ordinal%", String.valueOf(player.getClassId().ordinal()));
+        adminReply.replaceAll("%classid%", String.valueOf(player.getClassId()));
+        adminReply.replaceAll("%x%", String.valueOf(player.getX()));
+        adminReply.replaceAll("%y%", String.valueOf(player.getY()));
+        adminReply.replaceAll("%z%", String.valueOf(player.getZ()));
+        adminReply.replaceAll("%currenthp%", String.valueOf((int) player.getCurrentHp()));
+        adminReply.replaceAll("%maxhp%", String.valueOf(player.getMaxHp()));
+        adminReply.replaceAll("%karma%", String.valueOf(player.getKarma()));
+        adminReply.replaceAll("%currentmp%", String.valueOf((int) player.getCurrentMp()));
+        adminReply.replaceAll("%maxmp%", String.valueOf(player.getMaxMp()));
+        adminReply.replaceAll("%pvpflag%", String.valueOf(player.getPvpFlag()));
+        adminReply.replaceAll("%currentcp%", String.valueOf((int) player.getCurrentCp()));
+        adminReply.replaceAll("%maxcp%", String.valueOf(player.getMaxCp()));
+        adminReply.replaceAll("%pvpkills%", String.valueOf(player.getPvpKills()));
+        adminReply.replaceAll("%pkkills%", String.valueOf(player.getPkKills()));
+        adminReply.replaceAll("%currentload%", String.valueOf(player.getCurrentLoad()));
+        adminReply.replaceAll("%maxload%", String.valueOf(player.getMaxLoad()));
+        adminReply.replaceAll("%percent%", String.valueOf(Util.roundTo(((float) player.getCurrentLoad() / player.getMaxLoad()) * 100, 2)));
+        adminReply.replaceAll("%patk%", String.valueOf(player.getPAtk(null)));
+        adminReply.replaceAll("%matk%", String.valueOf(player.getMAtk(null, null)));
+        adminReply.replaceAll("%pdef%", String.valueOf(player.getPDef(null)));
+        adminReply.replaceAll("%mdef%", String.valueOf(player.getMDef(null, null)));
+        adminReply.replaceAll("%accuracy%", String.valueOf(player.getAccuracy()));
+        adminReply.replaceAll("%evasion%", String.valueOf(player.getEvasionRate(null)));
+        adminReply.replaceAll("%critical%", String.valueOf(player.getCriticalHit(null, null)));
+        adminReply.replaceAll("%runspeed%", String.valueOf(player.getRunSpeed()));
+        adminReply.replaceAll("%patkspd%", String.valueOf(player.getPAtkSpd()));
+        adminReply.replaceAll("%matkspd%", String.valueOf(player.getMAtkSpd()));
+        adminReply.replaceAll("%access%", String.valueOf(player.getAccessLevel().getLevel()));
+        adminReply.replaceAll("%account%", account);
+        adminReply.replaceAll("%ip%", ip);
+        adminReply.replaceAll("%protocol%", String.valueOf(player.getClient() != null ? player.getClient().getProtocolVersion() : "NULL"));
         activeChar.sendPacket(adminReply);
     }
 
@@ -908,12 +908,12 @@ public class AdminEditChar implements IAdminCommandHandler {
             }
         }
 
-        adminReply.replace("%results%", replyMSG.toString());
+        adminReply.replaceAll("%results%", replyMSG.toString());
         replyMSG = new StringBuilder();
         if (charactersFound == 0) {
             replyMSG.append("s. Please try again.");
         } else if (charactersFound > 20) {
-            adminReply.replace("%number%", " more than 20");
+            adminReply.replaceAll("%number%", " more than 20");
             replyMSG.append("s.<br>Please refine your search to see all of the results.");
         } else if (charactersFound == 1) {
             replyMSG.append('.');
@@ -921,8 +921,8 @@ public class AdminEditChar implements IAdminCommandHandler {
             replyMSG.append("s.");
         }
 
-        adminReply.replace("%number%", String.valueOf(charactersFound));
-        adminReply.replace("%end%", replyMSG.toString());
+        adminReply.replaceAll("%number%", String.valueOf(charactersFound));
+        adminReply.replaceAll("%end%", replyMSG.toString());
         activeChar.sendPacket(adminReply);
     }
 
@@ -965,8 +965,8 @@ public class AdminEditChar implements IAdminCommandHandler {
 
         final NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
         adminReply.setFile("data/html/admin/dualbox.htm");
-        adminReply.replace("%multibox%", String.valueOf(multibox));
-        adminReply.replace("%results%", results.toString());
+        adminReply.replaceAll("%multibox%", String.valueOf(multibox));
+        adminReply.replaceAll("%results%", results.toString());
         activeChar.sendPacket(adminReply);
     }
 
@@ -1005,12 +1005,12 @@ public class AdminEditChar implements IAdminCommandHandler {
             }
         }
 
-        adminReply.replace("%results%", replyMSG.toString());
+        adminReply.replaceAll("%results%", replyMSG.toString());
         replyMSG = new StringBuilder();
         if (charactersFound == 0) {
             replyMSG.append("s. Maybe they got d/c? :)");
         } else if (charactersFound > 20) {
-            adminReply.replace("%number%", " more than " + charactersFound);
+            adminReply.replaceAll("%number%", " more than " + charactersFound);
             replyMSG.append("s.<br>In order to avoid you a client crash I won't <br1>display results beyond the 20th character.");
         } else if (charactersFound == 1) {
             replyMSG.append('.');
@@ -1018,9 +1018,9 @@ public class AdminEditChar implements IAdminCommandHandler {
             replyMSG.append("s.");
         }
 
-        adminReply.replace("%ip%", ip);
-        adminReply.replace("%number%", String.valueOf(charactersFound));
-        adminReply.replace("%end%", replyMSG.toString());
+        adminReply.replaceAll("%ip%", ip);
+        adminReply.replaceAll("%number%", String.valueOf(charactersFound));
+        adminReply.replaceAll("%end%", replyMSG.toString());
         activeChar.sendPacket(adminReply);
     }
 
@@ -1048,9 +1048,9 @@ public class AdminEditChar implements IAdminCommandHandler {
                 replyMSG.append(charname + "<br1>");
             }
 
-            adminReply.replace("%characters%", replyMSG.toString());
-            adminReply.replace("%account%", account);
-            adminReply.replace("%player%", characterName);
+            adminReply.replaceAll("%characters%", replyMSG.toString());
+            adminReply.replaceAll("%account%", account);
+            adminReply.replaceAll("%player%", characterName);
             activeChar.sendPacket(adminReply);
         } else {
             throw new IllegalArgumentException("Malformed character name");

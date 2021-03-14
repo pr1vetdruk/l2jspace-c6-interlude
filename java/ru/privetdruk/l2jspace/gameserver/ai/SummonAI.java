@@ -69,7 +69,8 @@ public class SummonAI extends CreatureAI {
         _accessor.doAttack(getAttackTarget());
     }
 
-    private void thinkCast() {
+    @Override
+    protected void thinkCast() {
         final Summon summon = (Summon) _actor;
         final Creature target = getCastTarget();
         if (checkTargetLost(target)) {

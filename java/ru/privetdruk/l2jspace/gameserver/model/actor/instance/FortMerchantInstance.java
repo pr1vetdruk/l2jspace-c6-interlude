@@ -100,15 +100,15 @@ public class FortMerchantInstance extends NpcWalkerInstance {
 
         final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%npcId%", String.valueOf(getNpcId()));
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%npcId%", String.valueOf(getNpcId()));
         if (getFort().getOwnerClan() != null) {
-            html.replace("%clanname%", getFort().getOwnerClan().getName());
+            html.replaceAll("%clanname%", getFort().getOwnerClan().getName());
         } else {
-            html.replace("%clanname%", "NPC");
+            html.replaceAll("%clanname%", "NPC");
         }
 
-        html.replace("%castleid%", Integer.toString(getCastle().getCastleId()));
+        html.replaceAll("%castleid%", Integer.toString(getCastle().getCastleId()));
         player.sendPacket(html);
     }
 
@@ -123,8 +123,8 @@ public class FortMerchantInstance extends NpcWalkerInstance {
         if (siege.isInProgress()) {
             final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             html.setFile("data/html/fortress/merchant-busy.htm");
-            html.replace("%fortname%", getFort().getName());
-            html.replace("%objectId%", String.valueOf(getObjectId()));
+            html.replaceAll("%fortname%", getFort().getName());
+            html.replaceAll("%objectId%", String.valueOf(getObjectId()));
             player.sendPacket(html);
             player.sendPacket(ActionFailed.STATIC_PACKET);
         } else {

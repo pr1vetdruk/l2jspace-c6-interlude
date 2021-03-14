@@ -64,7 +64,7 @@ public class Repair implements IVoicedCommandHandler, ICustomByPassHandler {
             final String htmContent = HtmCache.getInstance().getHtm("data/html/mods/repair/repair.htm");
             final NpcHtmlMessage npcHtmlMessage = new NpcHtmlMessage(5);
             npcHtmlMessage.setHtml(htmContent);
-            npcHtmlMessage.replace("%acc_chars%", getCharList(activeChar));
+            npcHtmlMessage.replaceAll("%acc_chars%", getCharList(activeChar));
             activeChar.sendPacket(npcHtmlMessage);
             return true;
         }
@@ -239,7 +239,7 @@ public class Repair implements IVoicedCommandHandler, ICustomByPassHandler {
                 final String htmContent = HtmCache.getInstance().getHtm("data/html/mods/repair/repair-error.htm");
                 final NpcHtmlMessage npcHtmlMessage = new NpcHtmlMessage(5);
                 npcHtmlMessage.setHtml(htmContent);
-                npcHtmlMessage.replace("%acc_chars%", getCharList(activeChar));
+                npcHtmlMessage.replaceAll("%acc_chars%", getCharList(activeChar));
                 activeChar.sendPacket(npcHtmlMessage);
                 return;
             }

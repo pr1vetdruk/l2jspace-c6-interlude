@@ -348,7 +348,7 @@ public class IceFairySirra extends Quest {
     public void sendHtml(NpcInstance npc, PlayerInstance player, String filename) {
         final NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(npc.getObjectId()));
+        html.replaceAll("%objectId%", String.valueOf(npc.getObjectId()));
         player.sendPacket(html);
         player.sendPacket(ActionFailed.STATIC_PACKET);
     }

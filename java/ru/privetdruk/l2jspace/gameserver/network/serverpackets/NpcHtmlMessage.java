@@ -131,25 +131,22 @@ public class NpcHtmlMessage extends GameServerPacket {
      */
     private static final Logger LOGGER = Logger.getLogger(NpcHtmlMessage.class.getName());
 
+    private static final String BYPASS_PREFIX = "bypass -h";
+
     /**
      * The _npc obj id.
      */
-    private final int _npcObjId;
+    private final int npcObjId;
 
     /**
      * The _html.
      */
-    private String _html;
+    private String html;
 
     /**
      * The _html file.
      */
-    private String _file = null;
-
-    /**
-     * The _validate.
-     */
-    private final boolean _validate = true;
+    private String file = null;
 
     /**
      * Instantiates a new npc html message.
@@ -158,7 +155,7 @@ public class NpcHtmlMessage extends GameServerPacket {
      * @param text     the text
      */
     public NpcHtmlMessage(int npcObjId, String text) {
-        _npcObjId = npcObjId;
+        this.npcObjId = npcObjId;
         setHtml(text);
     }
 
@@ -168,7 +165,7 @@ public class NpcHtmlMessage extends GameServerPacket {
      * @param npcObjId the npc obj id
      */
     public NpcHtmlMessage(int npcObjId) {
-        _npcObjId = npcObjId;
+        this.npcObjId = npcObjId;
     }
 
     /*
@@ -177,7 +174,7 @@ public class NpcHtmlMessage extends GameServerPacket {
      */
     @Override
     public void runImpl() {
-        if (Config.BYPASS_VALIDATION && _validate) {
+        if (Config.BYPASS_VALIDATION) {
             buildBypassCache(getClient().getPlayer());
             buildLinksCache(getClient().getPlayer());
         }
@@ -191,17 +188,17 @@ public class NpcHtmlMessage extends GameServerPacket {
     public void setHtml(String text) {
         if (text == null) {
             LOGGER.warning("Html is null! this will crash the client!");
-            _html = "<html><body></body></html>";
+            html = "<html><body></body></html>";
             return;
         }
 
         if (text.length() > 8192) {
             LOGGER.warning("Html is too long! this will crash the client!");
-            _html = "<html><body>Html was too long,<br>Try to use DB for this action</body></html>";
+            html = "<html><body>Html was too long,<br>Try to use DB for this action</body></html>";
             return;
         }
 
-        _html = text; // html code must not exceed 8192 bytes
+        html = text; // html code must not exceed 8192 bytes
     }
 
     /**
@@ -211,15 +208,17 @@ public class NpcHtmlMessage extends GameServerPacket {
      * @return true, if successful
      */
     public boolean setFile(String path) {
-        final String content = HtmCache.getInstance().getHtm(path);
+         String content = HtmCache.getInstance().getHtm(path);
+
         if (content == null) {
             setHtml("<html><body>My Text is missing:<br>" + path + "</body></html>");
             LOGGER.warning("missing html page " + path);
             return false;
         }
 
-        _file = path;
+        file = path;
         setHtml(content);
+
         return true;
     }
 
@@ -229,24 +228,28 @@ public class NpcHtmlMessage extends GameServerPacket {
      * @param pattern the pattern
      * @param value   the value
      */
+    public void replaceAll(String pattern, String value) {
+        html = html.replaceAll(pattern, value);
+    }
+
     public void replace(String pattern, String value) {
-        _html = _html.replaceAll(pattern, value);
+        html = html.replace(pattern, value);
     }
 
-    public void replace(String pattern, boolean value) {
-        replace(pattern, String.valueOf(value));
+    public void replaceAll(String pattern, boolean value) {
+        replaceAll(pattern, String.valueOf(value));
     }
 
-    public void replace(String pattern, int value) {
-        replace(pattern, String.valueOf(value));
+    public void replaceAll(String pattern, int value) {
+        replaceAll(pattern, String.valueOf(value));
     }
 
-    public void replace(String pattern, long value) {
-        replace(pattern, String.valueOf(value));
+    public void replaceAll(String pattern, long value) {
+        replaceAll(pattern, String.valueOf(value));
     }
 
-    public void replace(String pattern, double value) {
-        replace(pattern, String.valueOf(value));
+    public void replaceAll(String pattern, double value) {
+        replaceAll(pattern, String.valueOf(value));
     }
 
     /**
@@ -254,28 +257,30 @@ public class NpcHtmlMessage extends GameServerPacket {
      *
      * @param player the player
      */
-    private final void buildBypassCache(PlayerInstance player) {
+    private void buildBypassCache(PlayerInstance player) {
         if (player == null) {
             return;
         }
 
         player.clearBypass();
-        final int len = _html.length();
-        for (int i = 0; i < len; i++) {
-            int start = _html.indexOf("bypass -h", i);
-            final int finish = _html.indexOf("\"", start);
-            if ((start < 0) || (finish < 0)) {
+
+        for (int i = 0; i < html.length(); i++) {
+            int startIndexBypass = html.indexOf(BYPASS_PREFIX, i);
+            int endIndexBypass = html.indexOf("\"", startIndexBypass);
+
+            if (startIndexBypass < 0 || endIndexBypass < 0) {
                 break;
             }
 
-            start += 10;
-            i = start;
-            final int finish2 = _html.indexOf('$', start);
-            if ((finish2 < finish) && (finish2 > 0)) {
-                player.addBypass2(_html.substring(start, finish2));
+            startIndexBypass += BYPASS_PREFIX.length() + 1;
+            i = startIndexBypass;
+
+            int startIndexComboBoxValue = html.indexOf('$', startIndexBypass);
+
+            if (startIndexComboBoxValue < endIndexBypass && startIndexComboBoxValue > 0) {
+                player.addBypass(html.substring(startIndexBypass, startIndexComboBoxValue), true);
             } else {
-                player.addBypass(_html.substring(start, finish));
-                // LOGGER.warning("["+_html.substring(start, finish)+"]");
+                player.addBypass(html.substring(startIndexBypass, endIndexBypass), false);
             }
         }
     }
@@ -285,22 +290,24 @@ public class NpcHtmlMessage extends GameServerPacket {
      *
      * @param player the player
      */
-    private final void buildLinksCache(PlayerInstance player) {
+    private void buildLinksCache(PlayerInstance player) {
         if (player == null) {
             return;
         }
 
         player.clearLinks();
-        final int len = _html.length();
-        for (int i = 0; i < len; i++) {
-            final int start = _html.indexOf("link", i);
-            final int finish = _html.indexOf("\"", start);
-            if ((start < 0) || (finish < 0)) {
+
+        for (int i = 0; i < html.length(); i++) {
+            int start = html.indexOf("link", i);
+            int finish = html.indexOf("\"", start);
+
+            if (start < 0 || finish < 0) {
                 break;
             }
 
             i = start;
-            player.addLink(_html.substring(start + 5, finish).trim());
+
+            player.addLink(html.substring(start + 5, finish).trim());
         }
     }
 
@@ -310,14 +317,15 @@ public class NpcHtmlMessage extends GameServerPacket {
      */
     @Override
     protected final void writeImpl() {
-        final PlayerInstance player = getClient().getPlayer();
-        if ((_file != null) && player.isGM() && Config.GM_DEBUG_HTML_PATHS) {
-            BuilderUtil.sendHtmlMessage(player, _file.substring(10));
+        PlayerInstance player = getClient().getPlayer();
+
+        if ((file != null) && player.isGM() && Config.GM_DEBUG_HTML_PATHS) {
+            BuilderUtil.sendHtmlMessage(player, file.substring(10));
         }
 
         writeC(0x0f);
-        writeD(_npcObjId);
-        writeS(_html);
+        writeD(npcObjId);
+        writeS(html);
         writeD(0x00);
     }
 
@@ -327,6 +335,6 @@ public class NpcHtmlMessage extends GameServerPacket {
      * @return the content
      */
     public String getContent() {
-        return _html;
+        return html;
     }
 }

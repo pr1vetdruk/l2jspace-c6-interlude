@@ -70,8 +70,8 @@ public class SiegeNpcInstance extends FolkInstance {
         if (siege.isInProgress()) {
             final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             html.setFile("data/html/siege/" + getTemplate().getNpcId() + "-busy.htm");
-            html.replace("%castlename%", getCastle().getName());
-            html.replace("%objectId%", String.valueOf(getObjectId()));
+            html.replaceAll("%castlename%", getCastle().getName());
+            html.replaceAll("%objectId%", String.valueOf(getObjectId()));
             player.sendPacket(html);
             player.sendPacket(ActionFailed.STATIC_PACKET);
         } else {

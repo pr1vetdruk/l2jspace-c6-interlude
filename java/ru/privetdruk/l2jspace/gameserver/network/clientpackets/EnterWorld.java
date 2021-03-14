@@ -162,8 +162,8 @@ public class EnterWorld extends GameClientPacket {
             if ((player.getClan() != null) && player.getClan().isNoticeEnabled()) {
                 final NpcHtmlMessage html = new NpcHtmlMessage(0);
                 html.setFile("data/html/clan_notice.htm");
-                html.replace("%clan_name%", player.getClan().getName());
-                html.replace("%notice_text%", player.getClan().getNotice().replaceAll("\r\n", "<br>").replaceAll("action", "").replace("bypass", ""));
+                html.replaceAll("%clan_name%", player.getClan().getName());
+                html.replaceAll("%notice_text%", player.getClan().getNotice().replaceAll("\r\n", "<br>").replaceAll("action", "").replace("bypass", ""));
                 sendPacket(html);
             }
         }
@@ -554,7 +554,7 @@ public class EnterWorld extends GameClientPacket {
             if (mainText.exists()) {
                 final NpcHtmlMessage html = new NpcHtmlMessage(1);
                 html.setFile(Welcome_Path);
-                html.replace("%name%", player.getName());
+                html.replaceAll("%name%", player.getName());
                 sendPacket(html);
             }
         }

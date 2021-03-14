@@ -477,8 +477,7 @@ public class PlayerInstance extends Playable {
     private ItemInstance _lure = null;
     private ScheduledFuture<?> _taskRentPet;
     private ScheduledFuture<?> _taskWater;
-    private final List<String> _validBypass = new ArrayList<>();
-    private final List<String> _validBypass2 = new ArrayList<>();
+    private final Map<String, Boolean> bypassMap = new HashMap<>();
     private final List<String> _validLink = new ArrayList<>();
     private Forum _forumMail;
     private Forum _forumMemo;
@@ -11700,23 +11699,12 @@ public class PlayerInstance extends Playable {
      *
      * @param bypass the bypass
      */
-    public synchronized void addBypass(String bypass) {
+    public synchronized void addBypass(String bypass, Boolean withComboBoxValue) {
         if (bypass == null) {
             return;
         }
-        _validBypass.add(bypass);
-    }
 
-    /**
-     * Adds the bypass2.
-     *
-     * @param bypass the bypass
-     */
-    public synchronized void addBypass2(String bypass) {
-        if (bypass == null) {
-            return;
-        }
-        _validBypass2.add(bypass);
+        bypassMap.put(bypass.trim(), withComboBoxValue);
     }
 
     /**
@@ -11730,32 +11718,28 @@ public class PlayerInstance extends Playable {
             return true;
         }
 
-        for (String bp : _validBypass) {
-            if (bp == null) {
+        for (Map.Entry<String, Boolean> bypassEntry : bypassMap.entrySet()) {
+            if (bypassEntry.getKey() == null) {
                 continue;
             }
 
-            if (bp.equals(cmd)) {
+            if (Boolean.TRUE.equals(bypassEntry.getValue())) {
+                if (cmd.startsWith(bypassEntry.getKey())) {
+                    return true;
+                }
+            } else if (bypassEntry.getKey().equals(cmd)) {
                 return true;
             }
         }
 
-        for (String bp : _validBypass2) {
-            if (bp == null) {
-                continue;
-            }
-
-            if (cmd.startsWith(bp)) {
-                return true;
-            }
-        }
         if (cmd.startsWith("npc_") && cmd.endsWith("_SevenSigns 7")) {
             return true;
         }
 
-        final PlayerInstance player = _client.getPlayer();
+        PlayerInstance player = _client.getPlayer();
         // We decided to put a kick because when a player is doing quest with a BOT he sends invalid bypass.
         Util.handleIllegalPlayerAction(player, "[PlayerInstance] player [" + player.getName() + "] sent invalid bypass '" + cmd + "'", Config.DEFAULT_PUNISH);
+
         return false;
     }
 
@@ -11830,8 +11814,7 @@ public class PlayerInstance extends Playable {
      * Clear bypass.
      */
     public synchronized void clearBypass() {
-        _validBypass.clear();
-        _validBypass2.clear();
+        bypassMap.clear();
     }
 
     /**

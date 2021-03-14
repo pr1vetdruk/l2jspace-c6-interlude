@@ -176,15 +176,15 @@ public class AdminFence implements IAdminCommandHandler {
 
         final NpcHtmlMessage html = new NpcHtmlMessage(0);
         html.setFile("data/html/admin/fences.htm");
-        html.replace("%pages%", result.getPagerTemplate().toString());
-        html.replace("%announcements%", result.getBodyTemplate().toString());
+        html.replaceAll("%pages%", result.getPagerTemplate().toString());
+        html.replaceAll("%announcements%", result.getBodyTemplate().toString());
         if (result.getPages() > 0) {
-            html.replace("%pages%", "<table width=280 cellspacing=0><tr>" + result.getPagerTemplate() + "</tr></table>");
+            html.replaceAll("%pages%", "<table width=280 cellspacing=0><tr>" + result.getPagerTemplate() + "</tr></table>");
         } else {
-            html.replace("%pages%", "");
+            html.replaceAll("%pages%", "");
         }
 
-        html.replace("%fences%", result.getBodyTemplate().toString());
+        html.replaceAll("%fences%", result.getBodyTemplate().toString());
         activeChar.sendPacket(html);
     }
 }

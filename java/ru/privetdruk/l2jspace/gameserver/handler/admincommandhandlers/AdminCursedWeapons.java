@@ -107,7 +107,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler {
                 replyMSG.append("<br>");
             }
 
-            adminReply.replace("%cwinfo%", replyMSG.toString());
+            adminReply.replaceAll("%cwinfo%", replyMSG.toString());
             activeChar.sendPacket(adminReply);
         } else if (command.equalsIgnoreCase("admin_cw_reload")) {
             cursedWeaponsManager.reload();

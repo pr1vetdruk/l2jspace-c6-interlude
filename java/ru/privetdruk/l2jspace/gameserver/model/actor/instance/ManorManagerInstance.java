@@ -71,8 +71,8 @@ public class ManorManagerInstance extends MerchantInstance {
             if (CastleManorManager.getInstance().isDisabled()) {
                 final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                 html.setFile("data/html/npcdefault.htm");
-                html.replace("%objectId%", String.valueOf(getObjectId()));
-                html.replace("%npcname%", getName());
+                html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+                html.replaceAll("%npcname%", getName());
                 player.sendPacket(html);
             } else if (!player.isGM() // Player is not GM
                     && (getCastle() != null) && (getCastle().getCastleId() > 0 // Verification of castle
@@ -217,9 +217,9 @@ public class ManorManagerInstance extends MerchantInstance {
     private void showMessageWindow(PlayerInstance player, String filename) {
         final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(getHtmlPath() + filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%npcId%", String.valueOf(getNpcId()));
-        html.replace("%npcname%", getName());
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%npcId%", String.valueOf(getNpcId()));
+        html.replaceAll("%npcname%", getName());
         player.sendPacket(html);
     }
 }

@@ -40,11 +40,11 @@ import ru.privetdruk.l2jspace.commons.util.Util;
 import ru.privetdruk.l2jspace.gameserver.cache.CrestCache;
 import ru.privetdruk.l2jspace.gameserver.cache.HtmCache;
 import ru.privetdruk.l2jspace.gameserver.communitybbs.Manager.ForumsBBSManager;
+import ru.privetdruk.l2jspace.gameserver.datatables.BufferTable;
 import ru.privetdruk.l2jspace.gameserver.datatables.HeroSkillTable;
 import ru.privetdruk.l2jspace.gameserver.datatables.ItemTable;
 import ru.privetdruk.l2jspace.gameserver.datatables.NobleSkillTable;
 import ru.privetdruk.l2jspace.gameserver.datatables.OfflineTradeTable;
-import ru.privetdruk.l2jspace.gameserver.datatables.SchemeBufferTable;
 import ru.privetdruk.l2jspace.gameserver.datatables.SkillTable;
 import ru.privetdruk.l2jspace.gameserver.datatables.sql.CharNameTable;
 import ru.privetdruk.l2jspace.gameserver.datatables.sql.ClanTable;
@@ -240,7 +240,7 @@ public class GameServer {
         }
 
         Util.printSection("Npc");
-        SchemeBufferTable.getInstance();
+        BufferTable.getInstance();
         WalkerRouteData.getInstance();
         if (!NpcTable.getInstance().isInitialized()) {
             LOGGER.info("Could not find the extracted files. Please Check Your Data.");

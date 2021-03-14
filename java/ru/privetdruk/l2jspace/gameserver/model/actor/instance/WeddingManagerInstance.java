@@ -82,9 +82,9 @@ public class WeddingManagerInstance extends NpcInstance {
         final String replace = String.valueOf(Config.WEDDING_PRICE);
         final NpcHtmlMessage html = new NpcHtmlMessage(1);
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%replace%", replace);
-        html.replace("%npcname%", getName());
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%replace%", replace);
+        html.replaceAll("%npcname%", getName());
         player.sendPacket(html);
     }
 
@@ -273,9 +273,9 @@ public class WeddingManagerInstance extends NpcInstance {
     private void sendHtmlMessage(PlayerInstance player, String filename, String replace) {
         final NpcHtmlMessage html = new NpcHtmlMessage(1);
         html.setFile(filename);
-        html.replace("%objectId%", String.valueOf(getObjectId()));
-        html.replace("%replace%", replace);
-        html.replace("%npcname%", getName());
+        html.replaceAll("%objectId%", String.valueOf(getObjectId()));
+        html.replaceAll("%replace%", replace);
+        html.replaceAll("%npcname%", getName());
         player.sendPacket(html);
     }
 }
