@@ -4980,12 +4980,16 @@ public abstract class Creature extends WorldObject implements ISkillsHolder {
                         && !(((curZ - z) > 300) && (distance < 300))) // Prohibit correcting destination if character wants to fall.
                 {
                     // location different if destination wasn't reached (or just z coord is different)
-                    final Location destiny = GeoEngine.getInstance().canMoveToTargetLoc(curX, curY, curZ, x, y, z, getInstanceId());
+                    Location destiny = GeoEngine.getInstance().canMoveToTargetLoc(curX, curY, curZ, x, y, z, getInstanceId());
+
                     x = destiny.getX();
                     y = destiny.getY();
+                    z = destiny.getZ();
+
                     dx = x - curX;
                     dy = y - curY;
                     dz = z - curZ;
+
                     distance = verticalMovementOnly ? Math.pow(dz, 2) : Math.hypot(dx, dy);
                 }
 
@@ -4993,15 +4997,19 @@ public abstract class Creature extends WorldObject implements ISkillsHolder {
                 if (((originalDistance - distance) > 30) && !_isAfraid && !isInBoat) {
                     // Path calculation -- overrides previous movement check
                     m.geoPath = GeoEnginePathfinding.getInstance().findPath(curX, curY, curZ, originalX, originalY, originalZ, getInstanceId());
-                    if ((m.geoPath == null) || (m.geoPath.size() < 2)) // No path found
-                    {
+                    if ((m.geoPath == null) || (m.geoPath.size() < 2)) { // No path found
+                        if (isPlayer()
+                                || (!isPlayable() && !isMinion() && (Math.abs(z - curZ) > 140))
+                                || (isSummon() && !((Summon) this).getFollowStatus())) {
+                            return;
+                        }
+
                         m.disregardingGeodata = true;
 
-                        // Mobius: Verify destination. Prevents wall collision issues.
-                        final Location newDestination = GeoEngine.getInstance().canMoveToTargetLoc(curX, curY, curZ, originalX, originalY, originalZ, getInstanceId());
-                        x = newDestination.getX();
-                        y = newDestination.getY();
-                        z = newDestination.getZ();
+                        x = originalX;
+                        y = originalY;
+                        z = originalZ;
+                        distance = originalDistance;
                     } else {
                         m.onGeodataPathIndex = 0; // on first segment
                         m.geoPathGtx = gtx;

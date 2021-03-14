@@ -13752,17 +13752,19 @@ public class PlayerInstance extends Playable {
         if (_fallingDamage == 0) {
             _fallingDamage = (int) Formulas.calcFallDam(this, deltaZ);
         }
+
         if (_fallingDamageTask != null) {
             if (Config.CORRECT_PLAYER_Z) {
-                final int nearestZ = GeoEngine.getInstance().getNextLowerZ(getX(), getY(), getZ());
+                int nearestZ = GeoEngine.getInstance().getHigherHeight(getX(), getY(), getZ());
+
                 if (getZ() < nearestZ) {
                     teleToLocation(new Location(getX(), getY(), nearestZ), false);
                 }
             }
             _fallingDamageTask.cancel(true);
         }
-        _fallingDamageTask = ThreadPool.schedule(() ->
-        {
+
+        _fallingDamageTask = ThreadPool.schedule(() -> {
             if ((_fallingDamage > 0) && !isInvul()) {
                 reduceCurrentHp(Math.min(_fallingDamage, getCurrentHp() - 1), null, false);
                 sendPacket(new SystemMessage(SystemMessageId.YOU_RECEIVED_S1_DAMAGE_FROM_TAKING_A_HIGH_FALL).addNumber(_fallingDamage));

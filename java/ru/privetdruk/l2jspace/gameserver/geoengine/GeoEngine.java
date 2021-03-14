@@ -300,6 +300,30 @@ public class GeoEngine {
     }
 
     /**
+     * Gets the next lower Z height.
+     *
+     * @param x the world x
+     * @param y the world y
+     * @param z the world z
+     * @return the nearest Z height
+     */
+    public int getLowerHeight(int x, int y, int z) {
+        return getNextLowerZ(getGeoX(x), getGeoY(y), z);
+    }
+
+    /**
+     * Gets the next higher Z height.
+     *
+     * @param x the world x
+     * @param y the world y
+     * @param z the world z
+     * @return the nearest Z height
+     */
+    public int getHigherHeight(int x, int y, int z) {
+        return getNextHigherZ(getGeoX(x), getGeoY(y), z);
+    }
+
+    /**
      * Can see target. Doors as target always return true. Checks doors between.
      *
      * @param cha    the character
