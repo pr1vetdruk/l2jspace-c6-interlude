@@ -19,7 +19,7 @@ package ru.privetdruk.l2jspace.gameserver.model.actor.instance;
 import ru.privetdruk.l2jspace.Config;
 import ru.privetdruk.l2jspace.gameserver.datatables.BufferTable;
 import ru.privetdruk.l2jspace.gameserver.datatables.SkillTable;
-import ru.privetdruk.l2jspace.gameserver.enums.buffer.BufferAction;
+import ru.privetdruk.l2jspace.gameserver.enums.bypass.BufferBypass;
 import ru.privetdruk.l2jspace.gameserver.model.Effect;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Creature;
 import ru.privetdruk.l2jspace.gameserver.model.actor.Summon;
@@ -44,15 +44,15 @@ public class BufferInstance extends FolkInstance {
     private static final String BUFFS_TYPE = "Buffs";
 
     public BufferInstance(int objectId, NpcTemplate template) {
-        super(objectId, template);
+        super(objectId, template, "mods/buffer/");
     }
 
     @Override
     public void onBypassFeedback(PlayerInstance player, String commandValue) {
         StringTokenizer tokenizer = new StringTokenizer(commandValue, " ");
-        BufferAction action = BufferAction.valueOf(tokenizer.nextToken().toUpperCase(Locale.ROOT));
+        BufferBypass bypass = BufferBypass.valueOf(tokenizer.nextToken().toUpperCase(Locale.ROOT));
 
-        switch (action) {
+        switch (bypass) {
             case ADD_BUFF -> addBuffToProfile(player, tokenizer);
             case BUFF -> buff(player, tokenizer);
             case CANCEL -> cancel(player);
@@ -67,13 +67,6 @@ public class BufferInstance extends FolkInstance {
         }
 
         super.onBypassFeedback(player, commandValue);
-    }
-
-    @Override
-    public String getHtmlPath(int npcId, int value) {
-        String filename = value == 0 ? Integer.toString(npcId) : npcId + "-" + value;
-
-        return "data/html/mods/buffer/" + filename + ".htm";
     }
 
     public static void configurePage(PlayerInstance player,

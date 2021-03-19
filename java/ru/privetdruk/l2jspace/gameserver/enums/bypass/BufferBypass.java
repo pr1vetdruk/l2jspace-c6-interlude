@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ru.privetdruk.l2jspace.gameserver.enums.buffer;
+package ru.privetdruk.l2jspace.gameserver.enums.bypass;
 
-public enum BufferAction {
+public enum BufferBypass {
     ADD_BUFF,
     BUFF,
     CANCEL,

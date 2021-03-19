@@ -45,7 +45,7 @@ import ru.privetdruk.l2jspace.gameserver.model.quest.QuestState;
 import ru.privetdruk.l2jspace.gameserver.model.zone.ZoneId;
 import ru.privetdruk.l2jspace.gameserver.network.SystemMessageId;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.ActionFailed;
-import ru.privetdruk.l2jspace.gameserver.network.serverpackets.AquireSkillList;
+import ru.privetdruk.l2jspace.gameserver.network.serverpackets.AcquireSkillList;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.NpcHtmlMessage;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.SystemMessage;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.UserInfo;
@@ -828,7 +828,7 @@ public class VillageMasterInstance extends FolkInstance {
         }
 
         final PledgeSkillLearn[] skills = SkillTreeTable.getInstance().getAvailablePledgeSkills(player);
-        final AquireSkillList asl = new AquireSkillList(AquireSkillList.skillType.Clan);
+        final AcquireSkillList asl = new AcquireSkillList(AcquireSkillList.SkillType.CLAN);
         int counts = 0;
         for (PledgeSkillLearn s : skills) {
             final int cost = s.getRepCost();

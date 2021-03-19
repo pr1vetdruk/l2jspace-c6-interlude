@@ -26,15 +26,15 @@ import java.util.List;
  *
  * @version $Revision: 1.3.2.1.2.5 $ $Date: 2005/03/27 15:29:57 $
  */
-public class AquireSkillList extends GameServerPacket {
-    public enum skillType {
-        Usual,
-        Fishing,
-        Clan
+public class AcquireSkillList extends GameServerPacket {
+    public enum SkillType {
+        USUAL,
+        FISHING,
+        CLAN
     }
 
-    private final List<Skill> _skills;
-    private final skillType _fishingSkills;
+    private final List<Skill> skills;
+    private final SkillType fishingSkills;
 
     private class Skill {
         public int id;
@@ -43,36 +43,40 @@ public class AquireSkillList extends GameServerPacket {
         public int spCost;
         public int requirements;
 
-        public Skill(int pId, int pNextLevel, int pMaxLevel, int pSpCost, int pRequirements) {
-            id = pId;
-            nextLevel = pNextLevel;
-            maxLevel = pMaxLevel;
-            spCost = pSpCost;
-            requirements = pRequirements;
+        public Skill(int id, int nextLevel, int maxLevel, int spCost, int requirements) {
+            this.id = id;
+            this.nextLevel = nextLevel;
+            this.maxLevel = maxLevel;
+            this.spCost = spCost;
+            this.requirements = requirements;
         }
     }
 
-    public AquireSkillList(skillType type) {
-        _skills = new ArrayList<>();
-        _fishingSkills = type;
+    public AcquireSkillList(SkillType type) {
+        skills = new ArrayList<>();
+        fishingSkills = type;
     }
 
     public void addSkill(int id, int nextLevel, int maxLevel, int spCost, int requirements) {
-        _skills.add(new Skill(id, nextLevel, maxLevel, spCost, requirements));
+        skills.add(new Skill(id, nextLevel, maxLevel, spCost, requirements));
+    }
+
+    public int size() {
+        return skills.size();
     }
 
     @Override
     protected final void writeImpl() {
         writeC(0x8a);
-        writeD(_fishingSkills.ordinal()); // c4 : C5 : 0: usuall 1: fishing 2: clans
-        writeD(_skills.size());
+        writeD(fishingSkills.ordinal()); // c4 : C5 : 0: usuall 1: fishing 2: clans
+        writeD(skills.size());
 
-        for (Skill temp : _skills) {
-            writeD(temp.id);
-            writeD(temp.nextLevel);
-            writeD(temp.maxLevel);
-            writeD(temp.spCost);
-            writeD(temp.requirements);
+        for (Skill skill : skills) {
+            writeD(skill.id);
+            writeD(skill.nextLevel);
+            writeD(skill.maxLevel);
+            writeD(skill.spCost);
+            writeD(skill.requirements);
         }
     }
 }

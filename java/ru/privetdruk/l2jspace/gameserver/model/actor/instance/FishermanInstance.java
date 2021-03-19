@@ -29,7 +29,7 @@ import ru.privetdruk.l2jspace.gameserver.model.StoreTradeList;
 import ru.privetdruk.l2jspace.gameserver.model.actor.templates.NpcTemplate;
 import ru.privetdruk.l2jspace.gameserver.network.SystemMessageId;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.ActionFailed;
-import ru.privetdruk.l2jspace.gameserver.network.serverpackets.AquireSkillList;
+import ru.privetdruk.l2jspace.gameserver.network.serverpackets.AcquireSkillList;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.BuyList;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.NpcHtmlMessage;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.SellList;
@@ -114,7 +114,7 @@ public class FishermanInstance extends FolkInstance {
 
     public void showSkillList(PlayerInstance player) {
         final SkillLearn[] skills = SkillTreeTable.getInstance().getAvailableSkills(player);
-        final AquireSkillList asl = new AquireSkillList(AquireSkillList.skillType.Fishing);
+        final AcquireSkillList asl = new AcquireSkillList(AcquireSkillList.SkillType.FISHING);
         int counts = 0;
         for (SkillLearn s : skills) {
             final Skill sk = SkillTable.getInstance().getSkill(s.getId(), s.getLevel());

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExEnchantSkillList extends GameServerPacket {
-    private final List<Skill> _skills;
+    private final List<Skill> skills;
 
     class Skill {
         public int id;
@@ -28,20 +28,24 @@ public class ExEnchantSkillList extends GameServerPacket {
         public int sp;
         public int exp;
 
-        Skill(int pId, int pNextLevel, int pSp, int pExp) {
-            id = pId;
-            nextLevel = pNextLevel;
-            sp = pSp;
-            exp = pExp;
+        Skill(int id, int nextLevel, int sp, int exp) {
+            this.id = id;
+            this.nextLevel = nextLevel;
+            this.sp = sp;
+            this.exp = exp;
         }
     }
 
     public void addSkill(int id, int level, int sp, int exp) {
-        _skills.add(new Skill(id, level, sp, exp));
+        skills.add(new Skill(id, level, sp, exp));
+    }
+
+    public int size() {
+        return skills.size();
     }
 
     public ExEnchantSkillList() {
-        _skills = new ArrayList<>();
+        skills = new ArrayList<>();
     }
 
     /*
@@ -52,13 +56,13 @@ public class ExEnchantSkillList extends GameServerPacket {
     protected void writeImpl() {
         writeC(0xfe);
         writeH(0x17);
+        writeD(skills.size());
 
-        writeD(_skills.size());
-        for (Skill sk : _skills) {
-            writeD(sk.id);
-            writeD(sk.nextLevel);
-            writeD(sk.sp);
-            writeQ(sk.exp);
+        for (Skill skill : skills) {
+            writeD(skill.id);
+            writeD(skill.nextLevel);
+            writeD(skill.sp);
+            writeQ(skill.exp);
         }
     }
 }
