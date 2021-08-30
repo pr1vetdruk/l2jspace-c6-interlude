@@ -42,10 +42,14 @@ import ru.privetdruk.l2jspace.commons.enums.ServerMode;
 import ru.privetdruk.l2jspace.commons.util.ClassMasterSettings;
 import ru.privetdruk.l2jspace.commons.util.PropertiesParser;
 import ru.privetdruk.l2jspace.commons.util.StringUtil;
+import ru.privetdruk.l2jspace.gameserver.enums.ItemEnum;
 import ru.privetdruk.l2jspace.gameserver.model.entity.olympiad.OlympiadPeriod;
+import ru.privetdruk.l2jspace.gameserver.model.holders.ItemHolder;
 import ru.privetdruk.l2jspace.gameserver.util.FloodProtectorConfig;
+import ru.privetdruk.l2jspace.gameserver.util.TimeConfig;
 import ru.privetdruk.l2jspace.gameserver.util.Util;
 import ru.privetdruk.l2jspace.loginserver.LoginController;
+import ru.privetdruk.l2jspace.gameserver.datatables.ItemTable;
 
 public class Config {
     private static final Logger LOGGER = Logger.getLogger(Config.class.getName());
@@ -87,6 +91,7 @@ public class Config {
     private static final String EVENT_PC_BANG_POINT_CONFIG_FILE = "./config/events/PcBang.ini";
     private static final String EVENT_TVT_CONFIG_FILE = "./config/events/TvT.ini";
     private static final String EVENT_TW_CONFIG_FILE = "./config/events/TW.ini";
+
     // custom
     private static final String BANK_CONFIG_FILE = "./config/custom/Bank.ini";
     private static final String CANCEL_SKILL_RESTORE_BUFFS_CONFIG_FILE = "./config/custom/CancelSkillRestoreBuffs.ini";
@@ -99,6 +104,8 @@ public class Config {
     private static final String SCHEME_BUFFER_CONFIG_FILE = "./config/custom/Buffer.ini";
     private static final String EVENT_REBIRTH_CONFIG_FILE = "./config/custom/Rebirth.ini";
     private static final String EVENT_WEDDING_CONFIG_FILE = "./config/custom/Wedding.ini";
+    private static final String SERVICES_CONFIG_FILE = "./config/custom/PremiumService.properties";
+
     // login
     private static final String LOGIN_CONFIG_FILE = "./config/main/LoginServer.ini";
     // others
@@ -1175,6 +1182,24 @@ public class Config {
     public static String NETWORK_IP_LIST;
     public static long SESSION_TTL;
     public static int MAX_LOGINSESSIONS;
+
+    // Premium Services Settings
+    public static boolean ALLOW_SERVICE_VOICED;
+    public static boolean PREMIUM_SERVICE_ENABLED;
+    public static boolean PREMIUM_ALLOW_VOICED;
+    public static boolean PREMIUM_PARTY_DROPSPOIL;
+    public static Map<String, ItemHolder> CHAR_PREMIUM_PRICE;
+    public static Map<String, ItemHolder> ACCOUNT_PREMIUM_PRICE;
+    public static boolean SHOW_PREMIUM_STATUS;
+    public static int NEWBIES_PREMIUM_PERIOD;
+    public static boolean NOTIFY_PREMIUM_EXPIRATION;
+
+    public static float PREMIUM_RATE_XP;
+    public static float PREMIUM_RATE_SP;
+    public static float PREMIUM_RATE_SPOIL;
+    public static float PREMIUM_RATE_DROP_ITEMS;
+    public static float PREMIUM_RATE_DROP_ITEMS_BY_RAID;
+    public static Map<Integer, Float> PREMIUM_RATE_DROP_ITEMS_ID;
 
     /**
      * MMO settings
@@ -2904,6 +2929,90 @@ public class Config {
         loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_POTION, "Potion", 4);
     }
 
+    private static void loadPremiumServiceConfig() {
+        PropertiesParser properties = new PropertiesParser(SERVICES_CONFIG_FILE);
+
+        ALLOW_SERVICE_VOICED = properties.getBoolean("AllowServiceVoiced", false);
+        PREMIUM_SERVICE_ENABLED = properties.getBoolean("PremiumServiceEnabled", false);
+        PREMIUM_ALLOW_VOICED = properties.getBoolean("PremiumAllowVoiced", false);
+        PREMIUM_PARTY_DROPSPOIL = properties.getBoolean("PremiumPartyDropSpoil", false);
+        SHOW_PREMIUM_STATUS = properties.getBoolean("ShowPremiumStatus", true);
+        NEWBIES_PREMIUM_PERIOD = properties.getInt("NewbiesPremiumPeriod", 0);
+        NOTIFY_PREMIUM_EXPIRATION = properties.getBoolean("NotifyPremiumExpiration", true);
+
+        PREMIUM_RATE_XP = properties.getFloat("PremiumRateXp", 1);
+        PREMIUM_RATE_SP = properties.getFloat("PremiumRateSp", 1);
+        PREMIUM_RATE_DROP_ITEMS = properties.getFloat("PremiumRateDropItems", 1);
+        PREMIUM_RATE_DROP_ITEMS_BY_RAID = properties.getFloat("PremiumRateRaidDropItems", 1);
+        PREMIUM_RATE_SPOIL = properties.getFloat("PremiumRateSpoil", 1);
+
+        String[] propertySplit = properties.getString("PremiumRateDropItemsById", "").split(";");
+        PREMIUM_RATE_DROP_ITEMS_ID = new HashMap<>(propertySplit.length);
+
+        if (!propertySplit[0].isEmpty()) {
+            for (String item : propertySplit) {
+                String[] itemSplit = item.split(",");
+
+                if (itemSplit.length != 2) {
+                    LOGGER.warning(StringUtil.concat("Config.load(): invalid config property -> PremiumRateDropItemsById \"", item, "\""));
+                    continue;
+                }
+
+                try {
+                    PREMIUM_RATE_DROP_ITEMS_ID.put(Integer.parseInt(itemSplit[0]), Float.parseFloat(itemSplit[1]));
+                } catch (NumberFormatException nfe) {
+                    if (!item.isEmpty()) {
+                        LOGGER.severe(StringUtil.concat("Config.load(): invalid config property -> PremiumRateDropItemsById \"", item, "\""));
+                    }
+                }
+            }
+        }
+
+        if (PREMIUM_RATE_DROP_ITEMS_ID.get(ItemEnum.ADENA.getId()) == 0f) {
+            PREMIUM_RATE_DROP_ITEMS_ID.put(ItemEnum.ADENA.getId(), PREMIUM_RATE_DROP_ITEMS); // for Adena rate if not defined
+        }
+
+        configurePremiumProperties(properties, "CharPremiumPrice", CHAR_PREMIUM_PRICE);
+        configurePremiumProperties(properties, "AccountPremiumPrice", ACCOUNT_PREMIUM_PRICE);
+    }
+
+    private static void configurePremiumProperties(PropertiesParser properties, String propertiesKey, Map<String, ItemHolder> map) {
+        String[] propertySplit = properties.getString(propertiesKey, "").split(";");
+
+        if (propertySplit[0].isEmpty()) {
+            return;
+        }
+
+        map = new HashMap<>();
+
+        for (String item : propertySplit) {
+            String[] itemSplit = item.split(",");
+
+            if (itemSplit.length != 3) {
+                LOGGER.warning(StringUtil.concat("Config.load(): invalid config property -> PremiumPrice \"", item, "\""));
+                continue;
+            }
+
+            if (TimeConfig.parse(itemSplit[0]) <= 0) {// check for correct time period
+                LOGGER.warning(StringUtil.concat("Config.load(): invalid time period -> PremiumPrice \"", itemSplit[0], "\""));
+                continue;
+            }
+
+            try {
+                int itemId = Integer.parseInt(itemSplit[1]);
+                long itemCount = Long.parseLong(itemSplit[2]);
+
+                if (itemCount > 0 && ItemTable.getInstance().getTemplate(itemId) == null) { // Check for existing item, if count is greater, than 0
+                    LOGGER.warning(StringUtil.concat("Config.load(): invalid item id -> PremiumPrice \"", itemSplit[1], "\""));
+                } else {
+                    map.put(itemSplit[0], new ItemHolder(itemId, itemCount));
+                }
+            } catch (NumberFormatException nfe) {
+                LOGGER.severe(StringUtil.concat("Config.load(): invalid item parameters -> PremiumPrice \"", itemSplit[1] + ";" + itemSplit[2], "\""));
+            }
+        }
+    }
+
     public static void load(ServerMode serverMode) {
         SERVER_MODE = serverMode;
         if (SERVER_MODE == ServerMode.GAME) {
@@ -2955,6 +3064,7 @@ public class Config {
             loadBufferConfig();
             loadPCBPointConfig();
             loadOfflineConfig();
+            loadPremiumServiceConfig();
 
             // Other
             loadDaemonsConf();

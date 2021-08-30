@@ -6,6 +6,7 @@ CREATE TABLE ctf_team_setting
     id                       INT(4)       NOT NULL DEFAULT 0 COMMENT 'Team ID',
     name                     VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'Team name',
     name_color               INT(11)      NOT NULL DEFAULT 0 COMMENT 'Name color',
+    offset                   INT(11)      NOT NULL DEFAULT 300 COMMENT 'Displacement of the player after teleporting to the event.',
     position_x               INT(11)      NOT NULL DEFAULT 0 COMMENT 'X-axis team spawn coordinates',
     position_y               INT(11)      NOT NULL DEFAULT 0 COMMENT 'Y-axis team spawn coordinates',
     position_z               INT(11)      NOT NULL DEFAULT 0 COMMENT 'Z-axis team spawn coordinates',
@@ -38,10 +39,10 @@ ALTER TABLE ctf_team_setting MODIFY throne_npc_id            INT COMMENT 'Throne
 ALTER TABLE ctf_team_setting MODIFY offset_throne_position_z INT(11) COMMENT 'Offset throne position on Z-axis';
 
 INSERT INTO ctf_team_setting (event_id, id, name, name_color,
-                              position_x, position_y, position_z,
+                              offset, position_x, position_y, position_z,
                               flag_position_x, flag_position_y, flag_position_z,
                               flag_item_id, flag_npc_id, throne_npc_id, offset_throne_position_z)
-VALUES (1, 1, 'Blue', 255, 87357, -145722, -1288, 87358, -145979, -1291, 6718, 35062, 32027, 10),
-       (1, 2, 'Red', 16711680, 87351, -139984, -1536,  87359, -139584, -1536, 6718, 35062, 32027, 10),
-       (2, 1, 'Blue', 255, 87357, -145722, -1288, 87358, -145979, -1291, 6718, 35062, 32027, 10),
-       (2, 2, 'Red', 16711680, 87351, -139984, -1536,  87359, -139584, -1536, 6718, 35062, 32027, 10);
+VALUES (1, 1, 'Blue', 255, 300, 87357, -145722, -1288, 87358, -145979, -1291, 6718, 35062, 32027, 10),
+       (1, 2, 'Red', 16711680, 300, 87351, -139984, -1536,  87359, -139584, -1536, 6718, 35062, 32027, 10),
+       (2, 1, 'Blue', 255, 300, 87357, -145722, -1288, 87358, -145979, -1291, 6718, 35062, 32027, 10),
+       (2, 2, 'Red', 16711680, 300, 87351, -139984, -1536,  87359, -139584, -1536, 6718, 35062, 32027, 10);

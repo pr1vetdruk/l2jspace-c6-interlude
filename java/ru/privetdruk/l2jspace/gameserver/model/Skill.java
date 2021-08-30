@@ -2441,11 +2441,16 @@ public abstract class Skill {
 
             // if src is in event and trg not OR viceversa, the target must be not attackable
             // to be fixed for mixed events status (in TvT joining phase, someone can attack a partecipating CTF player with area attack)
-            if (((activeCh._inEvent || activeCh.inEventCtf || activeCh._inEventDM || activeCh._inEventTvT || activeCh._inEventVIP) && (!targetChar._inEvent && !targetChar.inEventCtf && !targetChar._inEventDM && !targetChar._inEventTvT && !targetChar._inEventVIP)) || ((targetChar._inEvent || targetChar.inEventCtf || targetChar._inEventDM || targetChar._inEventTvT || targetChar._inEventVIP) && (!activeCh._inEvent && !activeCh.inEventCtf && !activeCh._inEventDM && !activeCh._inEventTvT && !activeCh._inEventVIP))) {
+            if (((activeCh._inEvent || activeCh.inEventCtf || activeCh._inEventDM || activeCh._inEventTvT || activeCh._inEventVIP)
+                    && (!targetChar._inEvent && !targetChar.inEventCtf && !targetChar._inEventDM && !targetChar._inEventTvT && !targetChar._inEventVIP))
+                    || ((targetChar._inEvent || targetChar.inEventCtf || targetChar._inEventDM || targetChar._inEventTvT || targetChar._inEventVIP)
+                    && (!activeCh._inEvent && !activeCh.inEventCtf && !activeCh._inEventDM && !activeCh._inEventTvT && !activeCh._inEventVIP))) {
                 return true;
             }
 
-            if ((activeCh._inEvent && targetChar._inEvent) || (activeCh._inEventDM && targetChar._inEventDM) || (activeCh._inEventTvT && targetChar._inEventTvT) || (activeCh.inEventCtf && targetChar.inEventCtf) || (activeCh._inEventVIP && targetChar._inEventVIP)) {
+            if ((activeCh._inEvent && targetChar._inEvent) || (activeCh._inEventDM && targetChar._inEventDM)
+                    || (activeCh._inEventTvT && targetChar._inEventTvT) || (activeCh.inEventCtf && targetChar.inEventCtf)
+                    || (activeCh._inEventVIP && targetChar._inEventVIP)) {
                 return false;
             }
 

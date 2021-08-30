@@ -55,6 +55,7 @@ import ru.privetdruk.l2jspace.gameserver.datatables.HeroSkillTable;
 import ru.privetdruk.l2jspace.gameserver.datatables.ItemTable;
 import ru.privetdruk.l2jspace.gameserver.datatables.NobleSkillTable;
 import ru.privetdruk.l2jspace.gameserver.datatables.SkillTable;
+import ru.privetdruk.l2jspace.gameserver.datatables.custom.PremiumTable;
 import ru.privetdruk.l2jspace.gameserver.datatables.sql.ClanTable;
 import ru.privetdruk.l2jspace.gameserver.datatables.sql.NpcTable;
 import ru.privetdruk.l2jspace.gameserver.datatables.sql.SkillTreeTable;
@@ -68,6 +69,7 @@ import ru.privetdruk.l2jspace.gameserver.datatables.xml.RecipeData;
 import ru.privetdruk.l2jspace.gameserver.datatables.xml.ZoneData;
 import ru.privetdruk.l2jspace.gameserver.enums.ChatType;
 import ru.privetdruk.l2jspace.gameserver.enums.Race;
+import ru.privetdruk.l2jspace.gameserver.enums.ServiceType;
 import ru.privetdruk.l2jspace.gameserver.enums.TeleportWhereType;
 import ru.privetdruk.l2jspace.gameserver.geoengine.GeoEngine;
 import ru.privetdruk.l2jspace.gameserver.handler.IItemHandler;
@@ -76,15 +78,7 @@ import ru.privetdruk.l2jspace.gameserver.handler.admincommandhandlers.AdminEditC
 import ru.privetdruk.l2jspace.gameserver.handler.skillhandlers.SiegeFlag;
 import ru.privetdruk.l2jspace.gameserver.handler.skillhandlers.StrSiegeAssault;
 import ru.privetdruk.l2jspace.gameserver.handler.skillhandlers.TakeCastle;
-import ru.privetdruk.l2jspace.gameserver.instancemanager.CastleManager;
-import ru.privetdruk.l2jspace.gameserver.instancemanager.CoupleManager;
-import ru.privetdruk.l2jspace.gameserver.instancemanager.CursedWeaponsManager;
-import ru.privetdruk.l2jspace.gameserver.instancemanager.DimensionalRiftManager;
-import ru.privetdruk.l2jspace.gameserver.instancemanager.DuelManager;
-import ru.privetdruk.l2jspace.gameserver.instancemanager.FortSiegeManager;
-import ru.privetdruk.l2jspace.gameserver.instancemanager.ItemsOnGroundManager;
-import ru.privetdruk.l2jspace.gameserver.instancemanager.QuestManager;
-import ru.privetdruk.l2jspace.gameserver.instancemanager.SiegeManager;
+import ru.privetdruk.l2jspace.gameserver.instancemanager.*;
 import ru.privetdruk.l2jspace.gameserver.model.AccessLevel;
 import ru.privetdruk.l2jspace.gameserver.model.BlockList;
 import ru.privetdruk.l2jspace.gameserver.model.Effect;
@@ -230,10 +224,7 @@ import ru.privetdruk.l2jspace.gameserver.network.serverpackets.TradePressOwnOk;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.TradeStart;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.UserInfo;
 import ru.privetdruk.l2jspace.gameserver.network.serverpackets.ValidateLocation;
-import ru.privetdruk.l2jspace.gameserver.util.Broadcast;
-import ru.privetdruk.l2jspace.gameserver.util.FloodProtectors;
-import ru.privetdruk.l2jspace.gameserver.util.IllegalPlayerAction;
-import ru.privetdruk.l2jspace.gameserver.util.Util;
+import ru.privetdruk.l2jspace.gameserver.util.*;
 
 import static ru.privetdruk.l2jspace.gameserver.model.entity.event.core.State.START;
 import static ru.privetdruk.l2jspace.gameserver.model.entity.event.core.State.TELEPORTATION;
@@ -319,8 +310,6 @@ public class PlayerInstance extends Playable {
     private boolean _isIn7sDungeon = false;
     private int _heroConsecutiveKillCount = 0;
     private boolean _isPvpHero = false;
-    public int _originalTitleColorAway;
-    public String _originalTitleAway;
     private boolean _isAio = false;
     private long _aioEndTime = 0;
     private boolean _expGain = true;
@@ -606,9 +595,14 @@ public class PlayerInstance extends Playable {
         }
 
         // Add the player in the characters table of the database
-        final boolean ok = player.createDb();
+        boolean ok = player.createDb();
         if (!ok) {
             return null;
+        }
+
+        // Give premium to Newbie
+        if (Config.NEWBIES_PREMIUM_PERIOD > 0) {
+            PremiumTable.addTime(player, TimeConfig.DAY, Config.NEWBIES_PREMIUM_PERIOD);
         }
 
         return player;
@@ -7553,7 +7547,7 @@ public class PlayerInstance extends Playable {
             statement.setString(55, getName());
             statement.setLong(56, getDeathPenaltyBuffLevel());
             statement.setInt(57, getPcBangScore());
-            statement.setString(58, StringToHex(Integer.toHexString(_originalNameColorOffline).toUpperCase()));
+            statement.setString(58, StringToHex(Integer.toHexString(getAppearance().getNameColor()).toUpperCase()));
             statement.setString(59, StringToHex(Integer.toHexString(getAppearance().getTitleColor()).toUpperCase()));
             statement.setInt(60, isAio() ? 1 : 0);
             statement.setLong(61, getAioEndTime());
@@ -10032,26 +10026,26 @@ public class PlayerInstance extends Playable {
      *
      * @return the count
      */
-    public int getCount() {
+    public int getHeroCount() {
         int count = 0;
-        try (Connection con = DatabaseFactory.getConnection()) {
-            final PreparedStatement statement = con.prepareStatement("SELECT count FROM heroes WHERE char_name=?");
+
+        try (Connection connection = DatabaseFactory.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT count FROM heroes WHERE char_name=?");
             statement.setString(1, getName());
-            final ResultSet rset = statement.executeQuery();
-            while (rset.next()) {
-                count = rset.getInt("count");
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                count = resultSet.getInt("count");
             }
 
-            rset.close();
+            resultSet.close();
             statement.close();
         } catch (Exception e) {
             LOGGER.warning(e.toString());
         }
 
-        if (count != 0) {
-            return count;
-        }
-        return 0;
+        return count;
     }
 
     /**
@@ -14391,7 +14385,7 @@ public class PlayerInstance extends Playable {
         _hero = hero;
         if (_hero && (_baseClass == _activeClass)) {
             giveHeroSkills();
-        } else if ((getCount() >= Config.HERO_COUNT) && _hero && Config.ALLOW_HERO_SUBSKILL) {
+        } else if ((getHeroCount() >= Config.HERO_COUNT) && _hero && Config.ALLOW_HERO_SUBSKILL) {
             giveHeroSkills();
         } else {
             removeHeroSkills();
@@ -14441,5 +14435,9 @@ public class PlayerInstance extends Playable {
         return true;
     }
 
+    public boolean checkItemAvailability(int itemId, int itemCount) {
+        ItemInstance item = getInventory().getItemByItemId(itemId);
 
+        return item != null && item.getCount() >= itemCount;
+    }
 }

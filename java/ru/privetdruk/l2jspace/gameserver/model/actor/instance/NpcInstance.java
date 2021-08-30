@@ -2270,9 +2270,7 @@ public class NpcInstance extends Creature {
             html.replaceAll("_Quest", "_RentPet\">Rent Pet</a><br><a action=\"bypass -h npc_%objectId%_Quest");
         }
 
-        if (npcId == 50008) {
-            BufferInstance.configurePage(player, html);
-        }
+        configurePage(player, html);
 
         html.replaceAll("%npcname%", getName());
         html.replaceAll("%playername%", player.getName());
@@ -2283,6 +2281,9 @@ public class NpcInstance extends Creature {
 
         // Send a Server->Client ActionFailed to the PlayerInstance in order to avoid that the client wait another packet
         player.sendPacket(ActionFailed.STATIC_PACKET);
+    }
+
+    public void configurePage(PlayerInstance player, NpcHtmlMessage html) {
     }
 
     /**

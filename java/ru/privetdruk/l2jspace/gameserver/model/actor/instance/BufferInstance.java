@@ -86,7 +86,8 @@ public class BufferInstance extends FolkInstance {
         html.replace("<objectId>", "%objectId%");
     }
 
-    public static void configurePage(PlayerInstance player, NpcHtmlMessage html) {
+    @Override
+    public void configurePage(PlayerInstance player, NpcHtmlMessage html) {
         configurePage(player, html, BUFFS_TYPE, BufferTable.getInstance().getLastUsedProfile(player.getObjectId()), 1, false, false);
     }
 
@@ -107,7 +108,6 @@ public class BufferInstance extends FolkInstance {
 
     public void show(PlayerInstance player, String groupType, String schemeName, int page, boolean displayCreateProfileInput, boolean displayEditing) {
         NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-
         html.setFile(getHtmlPath(getNpcId(), 0));
 
         configurePage(player, html, groupType, schemeName, page, displayCreateProfileInput, displayEditing);
